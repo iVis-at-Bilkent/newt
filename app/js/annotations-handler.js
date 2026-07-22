@@ -5,7 +5,6 @@
  */
 
 var jquery = $ = require('jquery');
-var AnnotationListView = require('./backbone-views').AnnotationListView;
 var Backbone = require('backbone');
 var _ = require('underscore');
 
@@ -277,8 +276,9 @@ ns.fillAnnotationsContainer = function (element) {
 		// this element has no annotations
 		// create new and empty list
 		annotationsListModel = new ns.AnnotationList([], {cyParent: element});
-	}
+	} 
 	// create new view from model
+	const AnnotationListView = require('./backbone-views').AnnotationListView;
 	var listView = new AnnotationListView({model: annotationsListModel});
 	// keep reference to this view, so we can check and delete it later
 	element.data('annotationsView', listView);

@@ -1,0 +1,695 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<sbgn xmlns="http://sbgn.org/libsbgn/0.2">
+  <map language="sif">
+    <extension>
+      <renderInformation 
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.1.0" background-color="#00000000">
+        <listOfColorDefinitions>
+          <colorDefinition id="color_1" value="#ffffffff"/>
+          <colorDefinition id="color_2" value="#ffffff"/>
+          <colorDefinition id="color_3" value="#555555ff"/>
+          <colorDefinition id="color_4" value="#555555"/>
+          <colorDefinition id="color_5" value="#c5dcedff"/>
+          <colorDefinition id="color_6" value="#000000"/>
+          <colorDefinition id="color_7" value="#55b1b6"/>
+          <colorDefinition id="color_8" value="#4886a5"/>
+          <colorDefinition id="color_9" value="#a9a9f7"/>
+          <colorDefinition id="color_10" value="#ff2f07"/>
+          <colorDefinition id="color_11" value="#d95f23"/>
+          <colorDefinition id="color_12" value="#b0b03d"/>
+          <colorDefinition id="color_13" value="#c364bf"/>
+          <colorDefinition id="color_14" value="#468de3"/>
+          <colorDefinition id="color_15" value="#db6f21"/>
+          <colorDefinition id="color_16" value="#2d5207"/>
+          <colorDefinition id="color_17" value="#3f00ff"/>
+          <colorDefinition id="color_18" value="#b4e1cd"/>
+          <colorDefinition id="color_19" value="#b57261"/>
+          <colorDefinition id="color_20" value="#b4987a"/>
+          <colorDefinition id="color_21" value="#f0e7c8"/>
+          <colorDefinition id="color_22" value="#d970a1"/>
+          <colorDefinition id="color_23" value="#6a0f30"/>
+          <colorDefinition id="color_24" value="#8ec3ed"/>
+          <colorDefinition id="color_25" value="#4e214b"/>
+          <colorDefinition id="color_26" value="#fc002c"/>
+          <colorDefinition id="color_27" value="#32d849"/>
+          <colorDefinition id="color_28" value="#cd4f32"/>
+          <colorDefinition id="color_29" value="#ee5f78"/>
+          <colorDefinition id="color_30" value="#43a93c"/>
+        </listOfColorDefinitions>
+        <listOfBackgroundImages/>
+        <listOfStyles>
+          <style id="nodeffffffffffff1.2512normalnormalHelvetica00000011" idList="nwtN_0e92c10f-4da4-ed1f-4bd8-225583b25143 nwtN_fa4d5a14-ca7f-42d5-a693-95f6fcb4c8df nwtN_66ff6721-8f82-b574-021f-2f71e70c4cc1 nwtN_5ddc4eec-4e82-fbd2-50c8-77877bc42c75 nwtN_4fce67d9-fe7d-3f31-afd1-9b73daa06d0f nwtN_6e7d53d4-a8c9-3e4b-34aa-71250f34037b nwtN_a869202d-d3de-9c93-bbe3-17de0df2ae97 nwtN_86bea12f-ec4f-0837-4ace-cfc0759b4805 nwtN_71184c0a-a672-340a-0d1f-522274c143b1 nwtN_1ed5fa0f-e85b-2348-30b3-7d8d1d844dee nwtN_e441fd4b-478d-6658-7396-e4cd2d6a33d0 nwtN_19ea6cc4-0564-a72d-3a4d-fdf8d7e63ec5 nwtN_40da344f-eb16-aa96-a022-10a895a2c0b6 nwtN_00afacf1-1848-b914-d916-ec74732a8001 nwtN_5b951610-dba1-2859-2850-23f72892117f nwtN_0bcaab21-6c89-e225-360f-1bab235f2c9e nwtN_4f8e7b4a-cfe1-f09e-3ce1-047da15416aa nwtN_b3b5c20c-1d43-4e8c-3de7-1322db8441a1 nwtN_93479d65-b451-8eda-ef82-f60cad56c562 nwtN_7a61777f-ebff-f095-7246-b128fed3f0f8 nwtN_9b1106ed-3a23-0aa3-fe87-00557d897b46 nwtN_b33dc475-8ff9-9386-3570-9c1544cf10aa nwtN_b00fb9e7-ce63-384c-7ea2-e5d109547c0a nwtN_199ef1bc-a31d-3e7b-d86f-a9628a0e5618 nwtN_f2690029-37e7-6e02-2d2a-bfe8909f9065 nwtN_beeaf884-892b-5c9b-a2f4-d2a9c13115aa nwtN_caa26250-cf9b-ad49-2b8d-9d54abe47b74 nwtN_642d2fe9-46f1-cc67-8cf9-55f0aee2bd38">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="node5555555555551.2518normalnormalHelveticaffffff11" idList="nwtN_4172ad8f-977b-45d0-a7ea-2cf1dc4cccb4 nwtN_eba14e56-7d47-b9ec-700c-11a88a794ce2 nwtN_e95c034c-749b-0a8c-0047-3310d6bf6c9e nwtN_8ad8adf1-3b02-5abd-f693-4d437d4fd310">
+            <g font-size="18" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#ffffff" stroke="color_4" stroke-width="1.25" fill="color_3" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodeffffff5555551.2512normalnormalHelvetica00000011" idList="nwtN_1655b9d6-17e7-49d7-93a9-b7c4e7f28eb2 nwtN_56441825-97d5-4917-89af-a96f3b2f7a10">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_4" stroke-width="1.25" fill="color_1" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="nodec5dced0000001.2512normalnormalHelvetica00000011" idList="nwtN_3a2a0202-ef94-771b-8971-08552d4e9799 nwtN_0cb0b581-99dc-4672-9a9b-740da8812a55 nwtN_ffefff5c-dc91-4581-8eb3-21e2176c9a00 nwtN_9340eec9-52c6-fbd1-2a95-fa67e129bc66 nwtN_47278318-85f7-90be-ffbe-e03f2a9301c4 nwtN_cf7ca85b-c1d2-4f8b-1ea7-3581dd4384da nwtN_42ae7280-3c99-67fd-85f2-4688a317c40e nwtN_4ecf45ee-1de9-e986-d48e-ce294acbdb3d nwtN_a935ef72-9dd6-7f02-cc4a-8f02e2a643ef nwtN_06a946d9-b22d-eec8-6a4c-8637608a47f9 nwtN_181c6347-d62b-7e76-fdcc-ad977a86f6b7 nwtN_5cb2d282-0828-2cbe-fc12-92524227c036 nwtN_26a58f63-b4bb-1092-fba3-43e1e27629ff nwtN_12f52dca-6d82-b632-2e74-634ebbb4c376 nwtN_e2141d63-3c5d-478d-dd37-20a55a268ae0 nwtN_e0c77201-fed9-bf89-2568-471904145047 nwtN_e25489e4-ed8e-c57b-c49f-9189fa81484b nwtN_5b75f42f-44f0-da18-898a-447eb7dc1503 nwtN_88c9355a-de2a-18c3-3301-a62014409434 nwtN_6a7fd212-487b-2733-df0f-4603201c7b42 nwtN_5f5bf084-7ef9-5f5a-d752-e177a86d3db1 nwtN_3c44e8ef-04fe-07c6-6df4-5ef12905a279 nwtN_b089ef83-71ac-9644-9e49-3730dcab2779 nwtN_9444fe73-9df7-d64e-99b3-5964143aade6 nwtN_3740561d-bbb9-28ad-c272-aea90bbae806 nwtN_0fb81595-6d6b-5430-d925-537c71a32196 nwtN_a2a4adff-5b9d-8a97-da37-ae0774662f32 nwtN_72cffe25-6545-7a13-8bba-92ccb5e557d3 nwtN_f5716ead-91a6-55fc-0f42-e67e93b32e9d nwtN_172b6248-a053-bad0-2895-43137b103402 nwtN_4cfc88ff-4533-7dcd-b84a-ec823c44cef5 nwtN_4df033f2-9bba-ffd9-13b8-558055b8897a nwtN_574f4985-2628-743d-f66b-ffa5236e74ed nwtN_4d98569c-3382-4c6b-ce56-8851efff1eae nwtN_6e4d0953-11ee-e0fd-2532-fbfd5a6353fd nwtN_40ee32c3-007d-cdf4-7afd-a3b81a23549d nwtN_c5b3ad8f-8542-f003-3537-5608ec1beed9 nwtN_23f8bbad-2024-090e-a119-0c9441b2d47b nwtN_63926e06-eea3-ca5d-6853-c77a9e2a4163 nwtN_e0e04669-6256-4406-3987-1a8be64e11ee nwtN_09c3e293-c449-950b-2ef4-d265e8883cba nwtN_fc839419-88ad-d42e-3317-439ef2af97ae nwtN_96d55599-1d9b-4d98-32c1-c5e747d76b88 nwtN_92744b36-9fcc-5f95-57f3-5f936c865ce4 nwtN_818b7d3b-261f-41e6-36a4-55efbb994bc0 nwtN_66e891b4-cc19-f5d3-a584-6be2bb399991 nwtN_81496180-969e-7b2b-4327-15e2e95040be nwtN_c6d4d112-df6b-6511-34f0-1f8f0ac4b4cb nwtN_3ea3b1ef-1457-d30b-2c33-d75b7c9b99d1 nwtN_869935e4-4118-25d2-ddf0-4147048675de nwtN_c543dc78-c80d-4219-7026-738720d0f6da nwtN_f50005e7-ccbe-b50f-7fd2-9dc5e3a2590e">
+            <g font-size="12" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000000" stroke="color_6" stroke-width="1.25" fill="color_5" background-image-opacity="1" background-opacity="1"/>
+          </style>
+          <style id="edge55b1b61.25" idList="nwtE_ba072e86-44cf-42c4-b659-6fc5f47ae1df">
+            <g stroke="color_7" stroke-width="1.25"/>
+          </style>
+          <style id="edge4886a51.25" idList="nwtE_ed31ffd7_13af_47fa_961d_55a510242897">
+            <g stroke="color_8" stroke-width="1.25"/>
+          </style>
+          <style id="edgea9a9f71.25" idList="nwtE_eabc5a4d_2b73_4de7_83fc_8b44210dae44">
+            <g stroke="color_9" stroke-width="1.25"/>
+          </style>
+          <style id="edgeff2f071.25" idList="nwtE_932d4cd5-c147-4000-b05e-bd0cb16682b5">
+            <g stroke="color_10" stroke-width="1.25"/>
+          </style>
+          <style id="edged95f231.25" idList="nwtE_73c4f863_990a_4fc9_b881_d68088f8d3a8">
+            <g stroke="color_11" stroke-width="1.25"/>
+          </style>
+          <style id="edgeb0b03d1.25" idList="nwtE_1f85547d-d33c-4aee-8bb4-39a10e5bb131">
+            <g stroke="color_12" stroke-width="1.25"/>
+          </style>
+          <style id="edgec364bf1.25" idList="nwtE_d5ff3a0f-6516-4f6f-9470-159d7c9ac9c2">
+            <g stroke="color_13" stroke-width="1.25"/>
+          </style>
+          <style id="edge468de31.25" idList="nwtE_697b7af1-e9ac-46b8-baa8-43cd2bd2cd8b">
+            <g stroke="color_14" stroke-width="1.25"/>
+          </style>
+          <style id="edgedb6f211.25" idList="nwtE_df850ecb-fa1f-442b-bfd8-272ec69ddc9c">
+            <g stroke="color_15" stroke-width="1.25"/>
+          </style>
+          <style id="edge2d52071.25" idList="nwtE_337ea799-e3a6-4d7a-9d63-dbd6ca40fe4d">
+            <g stroke="color_16" stroke-width="1.25"/>
+          </style>
+          <style id="edge3f00ff1.25" idList="nwtE_5039272e-a35f-4c37-9fb1-4a1b13222a90">
+            <g stroke="color_17" stroke-width="1.25"/>
+          </style>
+          <style id="edgeb4e1cd1.25" idList="nwtE_a8320825-959a-49f3-aff8-c32ed1efd5d6">
+            <g stroke="color_18" stroke-width="1.25"/>
+          </style>
+          <style id="edgeb572611.25" idList="nwtE_93509d33-78e9-4938-9c5b-86a5705eb9e5">
+            <g stroke="color_19" stroke-width="1.25"/>
+          </style>
+          <style id="edgeb4987a1.25" idList="nwtE_c245d7c5-ce6f-4479-b338-2234c1957d3a">
+            <g stroke="color_20" stroke-width="1.25"/>
+          </style>
+          <style id="edgef0e7c81.25" idList="nwtE_d9aa9a6e-5f51-4734-9343-7ed950cd4ad3">
+            <g stroke="color_21" stroke-width="1.25"/>
+          </style>
+          <style id="edged970a11.25" idList="nwtE_53ace26f-89e7-4200-9607-1ca6ea6d2e9d">
+            <g stroke="color_22" stroke-width="1.25"/>
+          </style>
+          <style id="edge6a0f301.25" idList="nwtE_ac894786-d061-4507-98e1-b37b09c8126a">
+            <g stroke="color_23" stroke-width="1.25"/>
+          </style>
+          <style id="edge8ec3ed1.25" idList="nwtE_a6d39f93-f1c6-419c-a26f-cd725a323b01">
+            <g stroke="color_24" stroke-width="1.25"/>
+          </style>
+          <style id="edge4e214b1.25" idList="nwtE_2d5f555b_cd73_4ec3_81f5_f08226d029fe">
+            <g stroke="color_25" stroke-width="1.25"/>
+          </style>
+          <style id="edgefc002c1.25" idList="nwtE_7baff09b_f888_46ab_a1a8_cf672ebe042d">
+            <g stroke="color_26" stroke-width="1.25"/>
+          </style>
+          <style id="edge32d8491.25" idList="nwtE_93a6972e_c7fb_4be3_9d21_ce936256be9c">
+            <g stroke="color_27" stroke-width="1.25"/>
+          </style>
+          <style id="edgecd4f321.25" idList="nwtE_90853071_271d_420a_b06e_29dbcbb9a767 nwtE_3fee6984_89c0_45f1_9a9f_edb14b610b52">
+            <g stroke="color_28" stroke-width="1.25"/>
+          </style>
+          <style id="edgeee5f781.25" idList="nwtE_15af7fb8_e57f_4467_b29e_5904e8eb8c66">
+            <g stroke="color_29" stroke-width="1.25"/>
+          </style>
+          <style id="edge43a93c1.25" idList="nwtE_5261c58a_22a6_44c3_8c58_8f79a08154bf nwtE_b2387837_a790_487e_bb12_08b30dba8bfb">
+            <g stroke="color_30" stroke-width="1.25"/>
+          </style>
+        </listOfStyles>
+      </renderInformation>
+      <nwt:mapProperties 
+        xmlns:nwt="https://newteditor.org/">
+        <compoundPadding>0</compoundPadding>
+        <extraCompartmentPadding>14</extraCompartmentPadding>
+        <extraComplexPadding>10</extraComplexPadding>
+        <arrowScale>1.25</arrowScale>
+        <showComplexName>true</showComplexName>
+        <dynamicLabelSize>regular</dynamicLabelSize>
+        <inferNestingOnLoad>false</inferNestingOnLoad>
+        <fitLabelsToNodes>false</fitLabelsToNodes>
+        <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
+        <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
+        <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <animateOnDrawingChanges>true</animateOnDrawingChanges>
+        <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <epnMatchingPercentage>100</epnMatchingPercentage>
+        <processIncomingContribution>33</processIncomingContribution>
+        <processOutgoingContribution>33</processOutgoingContribution>
+        <processAgentContribution>33</processAgentContribution>
+        <overallProcessPercentage>100</overallProcessPercentage>
+        <complexMatchPercentage>100</complexMatchPercentage>
+        <allowSimpleChemicalCloning>false</allowSimpleChemicalCloning>
+        <simpleChemicalCloningThreshold>3</simpleChemicalCloningThreshold>
+        <enablePorts>true</enablePorts>
+        <enableEntityStateSynchronization>false</enableEntityStateSynchronization>
+        <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <allowCompoundNodeResize>true</allowCompoundNodeResize>
+        <mapColorScheme>black_white</mapColorScheme>
+        <mapColorSchemeStyle>solid</mapColorSchemeStyle>
+        <mapName>Pathway #28</mapName>
+        <mapDescription/>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
+      </nwt:mapProperties>
+      <nwt:annotationLayers 
+        xmlns:nwt="https://newteditor.org/">
+        <layerCount>0</layerCount>
+        <layers>[]</layers>
+      </nwt:annotationLayers>
+    </extension>
+    <glyph id="nwtN_0e92c10f-4da4-ed1f-4bd8-225583b25143" class="SIF macromolecule">
+      <label text="Controls State Change of"/>
+      <bbox x="477.17438614181935" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4172ad8f-977b-45d0-a7ea-2cf1dc4cccb4" class="SIF macromolecule">
+      <label text="SIF NODES"/>
+      <bbox x="216.4182926349343" y="111.62620047129144" w="494.204732101874" h="40"/>
+    </glyph>
+    <glyph id="nwtN_1655b9d6-17e7-49d7-93a9-b7c4e7f28eb2" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="223.32409119852315" y="170.10474779713655" w="89.91832021860466" h="38.85776973919921"/>
+    </glyph>
+    <glyph id="nwtN_fa4d5a14-ca7f-42d5-a693-95f6fcb4c8df" class="SIF macromolecule">
+      <label text="Macromolecule"/>
+      <bbox x="345.2976214169174" y="174.53363266673617" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_56441825-97d5-4917-89af-a96f3b2f7a10" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="481.7898399564146" y="171.76557962323642" w="85.40429670111995" h="35.53610608699949"/>
+    </glyph>
+    <glyph id="nwtN_66ff6721-8f82-b574-021f-2f71e70c4cc1" class="SIF macromolecule">
+      <label text="Simple Chemical"/>
+      <bbox x="612.140076673728" y="174.53363266673617" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3a2a0202-ef94-771b-8971-08552d4e9799" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_0cb0b581-99dc-4672-9a9b-740da8812a55" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_ffefff5c-dc91-4581-8eb3-21e2176c9a00" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9340eec9-52c6-fbd1-2a95-fa67e129bc66" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5ddc4eec-4e82-fbd2-50c8-77877bc42c75" class="SIF macromolecule">
+      <label text="Controls Transport of"/>
+      <bbox x="477.17438614181935" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4fce67d9-fe7d-3f31-afd1-9b73daa06d0f" class="SIF macromolecule">
+      <label text="Inhibits"/>
+      <bbox x="1724.4409271631775" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_47278318-85f7-90be-ffbe-e03f2a9301c4" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_cf7ca85b-c1d2-4f8b-1ea7-3581dd4384da" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_eba14e56-7d47-b9ec-700c-11a88a794ce2" class="SIF macromolecule">
+      <label text="CAUSALPATH RELATIONS"/>
+      <bbox x="1086.3944492502114" y="243.9034876547937" w="752.1228238767983" h="40"/>
+    </glyph>
+    <glyph id="nwtN_6e7d53d4-a8c9-3e4b-34aa-71250f34037b" class="SIF macromolecule">
+      <label text="Controls Phosphorylation of"/>
+      <bbox x="477.17438614181935" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_42ae7280-3c99-67fd-85f2-4688a317c40e" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4ecf45ee-1de9-e986-d48e-ce294acbdb3d" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a869202d-d3de-9c93-bbe3-17de0df2ae97" class="SIF macromolecule">
+      <label text="Controls Expression of"/>
+      <bbox x="477.17438614181935" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a935ef72-9dd6-7f02-cc4a-8f02e2a643ef" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_06a946d9-b22d-eec8-6a4c-8637608a47f9" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_86bea12f-ec4f-0837-4ace-cfc0759b4805" class="SIF macromolecule">
+      <label text="Catalysis Precedes"/>
+      <bbox x="477.17438614181935" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_181c6347-d62b-7e76-fdcc-ad977a86f6b7" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5cb2d282-0828-2cbe-fc12-92524227c036" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_71184c0a-a672-340a-0d1f-522274c143b1" class="SIF macromolecule">
+      <label text="In Complex With"/>
+      <bbox x="477.17438614181935" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_26a58f63-b4bb-1092-fba3-43e1e27629ff" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_12f52dca-6d82-b632-2e74-634ebbb4c376" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_1ed5fa0f-e85b-2348-30b3-7d8d1d844dee" class="SIF macromolecule">
+      <label text="Interacts with"/>
+      <bbox x="477.17438614181935" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e2141d63-3c5d-478d-dd37-20a55a268ae0" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="224.91768770287683" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e0c77201-fed9-bf89-2568-471904145047" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="341.6234996714139" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e441fd4b-478d-6658-7396-e4cd2d6a33d0" class="SIF macromolecule">
+      <label text="Controls Production of"/>
+      <bbox x="930.355548277013" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e25489e4-ed8e-c57b-c49f-9189fa81484b" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="663.0988498380706" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5b75f42f-44f0-da18-898a-447eb7dc1503" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="663.0819421059989" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_19ea6cc4-0564-a72d-3a4d-fdf8d7e63ec5" class="SIF macromolecule">
+      <label text="Controls Transport of Chemical"/>
+      <bbox x="930.355548277013" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_88c9355a-de2a-18c3-3301-a62014409434" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="776.81326259299" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6a7fd212-487b-2733-df0f-4603201c7b42" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="777.0819421059989" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5f5bf084-7ef9-5f5a-d752-e177a86d3db1" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="663.0988498380706" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_40da344f-eb16-aa96-a022-10a895a2c0b6" class="SIF macromolecule">
+      <label text="Consumption Controlled By"/>
+      <bbox x="930.355548277013" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3c44e8ef-04fe-07c6-6df4-5ef12905a279" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="777.0988498380706" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b089ef83-71ac-9644-9e49-3730dcab2779" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="777.0819421059989" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_00afacf1-1848-b914-d916-ec74732a8001" class="SIF macromolecule">
+      <label text="Chemical Affects"/>
+      <bbox x="930.355548277013" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9444fe73-9df7-d64e-99b3-5964143aade6" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="663.0988498380706" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_5b951610-dba1-2859-2850-23f72892117f" class="SIF macromolecule">
+      <label text="Used to Produce"/>
+      <bbox x="930.355548277013" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3740561d-bbb9-28ad-c272-aea90bbae806" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="663.0988498380706" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_0fb81595-6d6b-5430-d925-537c71a32196" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="777.0819421059989" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_0bcaab21-6c89-e225-360f-1bab235f2c9e" class="SIF macromolecule">
+      <label text="Reacts With"/>
+      <bbox x="930.355548277013" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_a2a4adff-5b9d-8a97-da37-ae0774662f32" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="777.5698477423119" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_72cffe25-6545-7a13-8bba-92ccb5e557d3" class="SIF simple chemical">
+      <label text="LABEL"/>
+      <bbox x="663.5867554743836" y="654.892114092863" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4f8e7b4a-cfe1-f09e-3ce1-047da15416aa" class="SIF macromolecule">
+      <label text="Neighbor of"/>
+      <bbox x="930.355548277013" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_f5716ead-91a6-55fc-0f42-e67e93b32e9d" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="663.0988498380706" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_172b6248-a053-bad0-2895-43137b103402" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="777.0819421059989" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b3b5c20c-1d43-4e8c-3de7-1322db8441a1" class="SIF macromolecule">
+      <label text="Activates Gtpase"/>
+      <bbox x="1326.3505280222553" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_93479d65-b451-8eda-ef82-f60cad56c562" class="SIF macromolecule">
+      <label text="Demethylates"/>
+      <bbox x="1724.4409271631775" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4cfc88ff-4533-7dcd-b84a-ec823c44cef5" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4df033f2-9bba-ffd9-13b8-558055b8897a" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_574f4985-2628-743d-f66b-ffa5236e74ed" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_7a61777f-ebff-f095-7246-b128fed3f0f8" class="SIF macromolecule">
+      <label text="Phosphorylates"/>
+      <bbox x="1326.3505280222553" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_4d98569c-3382-4c6b-ce56-8851efff1eae" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_6e4d0953-11ee-e0fd-2532-fbfd5a6353fd" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_40ee32c3-007d-cdf4-7afd-a3b81a23549d" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c5b3ad8f-8542-f003-3537-5608ec1beed9" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_9b1106ed-3a23-0aa3-fe87-00557d897b46" class="SIF macromolecule">
+      <label text="Inhibits Gtpase"/>
+      <bbox x="1724.4409271631775" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_23f8bbad-2024-090e-a119-0c9441b2d47b" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b33dc475-8ff9-9386-3570-9c1544cf10aa" class="SIF macromolecule">
+      <label text="Dephosphorylates"/>
+      <bbox x="1724.4409271631775" y="306.15631133009197" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_63926e06-eea3-ca5d-6853-c77a9e2a4163" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="515.3977929877547" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_b00fb9e7-ce63-384c-7ea2-e5d109547c0a" class="SIF macromolecule">
+      <label text="Acetylates"/>
+      <bbox x="1326.3505280222553" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e0e04669-6256-4406-3987-1a8be64e11ee" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_09c3e293-c449-950b-2ef4-d265e8883cba" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_fc839419-88ad-d42e-3317-439ef2af97ae" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_96d55599-1d9b-4d98-32c1-c5e747d76b88" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_199ef1bc-a31d-3e7b-d86f-a9628a0e5618" class="SIF macromolecule">
+      <label text="Deacetylates"/>
+      <bbox x="1724.4409271631775" y="375.9034718826462" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_f2690029-37e7-6e02-2d2a-bfe8909f9065" class="SIF macromolecule">
+      <label text="Methylates"/>
+      <bbox x="1326.3505280222553" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_92744b36-9fcc-5f95-57f3-5f936c865ce4" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_818b7d3b-261f-41e6-36a4-55efbb994bc0" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="445.65063243520046" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_66e891b4-cc19-f5d3-a584-6be2bb399991" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_e95c034c-749b-0a8c-0047-3310d6bf6c9e" class="SIF macromolecule">
+      <label text="OTHER RELATIONS"/>
+      <bbox x="1086.3944492502114" y="663.1159975644902" w="752.1228238767983" h="40"/>
+    </glyph>
+    <glyph id="nwtN_8ad8adf1-3b02-5abd-f693-4d437d4fd310" class="SIF macromolecule">
+      <label text="PATHWAY COMMONS RELATIONS"/>
+      <bbox x="216.4182926349343" y="243.9034876547937" w="854.6156797723901" h="40"/>
+    </glyph>
+    <glyph id="nwtN_beeaf884-892b-5c9b-a2f4-d2a9c13115aa" class="SIF macromolecule">
+      <label text="Upregulates Expression"/>
+      <bbox x="1326.3505280222553" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_81496180-969e-7b2b-4327-15e2e95040be" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c6d4d112-df6b-6511-34f0-1f8f0ac4b4cb" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_caa26250-cf9b-ad49-2b8d-9d54abe47b74" class="SIF macromolecule">
+      <label text="Downregulates Expression"/>
+      <bbox x="1724.4409271631775" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_3ea3b1ef-1457-d30b-2c33-d75b7c9b99d1" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1588.8900406927698" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_869935e4-4118-25d2-ddf0-4147048675de" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1477.8136482795062" y="585.1449535403088" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_642d2fe9-46f1-cc67-8cf9-55f0aee2bd38" class="SIF macromolecule">
+      <label text="Activates"/>
+      <bbox x="1326.3505280222553" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_c543dc78-c80d-4219-7026-738720d0f6da" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1094.5527844227859" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <glyph id="nwtN_f50005e7-ccbe-b50f-7fd2-9dc5e3a2590e" class="SIF macromolecule">
+      <label text="LABEL"/>
+      <bbox x="1205.6291768360495" y="724.6392746454173" w="60" h="30"/>
+    </glyph>
+    <arc id="nwtE_ba072e86-44cf-42c4-b659-6fc5f47ae1df" class="acetylates" source="nwtN_e0e04669-6256-4406-3987-1a8be64e11ee" target="nwtN_09c3e293-c449-950b-2ef4-d265e8883cba">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="390.9034718826462"/>
+      <end x="1201.8791768360495" y="390.9034718826462"/>
+    </arc>
+    <arc id="nwtE_ed31ffd7_13af_47fa_961d_55a510242897" class="inhibits" source="nwtN_66e891b4-cc19-f5d3-a584-6be2bb399991" target="nwtN_3a2a0202-ef94-771b-8971-08552d4e9799">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="739.6392746454173"/>
+      <end x="1587.2650406927698" y="739.6392746454173"/>
+    </arc>
+    <arc id="nwtE_eabc5a4d_2b73_4de7_83fc_8b44210dae44" class="consumption-controled-by" source="nwtN_5b75f42f-44f0-da18-898a-447eb7dc1503" target="nwtN_3c44e8ef-04fe-07c6-6df4-5ef12905a279">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7069421059989" y="460.65063243520046"/>
+      <end x="773.3488498380706" y="460.65063243520046"/>
+    </arc>
+    <arc id="nwtE_932d4cd5-c147-4000-b05e-bd0cb16682b5" class="used-to-produce" source="nwtN_3740561d-bbb9-28ad-c272-aea90bbae806" target="nwtN_0fb81595-6d6b-5430-d925-537c71a32196">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7238498380706" y="600.1449535403088"/>
+      <end x="773.3319421059989" y="600.1449535403088"/>
+    </arc>
+    <arc id="nwtE_73c4f863_990a_4fc9_b881_d68088f8d3a8" class="chemical-affects" source="nwtN_9444fe73-9df7-d64e-99b3-5964143aade6" target="nwtN_88c9355a-de2a-18c3-3301-a62014409434">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7238498380706" y="530.3977929877547"/>
+      <end x="773.06326259299" y="530.3977929877547"/>
+    </arc>
+    <arc id="nwtE_1f85547d-d33c-4aee-8bb4-39a10e5bb131" class="methylates" source="nwtN_92744b36-9fcc-5f95-57f3-5f936c865ce4" target="nwtN_818b7d3b-261f-41e6-36a4-55efbb994bc0">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="460.65063243520046"/>
+      <end x="1201.8791768360495" y="460.65063243520046"/>
+    </arc>
+    <arc id="nwtE_d5ff3a0f-6516-4f6f-9470-159d7c9ac9c2" class="inhibits-gtpase" source="nwtN_c5b3ad8f-8542-f003-3537-5608ec1beed9" target="nwtN_63926e06-eea3-ca5d-6853-c77a9e2a4163">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="530.3977929877547"/>
+      <end x="1587.2650406927698" y="530.3977929877547"/>
+    </arc>
+    <arc id="nwtE_697b7af1-e9ac-46b8-baa8-43cd2bd2cd8b" class="activates-gtpase" source="nwtN_574f4985-2628-743d-f66b-ffa5236e74ed" target="nwtN_4df033f2-9bba-ffd9-13b8-558055b8897a">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="530.3977929877547"/>
+      <end x="1201.8791768360495" y="530.3977929877547"/>
+    </arc>
+    <arc id="nwtE_df850ecb-fa1f-442b-bfd8-272ec69ddc9c" class="demethylates" source="nwtN_4cfc88ff-4533-7dcd-b84a-ec823c44cef5" target="nwtN_9340eec9-52c6-fbd1-2a95-fa67e129bc66">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="460.65063243520046"/>
+      <end x="1587.2650406927698" y="460.65063243520046"/>
+    </arc>
+    <arc id="nwtE_337ea799-e3a6-4d7a-9d63-dbd6ca40fe4d" class="controls-production-of" source="nwtN_e25489e4-ed8e-c57b-c49f-9189fa81484b" target="nwtN_b089ef83-71ac-9644-9e49-3730dcab2779">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7238498380706" y="321.15631133009197"/>
+      <end x="773.3319421059989" y="321.15631133009197"/>
+    </arc>
+    <arc id="nwtE_5039272e-a35f-4c37-9fb1-4a1b13222a90" class="controls-transport-of-chemical" source="nwtN_5f5bf084-7ef9-5f5a-d752-e177a86d3db1" target="nwtN_6a7fd212-487b-2733-df0f-4603201c7b42">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7238498380706" y="390.9034718826462"/>
+      <end x="773.3319421059989" y="390.9034718826462"/>
+    </arc>
+    <arc id="nwtE_a8320825-959a-49f3-aff8-c32ed1efd5d6" class="controls-state-change-of" source="nwtN_0cb0b581-99dc-4672-9a9b-740da8812a55" target="nwtN_ffefff5c-dc91-4581-8eb3-21e2176c9a00">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="321.15631133009197"/>
+      <end x="337.8734996714139" y="321.15631133009197"/>
+    </arc>
+    <arc id="nwtE_93509d33-78e9-4938-9c5b-86a5705eb9e5" class="interacts-with" source="nwtN_e2141d63-3c5d-478d-dd37-20a55a268ae0" target="nwtN_e0c77201-fed9-bf89-2568-471904145047">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="739.6392746454173"/>
+      <end x="340.9984996714139" y="739.6392746454173"/>
+    </arc>
+    <arc id="nwtE_c245d7c5-ce6f-4479-b338-2234c1957d3a" class="in-complex-with" source="nwtN_26a58f63-b4bb-1092-fba3-43e1e27629ff" target="nwtN_12f52dca-6d82-b632-2e74-634ebbb4c376">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="669.892114092863"/>
+      <end x="340.9984996714139" y="669.892114092863"/>
+    </arc>
+    <arc id="nwtE_d9aa9a6e-5f51-4734-9343-7ed950cd4ad3" class="controls-transport-of" source="nwtN_cf7ca85b-c1d2-4f8b-1ea7-3581dd4384da" target="nwtN_47278318-85f7-90be-ffbe-e03f2a9301c4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="390.9034718826462"/>
+      <end x="337.8734996714139" y="390.9034718826462"/>
+    </arc>
+    <arc id="nwtE_53ace26f-89e7-4200-9607-1ca6ea6d2e9d" class="controls-phosphorylation-of" source="nwtN_42ae7280-3c99-67fd-85f2-4688a317c40e" target="nwtN_4ecf45ee-1de9-e986-d48e-ce294acbdb3d">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="460.65063243520046"/>
+      <end x="337.8734996714139" y="460.65063243520046"/>
+    </arc>
+    <arc id="nwtE_ac894786-d061-4507-98e1-b37b09c8126a" class="controls-expression-of" source="nwtN_a935ef72-9dd6-7f02-cc4a-8f02e2a643ef" target="nwtN_06a946d9-b22d-eec8-6a4c-8637608a47f9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="530.3977929877547"/>
+      <end x="337.8734996714139" y="530.3977929877547"/>
+    </arc>
+    <arc id="nwtE_a6d39f93-f1c6-419c-a26f-cd725a323b01" class="catalysis-precedes" source="nwtN_181c6347-d62b-7e76-fdcc-ad977a86f6b7" target="nwtN_5cb2d282-0828-2cbe-fc12-92524227c036">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="285.54268770287683" y="600.1449535403088"/>
+      <end x="337.8734996714139" y="600.1449535403088"/>
+    </arc>
+    <arc id="nwtE_2d5f555b_cd73_4ec3_81f5_f08226d029fe" class="reacts-with" source="nwtN_72cffe25-6545-7a13-8bba-92ccb5e557d3" target="nwtN_a2a4adff-5b9d-8a97-da37-ae0774662f32">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="724.2117554743836" y="669.892114092863"/>
+      <end x="776.9448477423119" y="669.892114092863"/>
+    </arc>
+    <arc id="nwtE_7baff09b_f888_46ab_a1a8_cf672ebe042d" class="neighbor-of" source="nwtN_f5716ead-91a6-55fc-0f42-e67e93b32e9d" target="nwtN_172b6248-a053-bad0-2895-43137b103402">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="723.7238498380706" y="739.6392746454173"/>
+      <end x="776.4569421059989" y="739.6392746454173"/>
+    </arc>
+    <arc id="nwtE_93a6972e_c7fb_4be3_9d21_ce936256be9c" class="activates" source="nwtN_c543dc78-c80d-4219-7026-738720d0f6da" target="nwtN_f50005e7-ccbe-b50f-7fd2-9dc5e3a2590e">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="739.6392746454173"/>
+      <end x="1201.8791768360495" y="739.6392746454173"/>
+    </arc>
+    <arc id="nwtE_90853071_271d_420a_b06e_29dbcbb9a767" class="downregulates-expression" source="nwtN_869935e4-4118-25d2-ddf0-4147048675de" target="nwtN_3ea3b1ef-1457-d30b-2c33-d75b7c9b99d1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="600.1449535403088"/>
+      <end x="1587.2650406927698" y="600.1449535403088"/>
+    </arc>
+    <arc id="nwtE_15af7fb8_e57f_4467_b29e_5904e8eb8c66" class="deacetylates" source="nwtN_96d55599-1d9b-4d98-32c1-c5e747d76b88" target="nwtN_fc839419-88ad-d42e-3317-439ef2af97ae">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="390.9034718826462"/>
+      <end x="1587.2650406927698" y="390.9034718826462"/>
+    </arc>
+    <arc id="nwtE_3fee6984_89c0_45f1_9a9f_edb14b610b52" class="dephosphorylates" source="nwtN_23f8bbad-2024-090e-a119-0c9441b2d47b" target="nwtN_40ee32c3-007d-cdf4-7afd-a3b81a23549d">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1538.4386482795062" y="321.15631133009197"/>
+      <end x="1587.2650406927698" y="321.15631133009197"/>
+    </arc>
+    <arc id="nwtE_5261c58a_22a6_44c3_8c58_8f79a08154bf" class="upregulates-expression" source="nwtN_c6d4d112-df6b-6511-34f0-1f8f0ac4b4cb" target="nwtN_81496180-969e-7b2b-4327-15e2e95040be">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="600.1449535403088"/>
+      <end x="1201.8791768360495" y="600.1449535403088"/>
+    </arc>
+    <arc id="nwtE_b2387837_a790_487e_bb12_08b30dba8bfb" class="phosphorylates" source="nwtN_4d98569c-3382-4c6b-ce56-8851efff1eae" target="nwtN_6e4d0953-11ee-e0fd-2532-fbfd5a6353fd">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1155.1777844227859" y="321.15631133009197"/>
+      <end x="1201.8791768360495" y="321.15631133009197"/>
+    </arc>
+  </map>
+</sbgn>

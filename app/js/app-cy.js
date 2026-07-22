@@ -4,6 +4,10 @@ var modeHandler = require('./app-mode-handler');
 var inspectorUtilities = require('./inspector-utilities');
 var appUndoActionsFactory = require('./app-undo-actions-factory');
 var _ = require('underscore');
+const databaseUtilities = require('./database-utilities');
+var annotationLayers = require('./annotation-layers');
+var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
+var submenuIcon = 'app/img/submenu-indicator-default.svg';
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -14,6 +18,1513 @@ module.exports = function (chiseInstance) {
   var cy = chiseInstance.getCy();
   //("here");
   window.cy = cy;
+
+  function buildEdgeJson(edgeId, source, target, edgeParams, edgeExtraData) {
+    var edgeJson = {
+      group: "edges",
+      data: {
+        id: edgeId,
+        source: source,
+        target: target,
+        class: edgeParams.class,
+        language: edgeParams.language,
+        width: edgeParams.width,
+        "line-color": edgeParams.lineColor
+      }
+    };
+
+    if (edgeExtraData) {
+      if (edgeExtraData.portsource !== undefined) {
+        edgeJson.data.portsource = edgeExtraData.portsource;
+      }
+      if (edgeExtraData.porttarget !== undefined) {
+        edgeJson.data.porttarget = edgeExtraData.porttarget;
+      }
+      if (edgeExtraData.cardinality !== undefined) {
+        edgeJson.data.cardinality = edgeExtraData.cardinality;
+      }
+      if (edgeExtraData.simulation !== undefined) {
+        edgeJson.data.simulation = edgeExtraData.simulation;
+      }
+    }
+
+    return edgeJson;
+  }
+
+  function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
+    if (!cyTarget || !newEdgeJson) {
+      return;
+    }
+
+    cy.undoRedo().do("batch", [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: newEdgeJson }
+    ]);
+  }
+
+  function replaceNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var nodeJson = cyTarget.json();
+    var currentClass = cyTarget.data("class");
+    var currentFontSize = parseFloat(cyTarget.style("font-size"));
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var shouldPreserveLabelSize = [
+      "and",
+      "or",
+      "not",
+      "delay",
+      "unknown logical operator",
+      "process",
+      "omitted process",
+      "uncertain process",
+      "truncated process",
+      "association",
+      "dissociation"
+    ].indexOf(currentClass) >= 0 || [
+      "and",
+      "or",
+      "not",
+      "delay",
+      "unknown logical operator",
+      "process",
+      "omitted process",
+      "uncertain process",
+      "truncated process",
+      "association",
+      "dissociation"
+    ].indexOf(toClass) >= 0;
+    var shouldUseAssociationDefaultColors = cyTarget.data("language") === "SBML" && toClass === "association";
+    var associationDefaultProps = shouldUseAssociationDefaultColors ?
+      chiseInstance.elementUtilities.getDefaultProperties(toClass) || {} :
+      null;
+
+    nodeJson.data.class = toClass;
+    if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
+      nodeJson.data["font-size"] = currentFontSize;
+      nodeJson.data.labelsize = currentFontSize;
+    }
+    if (shouldUseAssociationDefaultColors) {
+      nodeJson.data["background-color"] = associationDefaultProps["background-color"];
+      nodeJson.data["border-color"] = associationDefaultProps["border-color"];
+    }
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (shouldPreserveLabelSize) {
+      setTimeout(function () {
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (recreatedNode.nonempty()) {
+          recreatedNode.data("font-size", currentFontSize);
+          recreatedNode.data("labelsize", currentFontSize);
+          recreatedNode.removeData("_labelSize");
+          recreatedNode.removeData("_labelWidth");
+          recreatedNode.removeData("_labelHeight");
+          recreatedNode.updateStyle();
+          cy.style().update();
+        }
+      }, 0);
+    }
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
+  }
+
+  function replaceAfAuxiliaryUnitWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var auxUnitShapeNames = {
+      'BA macromolecule': 'roundrectangle',
+      'BA simple chemical': 'stadium',
+      'BA nucleic acid feature': 'bottomroundrectangle',
+      'BA unspecified entity': 'ellipse',
+      'BA complex': 'complex',
+      'BA perturbing agent': 'perturbing agent'
+    };
+    var nodeJson = {
+      group: currentJson.group,
+      data: $.extend(true, {}, currentJson.data),
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+    var statesAndInfos = nodeJson.data.statesandinfos || [];
+    var auxUnitLayouts = nodeJson.data.auxunitlayouts || {};
+
+    nodeJson.data.class = toClass;
+
+    statesAndInfos.forEach(function (unit) {
+      if (unit && unit.style) {
+        unit.style['shape-name'] = auxUnitShapeNames[toClass];
+      }
+    });
+
+    Object.keys(auxUnitLayouts).forEach(function (side) {
+      var layout = auxUnitLayouts[side];
+      if (!layout || !layout.units) {
+        return;
+      }
+
+      layout.units.forEach(function (unit) {
+        if (unit && unit.style) {
+          unit.style['shape-name'] = auxUnitShapeNames[toClass];
+        }
+      });
+    });
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
+  }
+
+  function replacePdNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var nodeJson = {
+      group: currentJson.group,
+      data: {
+        id: currentJson.data.id,
+        class: toClass,
+        language: currentJson.data.language
+      },
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+    var keysToCopy = [
+      'label',
+      'parent',
+      'boundaryParentId',
+      'minHeight',
+      'minHeightBiasTop',
+      'minHeightBiasBottom',
+      'minWidth',
+      'minWidthBiasLeft',
+      'minWidthBiasRight',
+      'complexCalculatedPadding',
+      'bbox',
+      'width',
+      'height',
+      'orientation',
+      'portOrdering',
+      'border-color',
+      'border-style',
+      'background-color',
+      'border-width',
+      'background-opacity',
+      'background-image-opacity',
+      'color',
+      'text-wrap',
+      'font-family',
+      'font-size',
+      'font-style',
+      'font-weight',
+      'background-image',
+      'image',
+      'annotationsView'
+    ];
+
+    keysToCopy.forEach(function (key) {
+      if (currentJson.data[key] !== undefined) {
+        if (key === 'annotationsView') {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
+          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
+        }
+        else {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+      }
+    });
+
+    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    if (currentJson.data.auxunitlayouts !== undefined) {
+      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+    }
+    nodeJson.data.ports = currentJson.data.ports || [];
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
+  }
+
+  function replaceSbmlNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var defaultProps = chiseInstance.elementUtilities.getDefaultProperties(toClass);
+    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
+      return edge.json();
+    });
+    var nodeJson = {
+      group: currentJson.group,
+      data: {
+        id: currentJson.data.id,
+        class: toClass,
+        language: currentJson.data.language
+      },
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+
+    nodeJson.data['background-color'] = defaultProps['background-color'];
+    nodeJson.data['border-color'] = defaultProps['border-color'];
+
+    var keysToCopy = [
+      'label',
+      'parent',
+      'boundaryParentId',
+      'simulation',
+      'minHeight',
+      'minHeightBiasTop',
+      'minHeightBiasBottom',
+      'minWidth',
+      'minWidthBiasLeft',
+      'minWidthBiasRight',
+      'complexCalculatedPadding',
+      'bbox',
+      'width',
+      'height',
+      'orientation',
+      'portOrdering',
+      'border-style',
+      'border-width',
+      'background-opacity',
+      'background-image-opacity',
+      'color',
+      'text-wrap',
+      'font-family',
+      'font-size',
+      'font-style',
+      'font-weight',
+      'background-image',
+      'image',
+      'annotationsView'
+    ];
+
+    keysToCopy.forEach(function (key) {
+      if (currentJson.data[key] !== undefined) {
+        if (key === 'annotationsView') {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
+          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
+        }
+        else {
+          nodeJson.data[key] = currentJson.data[key];
+        }
+      }
+    });
+
+    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    if (currentJson.data.auxunitlayouts !== undefined) {
+      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+    }
+    nodeJson.data.ports = currentJson.data.ports || [];
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    connectedEdgeJsons.forEach(function (edgeJson) {
+      actions.push({ name: "add", param: edgeJson });
+    });
+
+    cy.undoRedo().do("batch", actions);
+
+    if (nodeJson.data.boundaryParentId) {
+      setTimeout(function () {
+        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        }
+      }, 0);
+    }
+  }
+
+  function convertPdEdgeType(event, toClass, mode) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+
+    if (!cyTarget) return;
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    var edgeData = {
+      source: source,
+      target: target,
+      language: cyTarget.data("language"),
+      width: cyTarget.data("width"),
+      lineColor: cyTarget.data("line-color")
+    };
+    if (mode === "IO") {
+      edgeData.cardinality = cyTarget.data("cardinality");
+    }
+    var edgeParams = {
+      class: toClass,
+      language: edgeData.language,
+      width: edgeData.width,
+      lineColor: edgeData.lineColor
+    };
+    if (mode === "IO") {
+      edgeParams.cardinality = edgeData.cardinality;
+    }
+
+    if (!source || !target) return;
+
+    chiseInstance.deleteElesSimple(cyTarget);
+
+    var newEdge = chiseInstance.addEdge(edgeData.source, edgeData.target, edgeParams);
+
+    if (newEdge && !newEdge.empty()) {
+      newEdge.data("width", edgeData.width);
+      newEdge.data("language", edgeData.language);
+      newEdge.data("line-color", edgeData.lineColor);
+      if (mode === "IO") {
+        newEdge.data("cardinality", edgeData.cardinality);
+      }
+    }
+  }
+
+  function convertAfEdgeType(event, toClass) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+
+    if (!cyTarget) {
+      return;
+    }
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    var edgeData = {
+      source: source,
+      target: target,
+      language: cyTarget.data("language"),
+      width: cyTarget.data("width"),
+      lineColor: cyTarget.data("line-color"),
+      portsource: cyTarget.data("portsource"),
+      porttarget: cyTarget.data("porttarget")
+    };
+    var edgeParams = {
+      class: toClass,
+      language: edgeData.language,
+      width: edgeData.width,
+      lineColor: edgeData.lineColor
+    };
+
+    if (!source || !target) {
+      return;
+    }
+
+    var actionPayload = {
+      removeEdgeJson: cyTarget.json(),
+      addEdgeJson: buildEdgeJson(
+        cyTarget.id(),
+        edgeData.source,
+        edgeData.target,
+        edgeParams,
+        {
+          portsource: edgeData.portsource,
+          porttarget: edgeData.porttarget
+        }
+      )
+    };
+
+    replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
+  }
+
+  function createPdEdgeTypeIOMenu(fromClass, toClass) {
+    return {
+      id: 'ctx-menu-change-edge-type-pd-' + fromClass,
+      content: 'Change Edge Type To',
+      selector: 'edge[language="PD"][class="' + fromClass + '"]',
+      submenu: [
+        {
+          id: 'ctx-submenu-change-edge-type-pd-' + fromClass + '-' + toClass,
+          content: toClass.charAt(0).toUpperCase() + toClass.slice(1),
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            var source = cyTarget.data("source");
+            var target = cyTarget.data("target");
+            var newEdgeExtraData = {
+              width: cyTarget.data("width"),
+              language: cyTarget.data("language"),
+              lineColor: cyTarget.data("line-color"),
+              cardinality: cyTarget.data("cardinality")
+            };
+
+            if (fromClass === "consumption" && toClass === "production") {
+              newEdgeExtraData.portsource = target + ".2";
+              newEdgeExtraData.porttarget = source;
+            }
+            else if (fromClass === "production" && toClass === "consumption") {
+              newEdgeExtraData.portsource = target;
+              newEdgeExtraData.porttarget = source + ".1";
+            }
+
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                target,
+                source,
+                {
+                class: toClass,
+                language: cyTarget.data("language"),
+                width: cyTarget.data("width"),
+                lineColor: cyTarget.data("line-color")
+                },
+                newEdgeExtraData
+              )
+            };
+
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
+          }
+        }
+      ]
+    };
+  }
+
+  function createPdEdgeTypeModulatorsMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-pd-' + edgeClass,
+      content: 'Change Edge Type To',
+      selector: 'edge[language="PD"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-pd-' + edgeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) return;
+
+            var currentEdgeJson = cyTarget.json();
+            var actionPayload = {
+              removeEdgeJson: currentEdgeJson,
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                cyTarget.data("source"),
+                cyTarget.data("target"),
+                {
+                  class: item.toClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                {
+                  portsource: cyTarget.data("portsource"),
+                  porttarget: cyTarget.data("porttarget"),
+                  cardinality: cyTarget.data("cardinality")
+                }
+              )
+            };
+
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdEdgeTypeModulatorsMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'modulation',
+        submenuItems: [
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'stimulation',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'catalysis',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'inhibition',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+        ]
+      },
+      {
+        edgeClass: 'necessary stimulation',
+        submenuItems: [
+          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createPdEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSbmlEdgeTypeIOMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SBML"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            var source = cyTarget.data("source");
+            var target = cyTarget.data("target");
+            var currentClass = cyTarget.data("class");
+            var nextClass = item.toClass;
+            var shouldReverse = isSbmlConsumptionLikeEdge(currentClass) !== isSbmlConsumptionLikeEdge(nextClass);
+            var newEdgeSource = shouldReverse ? target : source;
+            var newEdgeTarget = shouldReverse ? source : target;
+            var newEdgeExtraData = {
+              width: cyTarget.data("width"),
+              language: cyTarget.data("language"),
+              lineColor: cyTarget.data("line-color"),
+              simulation: cyTarget.data("simulation")
+            };
+
+            if (isSbmlConsumptionLikeEdge(nextClass)) {
+              newEdgeExtraData.portsource = newEdgeSource;
+              newEdgeExtraData.porttarget = newEdgeTarget + ".1";
+            }
+            else if (isSbmlProductionLikeEdge(nextClass)) {
+              newEdgeExtraData.portsource = newEdgeSource + ".2";
+              newEdgeExtraData.porttarget = newEdgeTarget;
+            }
+
+            if (nextClass === "production" || nextClass === "consumption") {
+              newEdgeExtraData.cardinality = cyTarget.data("cardinality");
+            }
+
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                newEdgeSource,
+                newEdgeTarget,
+                {
+                  class: nextClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                newEdgeExtraData
+              )
+            };
+
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
+          }
+        };
+      })
+    };
+  }
+
+  function isSbmlConsumptionLikeEdge(edgeClass) {
+    return edgeClass === "consumption" ||
+      edgeClass === "translation consumption" ||
+      edgeClass === "transcription consumption";
+  }
+
+  function isSbmlProductionLikeEdge(edgeClass) {
+    return edgeClass === "production" ||
+      edgeClass === "transport" ||
+      edgeClass === "translation production" ||
+      edgeClass === "transcription production";
+  }
+
+  function createSbmlEdgeTypeIOMenuItems() {
+    var edgeTypes = [
+      'consumption',
+      'production',
+      'transcription consumption',
+      'transcription production',
+      'translation consumption',
+      'translation production',
+      'transport'
+    ];
+
+    return edgeTypes.map(function (edgeType) {
+      return createSbmlEdgeTypeIOMenu(edgeType, edgeTypes.filter(function (candidate) {
+        return candidate !== edgeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlEdgeTypeModulatorsMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SBML"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sbml-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            var actionPayload = {
+              removeEdgeJson: cyTarget.json(),
+              addEdgeJson: buildEdgeJson(
+                cyTarget.id(),
+                cyTarget.data("source"),
+                cyTarget.data("target"),
+                {
+                  class: item.toClass,
+                  language: cyTarget.data("language"),
+                  width: cyTarget.data("width"),
+                  lineColor: cyTarget.data("line-color")
+                },
+                {
+                  portsource: cyTarget.data("portsource"),
+                  porttarget: cyTarget.data("porttarget")
+                }
+              )
+            };
+
+            replaceEdgeWithBatch(cyTarget, actionPayload.addEdgeJson);
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlEdgeTypeModulatorsMenuItems(edgeTypes) {
+    return edgeTypes.map(function (edgeType) {
+      return createSbmlEdgeTypeModulatorsMenu(edgeType, edgeTypes.filter(function (candidate) {
+        return candidate !== edgeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlEdgeTypeModulators1MenuItems() {
+    var edgeTypes = [
+      'catalysis',
+      'unknown catalysis',
+      'inhibition',
+      'unknown inhibition',
+      'stimulation',
+      'modulation',
+      'trigger'
+    ];
+
+    return createSbmlEdgeTypeModulatorsMenuItems(edgeTypes);
+  }
+
+  function createSbmlEdgeTypeModulators2MenuItems() {
+    var edgeTypes = [
+      'positive influence sbml',
+      'unknown positive influence',
+      'negative influence',
+      'unknown negative influence',
+      'reduced stimulation',
+      'unknown reduced stimulation',
+      'reduced modulation',
+      'unknown reduced modulation',
+      'reduced trigger',
+      'unknown reduced trigger'
+    ];
+
+    var configs = edgeTypes.map(function (edgeType) {
+      return {
+        edgeClass: edgeType,
+        submenuItems: edgeTypes.filter(function (candidate) {
+          return candidate !== edgeType;
+        }).map(function (candidate) {
+          return {
+            idSuffix: candidate.replace(/\s+/g, '-'),
+            content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+            toClass: candidate
+          };
+        })
+      };
+    });
+
+    return configs.map(function (config) {
+      return createSbmlEdgeTypeModulatorsMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function convertPdNodeType(event, toClass) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+    if (!cyTarget) {
+      return;
+    }
+
+    replacePdNodeWithBatch(cyTarget, toClass);
+  }
+
+  function createPdNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-pd-' + nodeClass,
+      content: 'Change Node Type',
+      selector: 'node[class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-pd-' + nodeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            convertPdNodeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdNodeTypeMenuItems() {
+    var nodeTypes = [
+      'macromolecule',
+      'simple chemical',
+      'unspecified entity',
+      'nucleic acid feature',
+      'perturbing agent'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createPdNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Node',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createLogicalNodeTypeMenu(language, nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-logical-node-type-' + language.toLowerCase() + '-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Logical Node Type',
+      selector: 'node[language="' + language + '"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-logical-node-type-' + language.toLowerCase() + '-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdProcessNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-process-node-type-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Process Node Type',
+      selector: 'node[language="PD"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-process-node-type-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createPdProcessNodeTypeMenuItems() {
+    var nodeTypes = [
+      'process',
+      'omitted process',
+      'uncertain process',
+      'association',
+      'dissociation'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createPdProcessNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlProcessNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-process-node-type-sbml-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Process Node Type',
+      selector: 'node[language="SBML"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-process-node-type-sbml-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlProcessNodeTypeMenuItems() {
+    var nodeTypes = [
+      'process',
+      'omitted process',
+      'uncertain process',
+      'truncated process',
+      'association',
+      'dissociation'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createSbmlProcessNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-sbml-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Node Type',
+      selector: 'node[language="SBML"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-sbml-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceSbmlNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createSbmlNodeTypeMenuItems() {
+    var nodeTypes = [
+      'gene',
+      'rna',
+      'antisense rna',
+      'protein',
+      'truncated protein',
+      'ion channel',
+      'receptor',
+      'ion',
+      'simple molecule',
+      'unknown molecule',
+      'degradation',
+      'drug',
+      'phenotype sbml'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createSbmlNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'phenotype sbml' ? 'Phenotype' : candidate.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+          }),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createAfAuxiliaryUnitTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-af-auxiliary-unit-type-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change AF Auxiliary Unit Type',
+      selector: 'node[language="AF"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-af-auxiliary-unit-type-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createAfAuxiliaryUnitTypeMenuItems() {
+    var nodeTypes = [
+      'BA macromolecule',
+      'BA simple chemical',
+      'BA nucleic acid feature',
+      'BA unspecified entity',
+      'BA complex',
+      'BA perturbing agent'
+    ];
+
+    return nodeTypes.map(function (nodeType) {
+      return createAfAuxiliaryUnitTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.replace(/^BA\s+/, '').replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+          }),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function replaceSifNodeWithBatch(cyTarget, toClass) {
+    if (!cyTarget || !toClass) {
+      return;
+    }
+
+    var currentJson = cyTarget.json();
+    var nodeJson = {
+      group: currentJson.group,
+      data: $.extend(true, {}, currentJson.data),
+      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
+      removed: currentJson.removed,
+      selected: currentJson.selected,
+      selectable: currentJson.selectable,
+      locked: currentJson.locked,
+      grabbable: currentJson.grabbable,
+      pannable: currentJson.pannable,
+      classes: currentJson.classes
+    };
+
+    nodeJson.data.class = toClass;
+
+    var actions = [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: nodeJson }
+    ];
+
+    cy.undoRedo().do("batch", actions);
+  }
+
+  function createAfNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-af-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Node Type',
+      selector: 'node[language="AF"][class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-af-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createAfNodeTypeMenuItems() {
+    var nodeTypes = ['BA plain', 'phenotype'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createAfNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'BA plain' ? 'Biological Activity' : 'Phenotype',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSifNodeTypeMenu(nodeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-node-type-sif-' + nodeClass.replace(/\s+/g, '-'),
+      content: 'Change Node Type',
+      selector: 'node[class="' + nodeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-node-type-sif-' + nodeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+            var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+            if (!cyTarget) {
+              return;
+            }
+
+            replaceSifNodeWithBatch(cyTarget, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createSifNodeTypeMenuItems() {
+    var nodeTypes = ['SIF macromolecule', 'SIF simple chemical'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createSifNodeTypeMenu(nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'SIF macromolecule' ? 'Macromolecule' : 'Simple Chemical',
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createPdLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('PD', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.toUpperCase(),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createAfLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not', 'delay'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('AF', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.toUpperCase(),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createSbmlLogicalNodeTypeMenuItems() {
+    var nodeTypes = ['and', 'or', 'not', 'unknown logical operator'];
+
+    return nodeTypes.map(function (nodeType) {
+      return createLogicalNodeTypeMenu('SBML', nodeType, nodeTypes.filter(function (candidate) {
+        return candidate !== nodeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate === 'unknown logical operator' ? 'Unknown Logical Operator' : candidate.toUpperCase(),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function replaceSifEdgeType(event, toClass) {
+    var cyEvent = cy.scratch('cycontextmenus') && cy.scratch('cycontextmenus').currentCyEvent;
+    var cyTarget = (cyEvent && (cyEvent.target || cyEvent.cyTarget)) || event.target || event.cyTarget;
+    if (!cyTarget) {
+      return;
+    }
+
+    var source = cyTarget.data("source");
+    var target = cyTarget.data("target");
+    if (!source || !target) {
+      return;
+    }
+
+    function isSifChemicalToMacromolecule(edgeClass) {
+      return edgeClass === "chemical-affects" || edgeClass === "consumption-controled-by";
+    }
+
+    function isSifMacromoleculeToChemical(edgeClass) {
+      return edgeClass === "controls-production-of" || edgeClass === "controls-transport-of-chemical";
+    }
+
+    var newEdgeJson = cyTarget.json();
+    var shouldSwapEnds =
+      isSifChemicalToMacromolecule(cyTarget.data("class")) !== isSifChemicalToMacromolecule(toClass) &&
+      (isSifChemicalToMacromolecule(cyTarget.data("class")) || isSifMacromoleculeToChemical(cyTarget.data("class"))) &&
+      (isSifChemicalToMacromolecule(toClass) || isSifMacromoleculeToChemical(toClass));
+
+    if (shouldSwapEnds) {
+      newEdgeJson.data.source = target;
+      newEdgeJson.data.target = source;
+      if (newEdgeJson.data.portsource !== undefined) {
+        newEdgeJson.data.portsource = target;
+      }
+      if (newEdgeJson.data.porttarget !== undefined) {
+        newEdgeJson.data.porttarget = source;
+      }
+    }
+
+    newEdgeJson.data.class = toClass;
+    var defaultEdgeProps = chiseInstance.elementUtilities.getDefaultProperties(toClass);
+    newEdgeJson.data["line-color"] = defaultEdgeProps["line-color"];
+
+    var ur = cy.undoRedo();
+    ur.do("batch", [
+      { name: "remove", param: cyTarget },
+      { name: "add", param: newEdgeJson }
+    ]);
+
+  }
+
+  function createSifEdgeTypeMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-sif-' + edgeClass.replace(/\s+/g, '-'),
+      content: 'Change Edge Type To',
+      selector: 'edge[language="SIF"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-sif-' + edgeClass.replace(/\s+/g, '-') + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            replaceSifEdgeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createSifChemicalChemicalEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'reacts-with',
+        submenuItems: [
+          { idSuffix: 'used-to-produce', content: 'Used-to-produce Edge', toClass: 'used-to-produce' }
+        ]
+      },
+      {
+        edgeClass: 'used-to-produce',
+        submenuItems: [
+          { idSuffix: 'reacts-with', content: 'Reacts-with Edge', toClass: 'reacts-with' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createSifEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSifChemicalMacromoleculeEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'controls-production-of',
+        submenuItems: [
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'controls-transport-of-chemical',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'chemical-affects',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+        ]
+      },
+      {
+        edgeClass: 'consumption-controled-by',
+        submenuItems: [
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createSifEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
+  function createSifMacromoleculeMacromoleculeEdgeTypeMenuItems() {
+    var edgeTypes = [
+      'controls-state-change-of',
+      'controls-transport-of',
+      'controls-phosphorylation-of',
+      'controls-expression-of',
+      'catalysis-precedes',
+      'in-complex-with',
+      'interacts-with',
+      'neighbor-of',
+      'activates',
+      'inhibits',
+      'phosphorylates',
+      'dephosphorylates',
+      'upregulates-expression',
+      'downregulates-expression',
+      'acetylates',
+      'deacetylates',
+      'methylates',
+      'demethylates',
+      'activates-gtpase',
+      'inhibits-gtpase'
+    ];
+
+    return edgeTypes.map(function (edgeType) {
+      return createSifEdgeTypeMenu(edgeType, edgeTypes.filter(function (candidate) {
+        return candidate !== edgeType;
+      }).map(function (candidate) {
+        return {
+          idSuffix: candidate.replace(/\s+/g, '-'),
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
+          toClass: candidate
+        };
+      }));
+    });
+  }
+
+  function createAfEdgeTypeMenu(edgeClass, submenuItems) {
+    return {
+      id: 'ctx-menu-change-edge-type-af-' + edgeClass,
+      content: 'Change Edge Type To',
+      selector: 'edge[language="AF"][class="' + edgeClass + '"]',
+      submenu: submenuItems.map(function (item) {
+        return {
+          id: 'ctx-submenu-change-edge-type-af-' + edgeClass + '-' + item.idSuffix,
+          content: item.content,
+          onClickFunction: function (event) {
+            convertAfEdgeType(event, item.toClass);
+          }
+        };
+      })
+    };
+  }
+
+  function createAfEdgeTypeMenuItems() {
+    var configs = [
+      {
+        edgeClass: 'necessary stimulation',
+        submenuItems: [
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'unknown influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'negative influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+        ]
+      },
+      {
+        edgeClass: 'positive influence',
+        submenuItems: [
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' }
+        ]
+      }
+    ];
+
+    return configs.map(function (config) {
+      return createAfEdgeTypeMenu(config.edgeClass, config.submenuItems);
+    });
+  }
+
   // register extensions and bind events when cy is ready
   cy.ready(function () {
     cytoscapeExtensionsAndContextMenu();
@@ -52,12 +1563,20 @@ module.exports = function (chiseInstance) {
     ur.action("unhideAll", appUndoActions.unhideAllUI, appUndoActions.unhideAllUIUndo);
     ur.action("loadExperiment", appUndoActions.loadExperimentData, appUndoActions.undoLoadExperiment);
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
+    ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
+    ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
+    ur.action("convertEdgeType", appUndoActions.convertEdgeType, appUndoActions.convertEdgeType);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
     cy.expandCollapse(getExpandCollapseOptions(cy));
 
     var contextMenus = cy.contextMenus({
+      submenuIndicator: {
+        src: submenuIcon,
+        width: 12,
+        height: 12
+      },
       menuItemClasses: ['custom-menu-item'],
     });
 
@@ -87,8 +1606,25 @@ module.exports = function (chiseInstance) {
       zIndex: 999,
       enableMultipleAnchorRemovalOption: true,
     });
-
-    contextMenus.appendMenuItems([
+    var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
+    var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
+    var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();
+    var sbmlEdgeTypeIOMenuItems = createSbmlEdgeTypeIOMenuItems();
+    var sbmlEdgeTypeModulators1MenuItems = createSbmlEdgeTypeModulators1MenuItems();
+    var sbmlEdgeTypeModulators2MenuItems = createSbmlEdgeTypeModulators2MenuItems();
+    var sifChemicalChemicalEdgeTypeMenuItems = createSifChemicalChemicalEdgeTypeMenuItems();
+    var sifChemicalMacromoleculeEdgeTypeMenuItems = createSifChemicalMacromoleculeEdgeTypeMenuItems();
+    var sifMacromoleculeMacromoleculeEdgeTypeMenuItems = createSifMacromoleculeMacromoleculeEdgeTypeMenuItems();
+    var pdLogicalNodeTypeMenuItems = createPdLogicalNodeTypeMenuItems();
+    var pdProcessNodeTypeMenuItems = createPdProcessNodeTypeMenuItems();
+    var afLogicalNodeTypeMenuItems = createAfLogicalNodeTypeMenuItems();
+    var afAuxiliaryUnitTypeMenuItems = createAfAuxiliaryUnitTypeMenuItems();
+    var afNodeTypeMenuItems = createAfNodeTypeMenuItems();
+    var sifNodeTypeMenuItems = createSifNodeTypeMenuItems();
+    var sbmlNodeTypeMenuItems = createSbmlNodeTypeMenuItems();
+    var sbmlLogicalNodeTypeMenuItems = createSbmlLogicalNodeTypeMenuItems();
+    var sbmlProcessNodeTypeMenuItems = createSbmlProcessNodeTypeMenuItems();
+    const contextMenuItems = [
       {
         id: 'ctx-menu-general-properties',
         content: 'Properties...',
@@ -108,8 +1644,33 @@ module.exports = function (chiseInstance) {
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         selector: 'node, edge',
         onClickFunction: function (event) {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
           let eles = event.target || event.cyTarget;
-          
+          let connections = eles.connectedEdges();
+          for (let i = 0; i < connections.length; i++) {
+            let className = connections[i].data('class');
+            let source = connections[i].source();
+            let target = connections[i].target();
+            delete databaseUtilities.edgesInDB[
+            [
+              source.id(),
+              target.id(),
+              className
+            ]
+            ];
+            // console.log("source:",source.id(), "target:", target.id(), "className:", className);
+          }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
+      
+          delete databaseUtilities.nodesInDB[eles.id()];
+
           chiseInstance.deleteElesSimple(eles);
           
           if(!chiseInstance.elementUtilities.isGraphTopologyLocked())
@@ -121,6 +1682,15 @@ module.exports = function (chiseInstance) {
         content: 'Delete Selected',
         image: {src : "app/img/toolbar/delete-simple.svg", width : 16, height : 16, x : 2, y : 3},
         onClickFunction: function () {
+          var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+          var currentMapType = chiseInstance.getMapType();
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping
+          ) {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
+          }
           $("#delete-selected-simple").trigger('click');
         },
         coreAsWell: true // Whether core instance have this item on cxttap
@@ -228,6 +1798,7 @@ module.exports = function (chiseInstance) {
         },
         coreAsWell: true // Whether core instance have this item on cxttap
       },
+      
       {
         id: 'ctx-menu-select-all-object-of-this-type',
         content: 'Select Objects of This Type',
@@ -237,6 +1808,157 @@ module.exports = function (chiseInstance) {
           appUtilities.selectAllElementsOfSameType(cyTarget);
         }
       },
+
+      // Change Edge Type Starts
+      //// PD
+      createPdEdgeTypeIOMenu("consumption", "production"),
+      createPdEdgeTypeIOMenu("production", "consumption"),
+      pdEdgeTypeModulatorsMenuItems[0],
+      pdEdgeTypeModulatorsMenuItems[1],
+      pdEdgeTypeModulatorsMenuItems[2],
+      pdEdgeTypeModulatorsMenuItems[3],
+      pdEdgeTypeModulatorsMenuItems[4],
+
+      //// AF
+      afEdgeTypeMenuItems[0],
+      afEdgeTypeMenuItems[1],
+      afEdgeTypeMenuItems[2],
+      afEdgeTypeMenuItems[3],
+
+      //// SBML
+      sbmlEdgeTypeIOMenuItems[0],
+      sbmlEdgeTypeIOMenuItems[1],
+      sbmlEdgeTypeIOMenuItems[2],
+      sbmlEdgeTypeIOMenuItems[3],
+      sbmlEdgeTypeIOMenuItems[4],
+      sbmlEdgeTypeIOMenuItems[5],
+      sbmlEdgeTypeIOMenuItems[6],
+      //// SBML Modulators
+      //// SBML Modulators 1
+      sbmlEdgeTypeModulators1MenuItems[0],
+      sbmlEdgeTypeModulators1MenuItems[1],
+      sbmlEdgeTypeModulators1MenuItems[2],
+      sbmlEdgeTypeModulators1MenuItems[3],
+      sbmlEdgeTypeModulators1MenuItems[4],
+      sbmlEdgeTypeModulators1MenuItems[5],
+      sbmlEdgeTypeModulators1MenuItems[6],
+      //// SBML Modulators 2
+      sbmlEdgeTypeModulators2MenuItems[0],
+      sbmlEdgeTypeModulators2MenuItems[1],
+      sbmlEdgeTypeModulators2MenuItems[2],
+      sbmlEdgeTypeModulators2MenuItems[3],
+      sbmlEdgeTypeModulators2MenuItems[4],
+      sbmlEdgeTypeModulators2MenuItems[5],
+      sbmlEdgeTypeModulators2MenuItems[6],
+      sbmlEdgeTypeModulators2MenuItems[7],
+      sbmlEdgeTypeModulators2MenuItems[8],
+      sbmlEdgeTypeModulators2MenuItems[9],
+
+      //// SIF
+      sifChemicalChemicalEdgeTypeMenuItems[0],
+      sifChemicalChemicalEdgeTypeMenuItems[1],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[0],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[1],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[2],
+      sifChemicalMacromoleculeEdgeTypeMenuItems[3],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[0],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[1],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[2],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[3],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[4],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[5],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[6],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[7],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[8],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[9],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[10],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[11],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[12],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[13],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[14],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[15],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[16],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[17],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[18],
+      sifMacromoleculeMacromoleculeEdgeTypeMenuItems[19],
+      // Change Edge Type Ends
+
+      // Change Logical Node Type Starts
+      //// PD Logical Operators
+      pdLogicalNodeTypeMenuItems[0],
+      pdLogicalNodeTypeMenuItems[1],
+      pdLogicalNodeTypeMenuItems[2],
+      //// AF Logical Operators
+      afLogicalNodeTypeMenuItems[0],
+      afLogicalNodeTypeMenuItems[1],
+      afLogicalNodeTypeMenuItems[2],
+      afLogicalNodeTypeMenuItems[3],
+      //// SBML Logical Operators
+      sbmlLogicalNodeTypeMenuItems[0],
+      sbmlLogicalNodeTypeMenuItems[1],
+      sbmlLogicalNodeTypeMenuItems[2],
+      sbmlLogicalNodeTypeMenuItems[3],
+      // Change Logical Node Type Ends
+
+      // Change Process Node Type Starts
+      //// PD Process Nodes
+      pdProcessNodeTypeMenuItems[0],
+      pdProcessNodeTypeMenuItems[1],
+      pdProcessNodeTypeMenuItems[2],
+      pdProcessNodeTypeMenuItems[3],
+      pdProcessNodeTypeMenuItems[4],
+      //// SBML Process Nodes
+      sbmlProcessNodeTypeMenuItems[0],
+      sbmlProcessNodeTypeMenuItems[1],
+      sbmlProcessNodeTypeMenuItems[2],
+      sbmlProcessNodeTypeMenuItems[3],
+      sbmlProcessNodeTypeMenuItems[4],
+      sbmlProcessNodeTypeMenuItems[5],
+      // Change Process Node Type Ends
+
+      // Change SBML Node Type Starts
+      sbmlNodeTypeMenuItems[0],
+      sbmlNodeTypeMenuItems[1],
+      sbmlNodeTypeMenuItems[2],
+      sbmlNodeTypeMenuItems[3],
+      sbmlNodeTypeMenuItems[4],
+      sbmlNodeTypeMenuItems[5],
+      sbmlNodeTypeMenuItems[6],
+      sbmlNodeTypeMenuItems[7],
+      sbmlNodeTypeMenuItems[8],
+      sbmlNodeTypeMenuItems[9],
+      sbmlNodeTypeMenuItems[10],
+      sbmlNodeTypeMenuItems[11],
+      sbmlNodeTypeMenuItems[12],
+      // Change SBML Node Type Ends
+
+      // Change AF Auxiliary Unit Type Starts
+      afAuxiliaryUnitTypeMenuItems[0],
+      afAuxiliaryUnitTypeMenuItems[1],
+      afAuxiliaryUnitTypeMenuItems[2],
+      afAuxiliaryUnitTypeMenuItems[3],
+      afAuxiliaryUnitTypeMenuItems[4],
+      afAuxiliaryUnitTypeMenuItems[5],
+      // Change AF Auxiliary Unit Type Ends
+
+      // Change AF Node Type Starts
+      afNodeTypeMenuItems[0],
+      afNodeTypeMenuItems[1],
+      // Change AF Node Type Ends
+
+      // Change SIF Node Type Starts
+      sifNodeTypeMenuItems[0],
+      sifNodeTypeMenuItems[1],
+      // Change SIF Node Type Ends
+   
+      //// PD Nodes
+      pdNodeTypeMenuItems[0],
+      pdNodeTypeMenuItems[1],
+      pdNodeTypeMenuItems[2],
+      pdNodeTypeMenuItems[3],
+      pdNodeTypeMenuItems[4],
+
+
       {
         id: 'ctx-menu-show-hidden-neighbors',
         content: 'Show Hidden Neighbors',
@@ -294,7 +2016,8 @@ module.exports = function (chiseInstance) {
       {
         id: 'ctx-menu-relocate-info-boxes',
         content: 'Relocate Information Boxes',
-        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"]',
+        selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],[class^="compartment"],[class="SIF macromolecule"],[class="SIF simple chemical"],'
+        +'[class="gene"],[class="protein"],[class="rna"],[class="antisense rna"],[class="truncated protein"],[class="ion channel"],[class="ion"],[class="receptor"],[class="simple molecule"],[class="unknown molecule"],[class="degradation"],[class="drug"],[class="phenotype sbml"],[class="complex sbml"]',
         onClickFunction: function (event){
           var cyTarget = event.target || event.cyTarget;
           appUtilities.relocateInfoBoxes(cyTarget);
@@ -314,7 +2037,7 @@ module.exports = function (chiseInstance) {
         id: 'ctx-menu-fit-content-into-node',
         content: 'Resize Node to Content',
         selector: 'node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
-        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
         onClickFunction: function (event) {
             var cyTarget = event.target || event.cyTarget;
             //Collection holds the element and is used to generalize resizeNodeToContent function (which is used from Edit-> Menu)
@@ -368,15 +2091,81 @@ module.exports = function (chiseInstance) {
             }
         }
       }
-    ]);
+    ];
+    if(IS_LOCAL_DATABASE){
+      contextMenuItems.push({
+        id: 'ctx-menu-get-database-neighbors',
+        content: 'Get Neighbors from Local Database',
+        selector: 'node[class^="process"],node[class^="macromolecule"],[class^="complex"],[class^="simple chemical"],[class^="nucleic acid feature"],' +
+        '[class^="unspecified entity"], [class^="perturbing agent"],[class^="phenotype"],[class^="tag"],[class^="compartment"],[class^="submap"],[class^="BA"],[class="SIF macromolecule"],[class="SIF simple chemical"],[class^="gene"],[class^="rna"],[class^="antisense rna"],[class^="protein"],[class^="truncated protein"],[class^="ion"],[class^="receptor"],[class^="simple molecule"],[class^="unknown molecule"],[class^="drug"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            var generalProperties = appUtilities.getScratch(
+              cy,
+              "currentGeneralProperties"
+            );
+            const allowCloning = generalProperties.allowSimpleChemicalCloning;
+            const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
+            databaseUtilities.getNeighboringNodes(cyTarget.id(), allowCloning, cloningThreshold);
+        }
+      },
+      {
+        id: 'ctx-menu-get-database-member-contents',
+        content: 'Get Contents from Local Database',
+        selector: 'node[class^="compartment"]',
+        onClickFunction: function (event) {
+            var cyTarget = event.target || event.cyTarget;
+            console.log("Getting contents for compartment:", cyTarget.id());
+            var generalProperties = appUtilities.getScratch(
+              cy,
+              "currentGeneralProperties"
+            );
+            const allowCloning = generalProperties.allowSimpleChemicalCloning;
+            const cloningThreshold = generalProperties.simpleChemicalCloningThreshold;
+            databaseUtilities.getCompartmentMembers(cyTarget.id(), allowCloning, cloningThreshold);
+            // databaseUtilities.getNeighboringNodes(cyTarget.id());
+        }
+      }
+    );
+    }
+    contextMenus.appendMenuItems(contextMenuItems);
 
     cy.clipboard({
       clipboardSize: 5, // Size of clipboard. 0 means unlimited. If size is exceeded, first added item in clipboard will be removed.
+      nodePrefix: "nwtN_", // Prefix to add to the IDs of pasted nodes 
+      edgePrefix: "nwtE_", // Prefix to add to the IDs of pasted edges 
       shortcuts: {
         enabled: true, // Whether keyboard shortcuts are enabled
         undoable: appUtilities.undoable // and if undoRedo extension exists
       },
       afterPaste: function(eles) {
+
+        // Boundary node handling part can be handled in the loop below, 
+        // but it is implemented separately for now, for potential debugging purposes.
+        var activeChiseInstance = appUtilities.getActiveChiseInstance();
+        var mapType = activeChiseInstance.getMapType();
+        if (mapType === 'PD' || mapType === 'AF' || mapType === 'HybridSbgn' || mapType === 'SBML') {
+          var boundaryCandidates = eles.filter(function (ele) {
+            return ele.isNode() && ele.data('boundaryParentId');
+          });
+
+          var parentCandidates = eles.filter(function (ele) {
+            return ele.isNode() && ele.data('class') === 'compartment';
+          });
+
+          if (boundaryCandidates.nonempty() && parentCandidates.nonempty()) {
+            var snapThreshold = appUtilities.getScratch(cy, 'currentGeneralProperties').boundarySnapThreshold;
+            boundaryCandidates.forEach(function (boundaryCandidate) {
+              parentCandidates.forEach(function (parentCandidate) {
+                if (activeChiseInstance.elementUtilities.isNearBoundary(parentCandidate, boundaryCandidate.position(), snapThreshold)) {
+                  activeChiseInstance.elementUtilities.addNodeOnBoundary(parentCandidate, boundaryCandidate);
+                }
+              });
+            });
+
+          }
+        }
+
         eles.nodes().forEach(function(ele){
           // skip nodes without any auxiliary units
           if(!ele.data('statesandinfos') || ele.data('statesandinfos').length == 0) {
@@ -461,8 +2250,8 @@ module.exports = function (chiseInstance) {
     cy.viewUtilities({
       highlightStyles: [
         {
-          node: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
-          edge: { 'overlay-color': '#0B9BCD', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
+          node: { 'overlay-color': '#0b9bcd', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
+          edge: { 'overlay-color': '#0b9bcd', 'overlay-opacity': 0.4, 'overlay-padding': 5 },
         },
         {
           node: { 'overlay-color': '#bf0603', 'overlay-opacity': 0.2, 'overlay-padding': 5 },
@@ -596,7 +2385,7 @@ module.exports = function (chiseInstance) {
 
       resizeToContentCueEnabled: function (node){
         var enabled_classes = ["macromolecule", "complex", "simple chemical", "nucleic acid feature",
-          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
+          "unspecified entity", "perturbing agent", "phenotype", "tag", "compartment", "submap", "BA", "gene", "rna", "antisense rna", "protein", "ion channel", "receptor", "simple molecule", "unknown molecule", "drug"];
         var node_class = node.data('class');
         var result = false;
 
@@ -620,6 +2409,7 @@ module.exports = function (chiseInstance) {
         }
 
         var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
 
         // We need to remove interactively added entities because we should add the edge with the chise api
         addedEntities.remove();
@@ -640,8 +2430,8 @@ module.exports = function (chiseInstance) {
           var currentMapType = chiseInstance.getMapType();
           if(currentMapType == "HybridAny"){
             isMapTypeValid = true;
-          }else if(currentMapType == "HybridSbgn"){
-              if(edgeParams.language == "PD" || edgeParams.language =="AF"){
+          }else if(currentMapType == "HybridPDAF"){
+              if(edgeParams.language == "PD" || edgeParams.language =="AF" || edgeParams.language =="HybridPDAF"){
                 isMapTypeValid = true;
               }
           }else if(currentMapType == edgeParams.language){
@@ -658,6 +2448,14 @@ module.exports = function (chiseInstance) {
                 var currentArrowScale = Number($('#arrow-scale').val());
                 addedEdge.style('arrow-scale', currentArrowScale);
             }); */
+          }
+          // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+          else if (
+            currentMapType === "SIF" &&
+            currentGeneralProperties.enableSIFTopologyGrouping 
+          ) 
+          {
+            appUtilities.promptSIFTopologyGroupingWarning.render();
           }
           else{
               chiseInstance.addEdge(source, target, edgeParams, promptInvalidEdge);
@@ -729,6 +2527,9 @@ module.exports = function (chiseInstance) {
     };
 
     cy.panzoom(panProps);
+    
+    // Override panzoom reset functionality to include annotation items
+    appUtilities.overridePanzoomReset(cy);
   }
 
   function bindCyEvents() {
@@ -765,9 +2566,41 @@ module.exports = function (chiseInstance) {
       cy.style().update();
     }); */
 
+    cy.on("expandcollapse.beforecollapse", function (e, type, node) {
+      var targetNode = node || e.target;
+      if (!targetNode) return;
+      var activeChiseInstance = appUtilities.getActiveChiseInstance();
+      var bNodes = cy.nodes().filter(function (ele) {
+        return ele.data('boundaryParentId') === targetNode.id();
+      });
+      if (bNodes.length > 0) {
+        bNodes.each(function (bNode) {
+          activeChiseInstance.elementUtilities.freeNodeFromBoundary(targetNode, bNode);
+          bNode.data("boundaryParentId", targetNode.id());
+          activeChiseInstance.elementUtilities.changeParent(bNode, targetNode, undefined, undefined);
+        });
+      }
+    });
+
     //Fixes info box locations after expand collapse
     cy.on("expandcollapse.aftercollapse expandcollapse.afterexpand", function(e, type, node) {
       cy.nodeEditing('get').refreshGrapples();
+    });
+
+    // Restore boundary nodes
+    cy.on("expandcollapse.afterexpand", function (e, type, node) {
+      var targetNode = node || e.target;
+      if (!targetNode) return;
+      var activeChiseInstance = appUtilities.getActiveChiseInstance();
+      var bNodes = cy.nodes().filter(function (ele) {
+        return ele.data('boundaryParentId') === targetNode.id();
+      });
+      if (bNodes.length > 0) {
+        bNodes.each(function (bNode) {
+          var changedNodes = activeChiseInstance.elementUtilities.changeParent(bNode, null, undefined, undefined);
+          activeChiseInstance.elementUtilities.addNodeOnBoundary(targetNode, changedNodes[0]);
+        });
+      }
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
@@ -846,6 +2679,9 @@ module.exports = function (chiseInstance) {
         }
 
       }
+      else if (actionName === "annotationSetElement" || actionName === "annotationSetLayer") {
+        annotationLayers.syncUIAfterUndoRedo();
+      }
     });
 
     cy.on("afterRedo", function (event, actionName, args, res) {
@@ -879,6 +2715,9 @@ module.exports = function (chiseInstance) {
         }
 
       }
+      else if (actionName === "annotationSetElement" || actionName === "annotationSetLayer") {
+        annotationLayers.syncUIAfterUndoRedo();
+      }
     });
 
     cy.on("mousedown", "node", function (event) {
@@ -904,35 +2743,212 @@ module.exports = function (chiseInstance) {
       }
     });
 
+    let _panStartPosition = null;
+    let _hollowClickedNode = null;
+    let _isGrabbing = false;
+    let _isBackgroundPanning = false;
+
+    cy.on('tapstart', function (event) {
+      if (event.target === cy) {
+        var isModifierDown = event.originalEvent && (event.originalEvent.shiftKey || event.originalEvent.ctrlKey || event.originalEvent.metaKey || event.originalEvent.altKey);
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+        var isBoxMode = modeProperties && (modeProperties.mode === "marquee-zoom-mode" || modeProperties.mode === "lasso-mode");
+        if (!isModifierDown && !isBoxMode) {
+          _isBackgroundPanning = true;
+        }
+      }
+    });
+
+    cy.on('tapstart', 'node', function (event) {
+      var node = this;
+      if (node.isParent()) {
+        var currentGeneralProperties = appUtilities.getScratch(cy, 'currentGeneralProperties');
+        var defaultPadding = currentGeneralProperties.compoundPadding;
+        if (node.data('class').includes('compartment'))
+          defaultPadding += currentGeneralProperties.extraCompartmentPadding;
+        if (node.data('class').includes('complex'))
+          defaultPadding += currentGeneralProperties.extraComplexPadding;
+
+        var p = event.position || event.cyPosition;
+        var bb = node.boundingBox({ includeLabels: false, includeOverlays: false });
+
+        var pLeft = parseFloat(node.style('padding-left')) || defaultPadding;
+        var pRight = parseFloat(node.style('padding-right')) || defaultPadding;
+        var pTop = parseFloat(node.style('padding-top')) || defaultPadding;
+        var pBottom = parseFloat(node.style('padding-bottom')) || defaultPadding;
+
+        var grabTolerance = 5;
+
+        const isInsideCenter = (
+          p.x > bb.x1 + pLeft + grabTolerance &&
+          p.x < bb.x2 - pRight - grabTolerance &&
+          p.y > bb.y1 + pTop + grabTolerance &&
+          p.y < bb.y2 - pBottom - grabTolerance
+        );
+
+        var ctrlKeyDown = (event.originalEvent && (event.originalEvent.ctrlKey || event.originalEvent.metaKey)) || appUtilities.ctrlKeyDown;
+        var shiftKeyDown = event.originalEvent && event.originalEvent.shiftKey;
+        var modeProperties = appUtilities.getScratch(cy, 'modeProperties'); 
+        var isAddEdgeMode = modeProperties && modeProperties.mode === "add-edge-mode";
+        var isBoxMode = modeProperties && (modeProperties.mode === "marquee-zoom-mode" || modeProperties.mode === "lasso-mode");
+
+        if (isInsideCenter && !ctrlKeyDown && !shiftKeyDown && !isAddEdgeMode && !isBoxMode) {
+          node.unselect();
+          node.ungrabify();
+          node.scratch('_wasHollowClicked', true);
+          _hollowClickedNode = node;
+          _panStartPosition = {
+            x: event.renderedPosition.x,
+            y: event.renderedPosition.y
+          }
+        }
+      }
+    });
+
+    cy.on('tapdrag', function (event) {
+      if (_hollowClickedNode || _isBackgroundPanning) {
+        if (!_isGrabbing) {
+          $(cy.container()).find('canvas').addClass('grabbing-cursor');
+          _isGrabbing = true;
+        }
+      }
+
+      if (_hollowClickedNode && _panStartPosition) {
+        var rx = event.renderedPosition.x;
+        var ry = event.renderedPosition.y;
+        var dx = rx - _panStartPosition.x;
+        var dy = ry - _panStartPosition.y;
+
+        var currentPan = cy.pan();
+        cy.pan({
+          x: currentPan.x + dx,
+          y: currentPan.y + dy
+        });
+        _panStartPosition = { x: rx, y: ry };
+      }
+    });
+
+    cy.on('tapend', function (event) {
+      if (_isGrabbing) {
+        $(cy.container()).find('canvas').removeClass('grabbing-cursor');
+        _isGrabbing = false;
+      }
+      _isBackgroundPanning = false;
+      if (_hollowClickedNode && _hollowClickedNode.scratch('_wasHollowClicked')) {
+        _hollowClickedNode.grabify();
+        _hollowClickedNode.removeScratch('_wasHollowClicked');
+      }
+      _hollowClickedNode = null;
+      _panStartPosition = null;
+    });
+
     cy.on("mouseup", function (event) {
       var self = event.target || event.cyTarget;
 
       // get chise instance for cy
       var chiseInstance = appUtilities.getChiseInstance(cy);
 
-      if ( appUtilities.getScratch(cy, 'dragAndDropModeEnabled') ) {
+      if (appUtilities.getScratch(cy, 'dragAndDropModeEnabled')) {
 
         var nodes = appUtilities.getScratch(cy, 'nodesToDragAndDrop');
+
         if (appUtilities.ctrlKeyDown ) {
-          var newParent;
-          if( self != cy) {
-            newParent = self;
-            nodes = nodes.difference(newParent);
-            if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment"
-                && newParent.data("class") != "submap") {
-              newParent = newParent.parent()[0];
+
+          var handledBoundaryAction = false;
+          var mousePos = event.position || event.cyPosition;
+          var activeChiseInstance = appUtilities.getActiveChiseInstance();
+          var mapType = activeChiseInstance.getMapType();
+
+          if (mapType === 'PD' || mapType === 'AF' || mapType === 'HybridSbgn' || mapType === 'SBML') {
+            appUtilities.disableDragAndDropMode(cy);
+
+            if (self !== cy && self.isNode() && self.data('class') === 'compartment') {
+
+              var snapThreshold = appUtilities.getScratch(cy, 'currentGeneralProperties').boundarySnapThreshold;
+
+              if (activeChiseInstance.elementUtilities.isNearBoundary(self, mousePos, snapThreshold)) {
+                var actions = [];
+                nodes.each(function (node) {
+                  if (node.id() !== self.id() && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isPNClass(node)) || cy.scratch('_sbgnviz').sbgnvizParams.jsonToSbmlConverter.isSpecies(node.data('class'))) {
+                    var boundaryNode = node;
+                    var currentBoundaryParent = node.data('boundaryParentId') ? cy.getElementById(node.data('boundaryParentId')) : null;
+                    var nextBoundaryParent = self;
+                    var parentNode = node.parent().nonempty() ? node.parent() : null;
+                    var currentPosition = { x: node.position().x, y: node.position().y };
+                    var nextPosition = { x: mousePos.x, y: mousePos.y };
+                    actions.push({
+                      name: "addNodeOnBoundary", 
+                      param: { boundaryNode: boundaryNode, currentBoundaryParent: currentBoundaryParent, nextBoundaryParent: nextBoundaryParent, parentNode: parentNode, currentPosition: currentPosition, nextPosition: nextPosition}
+                    });
+                  }
+                });
+                if (actions.length > 1) {
+                  cy.undoRedo().do("batch", actions);
+                } else if (actions.length === 1) {
+                  activeChiseInstance.addNodeOnBoundary(actions[0].param.boundaryNode, actions[0].param.currentBoundaryParent, actions[0].param.nextBoundaryParent, actions[0].param.parentNode, actions[0].param.currentPosition, actions[0].param.nextPosition);
+                } 
+                handledBoundaryAction = true;
+              }
+            }
+
+            if (!handledBoundaryAction) {
+              var actions = [];
+              nodes.each(function (node) {
+                if (node.data('boundaryParentId')) {
+                  var boundaryNode = node;
+                  var currentBoundaryParent = node.data('boundaryParentId') ? cy.getElementById(node.data('boundaryParentId')) : null;
+                  var nextBoundaryParent = null;
+                  var parentNode = self != cy ? self : null;
+                  var currentPosition = { x: node.position().x, y: node.position().y };
+                  var nextPosition = { x: mousePos.x, y: mousePos.y };
+                  actions.push({
+                    name: "freeNodeFromBoundary", 
+                    param: { boundaryNode: boundaryNode, currentBoundaryParent: currentBoundaryParent, nextBoundaryParent: nextBoundaryParent, parentNode: parentNode, currentPosition: currentPosition, nextPosition: nextPosition}
+                  });
+                }
+              });
+              if (actions.length > 1) {
+                cy.undoRedo().do("batch", actions);
+                handledBoundaryAction = true;
+              } else if (actions.length === 1) {
+                activeChiseInstance.freeNodeFromBoundary(actions[0].param.boundaryNode, actions[0].param.currentBoundaryParent, actions[0].param.nextBoundaryParent, actions[0].param.parentNode, actions[0].param.currentPosition, actions[0].param.nextPosition);
+                handledBoundaryAction = true;
+              }
             }
           }
 
-          appUtilities.disableDragAndDropMode(cy);
+          if (!handledBoundaryAction) {
+            var newParent;
+            if( self != cy) {
+              newParent = self;
+              nodes = nodes.difference(newParent);
+              if (!newParent.data("class").startsWith("complex") && newParent.data("class") != "compartment" && newParent.data("class") != "submap") {
+                newParent = newParent.parent()[0];
+              }
+            }
 
-          var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
-          var pos = event.position || event.cyPosition;
-          var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+            appUtilities.disableDragAndDropMode(cy);
 
-          if( self == cy ||(self != cy && mouseDownNode != self)){
-            chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x,
-                                  pos.y - dragAndDropStartPosition.y);
+            var mouseDownNode = appUtilities.getScratch(cy, 'mouseDownNode');
+            var pos = event.position || event.cyPosition;
+            var dragAndDropStartPosition = appUtilities.getScratch(cy, 'dragAndDropStartPosition');
+
+            if(self == cy ||(self != cy && mouseDownNode != self)) {
+              chiseInstance.changeParent(nodes, newParent, pos.x - dragAndDropStartPosition.x, pos.y - dragAndDropStartPosition.y);
+            }
+          }
+
+          if (handledBoundaryAction) {
+            cy.one('free', 'node', function () {
+              setTimeout(function () {
+                var ur = cy.undoRedo();
+                var stack = ur.getUndoStack();
+                if (stack.length > 0 && stack[stack.length - 1].name === "drag") {
+                  stack.pop();
+                  appUtilities.refreshUndoRedoButtonsStatus(cy);
+                }
+              }, 0);
+            });
           }
 
           appUtilities.setScratch(cy, 'dragAndDropStartPosition', null);
@@ -1008,7 +3024,7 @@ module.exports = function (chiseInstance) {
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
-      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && chiseInstance.elementUtilities.isEPNClass(node) && !convenientProcessSource) {
+      if (modeProperties.mode === 'add-node-mode' && chiseInstance.elementUtilities.isPNClass(modeProperties.selectedNodeType) && (chiseInstance.elementUtilities.isEPNClass(node) || chiseInstance.elementUtilities.isSBMLNode(node)) && !convenientProcessSource) {
         convenientProcessSource = node;
         cy.edgehandles('drawon');
       }
@@ -1034,6 +3050,7 @@ module.exports = function (chiseInstance) {
 
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
+      var currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
 
       if (relPos){ // drag and drop case
         var nodesAtRelpos = chiseInstance.elementUtilities.getNodesAt(relPos);
@@ -1061,10 +3078,10 @@ module.exports = function (chiseInstance) {
         if( convenientProcessSource && cyTarget.isNode && cyTarget.isNode()
                 && cyTarget.id() !== convenientProcessSource.id()
                 && chiseInstance.elementUtilities.isPNClass(nodeType)
-                && chiseInstance.elementUtilities.isEPNClass(cyTarget)
-                && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)
-                && !(cyTarget.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) ||
-                  convenientProcessSource.parent()[0] != undefined && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0])))
+                && nodeType !== "phenotype"
+                && ((chiseInstance.elementUtilities.isEPNClass(cyTarget) && chiseInstance.elementUtilities.isEPNClass(convenientProcessSource)) || (chiseInstance.elementUtilities.isSBMLNode(cyTarget) && chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource)))
+                && !(cyTarget.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(cyTarget.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(cyTarget.parent()[0])) ||
+                  convenientProcessSource.parent()[0] != undefined && (chiseInstance.elementUtilities.isEPNClass(convenientProcessSource.parent()[0]) || chiseInstance.elementUtilities.isSBMLNode(convenientProcessSource.parent()[0]))))
         {
           chiseInstance.addProcessWithConvenientEdges(convenientProcessSource, cyTarget, nodeParams);
           //Update arrow scale of the newly added edge
@@ -1117,27 +3134,42 @@ module.exports = function (chiseInstance) {
             var currentMapType = chiseInstance.getMapType();
             if(currentMapType == "HybridAny"){
               isMapTypeValid = true;
-            }else if(currentMapType == "HybridSbgn"){
-                if(nodeParams.language == "PD" || nodeParams.language =="AF"){
-                  isMapTypeValid = true;
-                }
+            }else if((currentMapType == "HybridPDAF") &&
+              (nodeParams.language == "PD" || nodeParams.language =="AF")){
+              isMapTypeValid = true;
             }else if(currentMapType == nodeParams.language){
               isMapTypeValid = true;
+            }else if(cy.elements().length == 0){ // if canvas is empty, change the map type and add node
+                chiseInstance.elementUtilities.setMapType(nodeParams.language);
+                $(document).trigger("changeMapTypeFromMenu", [nodeParams.language]);
+                currentMapType = nodeParams.language;
+                isMapTypeValid = true;
             }
             // if added node changes map type, warn user
             if (chiseInstance.getMapType() && !isMapTypeValid){
 
               appUtilities.promptMapTypeView.render("You cannot add element of type "+ appUtilities.mapTypesToViewableText[nodeParams.language]  + " to a map of type "+appUtilities.mapTypesToViewableText[currentMapType] +"!","You can change map type from Map Properties.");
             }
+            // Check if SIF topology grouping is enabled and map type is SIF, and show warning if it is
+            else if (currentMapType === "SIF" && 
+              currentGeneralProperties.enableSIFTopologyGrouping){
+                appUtilities.promptSIFTopologyGroupingWarning.render()
+            }
             else{
               chiseInstance.addNode(cyPosX, cyPosY, nodeParams, undefined, parentId);
-              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not')
+              if (nodeType === 'process' || nodeType === 'omitted process' || nodeType === 'uncertain process' || nodeType === 'association' || nodeType == 'truncated process' || nodeType == 'unknown logical operator' || nodeType === 'dissociation'  || nodeType === 'and'  || nodeType === 'or'  || nodeType === 'not' || nodeType === 'delay')
                 {
                     var newEle = cy.nodes()[cy.nodes().length - 1];
                     var defaultPortsOrdering = chiseInstance.elementUtilities.getDefaultProperties(nodeType)['ports-ordering'];
                     chiseInstance.elementUtilities.setPortsOrdering(newEle, ( defaultPortsOrdering ? defaultPortsOrdering : 'L-to-R'));
                 }
-
+              
+                if (nodeType === 'tag') {
+                  var newEle = cy.nodes()[cy.nodes().length - 1];
+                  if (!newEle.data('orientation')) {
+                    newEle.data('orientation', 'right');
+                  }
+                }
                 // If the node will not be added to the root then the parent node may be resized and the top left corner pasition may change after
                 // the node is added. Therefore, we may need to clear the expand collapse viusal cue.
                 if (parent) {
@@ -1200,7 +3232,10 @@ module.exports = function (chiseInstance) {
     });
 
     cy.on('doubleTap', 'node', function (event) {
-
+      // Prevent double click on nodes to edit label if in annotation layer (layer 1+)
+      if (window.annotationLayers && window.annotationLayers.getCurrentLayer && window.annotationLayers.getCurrentLayer().isAnnotationLayer) {
+        return;
+      }
       // get mode properties for cy
       var modeProperties = appUtilities.getScratch(cy, 'modeProperties');
 
@@ -1430,3 +3465,5 @@ module.exports = function (chiseInstance) {
     }
   }
 };
+
+

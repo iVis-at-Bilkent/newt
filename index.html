@@ -10,7 +10,7 @@
 
       gtag("config", "UA-109049087-1");
     </script>
-
+    <script src="/env.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Newt Editor</title>
@@ -112,6 +112,14 @@
                       </li>
                       <li class="divider" style="margin-bottom: 0"></li>
                       <li>
+                        <a class="title"><i>Hybrid PD-AF</i></a>
+                      </li>
+                      <li class="divider" style="margin-top: 0"></li>
+                      <li>
+                        <a href="#" id="load-sample27">EGFR–PI3K/AKT-MAPK signaling</a>
+                      </li>
+                      <li class="divider" style="margin-bottom: 0"></li>
+                      <li>
                         <a class="title"><i>SIF</i></a>
                       </li>
                       <li class="divider" style="margin-top: 0"></li>
@@ -121,17 +129,20 @@
                       <li>
                         <a href="#" id="load-sample18">Signaling downstream of AKT2/3</a>
                       </li>
+                      <li>
+                        <a href="#" id="load-sample25">SIF Learner's Reference Card</a>
+                      </li>
                       <li class="divider" style="margin-bottom: 0"></li>
                       <li>
                         <a class="title"><i>SBML</i></a>
                       </li>
                       <li class="divider" style="margin-top: 0"></li>
                       <li>
-                        <a href="#" id="load-sample21">RUNX1 regulates transcription of genes in WNT signaling</a>
+                        <a href="#" id="load-sample21">RUNX1 regulates transcription of genes in WNT
+                          signaling</a>
                       </li>
                       <li>
-                        <a href="#" id="load-sample22">PTK6 activates STAT3
-                        </a>
+                        <a href="#" id="load-sample22">PTK6 activates STAT3 </a>
                       </li>
                       <li>
                         <a href="#" id="load-sample23">Pharmacokinetics of PFOA and PFOS in the monkey
@@ -140,6 +151,9 @@
                       <li>
                         <a href="#" id="load-sample24">
                           Interaction topologies of MAPK cascade (M1_K2_PSEQ)</a>
+                      </li>
+                      <li>
+                        <a href="#" id="load-sample26">SBML Learner's Reference Card</a>
                       </li>
                     </ul>
                   </li>
@@ -343,23 +357,34 @@
                   </li>
 
                   <li class="dropdown-submenu">
-                    <a href="#" id="add-node-menu-option" class="dropdown-toggle" data-toggle="dropdown">
-                      Align
+                    <a href="#" id="align-distribute-menu-option" class="dropdown-toggle" data-toggle="dropdown">
+                      Align/Distribute
                       <!--<b class="right-caret"></b>-->
                     </a>
-                    <ul class="dropdown-menu" id="add-node-submenu">
+                    <ul class="dropdown-menu" id="align-distribute-submenu">
                       <li class="dropdown-submenu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           Horizontal
                           <!--<b class="right-caret"></b>-->
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a href="#" id="align-horizontal-top">Top</a></li>
+                          <li><a href="#" id="align-horizontal-top">Align Top</a></li>
                           <li>
-                            <a href="#" id="align-horizontal-middle">Middle</a>
+                            <a href="#" id="align-horizontal-middle">Align Middle</a>
                           </li>
                           <li>
-                            <a href="#" id="align-horizontal-bottom">Bottom</a>
+                            <a href="#" id="align-horizontal-bottom">Align Bottom</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#" id="distribute-horizontal-left">Distribute Left</a></li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-center">Distribute Center</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-right">Distribute Right</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-horizontal-even">Distribute Even Gaps</a>
                           </li>
                         </ul>
                       </li>
@@ -369,12 +394,23 @@
                           <!--<b class="right-caret"></b>-->
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a href="#" id="align-vertical-left">Left</a></li>
+                          <li><a href="#" id="align-vertical-left">Align Left</a></li>
                           <li>
-                            <a href="#" id="align-vertical-center">Center</a>
+                            <a href="#" id="align-vertical-center">Align Center</a>
                           </li>
                           <li>
-                            <a href="#" id="align-vertical-right">Right</a>
+                            <a href="#" id="align-vertical-right">Align Right</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#" id="distribute-vertical-top">Distribute Top</a></li>
+                          <li>
+                            <a href="#" id="distribute-vertical-center">Distribute Center</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-vertical-bottom">Distribute Bottom</a>
+                          </li>
+                          <li>
+                            <a href="#" id="distribute-vertical-even">Distribute Even Gaps</a>
                           </li>
                         </ul>
                       </li>
@@ -448,7 +484,7 @@
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Query
+                  Database
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -486,6 +522,62 @@
                       </li>
                     </ul>
                   </li>
+                  <li class="dropdown-submenu database-function" id="database-function">
+                    <a href="#" id="query-localdatabase" class="dropdown-toggle" data-toggle="dropdown">
+                      Local
+                      <!--<b class="right-caret"></b>-->
+                    </a>
+                    <ul class="dropdown-menu">
+                      <input id="input-file" type="file" style="display: none;">
+                      <li>
+                        <a href="#" id="get-all-data">Load Entire Content</a>
+                      </li>
+                      <li>
+                        <a href="#" id="search-nodes">Find by Label...</a>
+                      </li>
+                      <li>
+                        <a href="#" id="push-active-tab-contents">Push Active Tab Content</a>
+                      </li>
+                      <li>
+                        <a href="#" type="file" id="load-from-file">Push from File...</a>
+                      </li>
+                      <li>
+                        <a href="#" id="database-properties">Database Properties...</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
+                        <a href="#" id="merge-nodes">Merge Nodes...</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
+                        <a href="#" id="query-pathsbetween-localdatabase">Paths Between...</a>
+                      </li>
+                      <li>
+                        <a href="#" id="query-pathsfromto-localdatabase">Paths From To...</a>
+                      </li>
+                      <li>
+                        <a href="#" id="query-commonstream-localdatabase">Common Stream...</a>
+                      </li>
+                      <li>
+                        <a href="#" id="query-neighborhood-localdatabase">Neighborhood...</a>
+                      <!-- </li>
+                      <li>
+                        <a href="#" id="query-upstream-localdatabase"
+                          >Upstream...</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" id="query-downstream-localdatabase"
+                          >Downstream...</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" id="query-feedback-localdatabase"
+                          >Feedback...</a
+                        >
+                      </li> -->
+                    </li></ul>
+                  </li>
                 </ul>
               </li>
 
@@ -497,6 +589,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="#" id="PD-legend">Process Description</a></li>
                   <li><a href="#" id="AF-legend">Activity Flow</a></li>
+                  <li><a href="#" id="PD-AF-legend">Hybrid PD-AF</a></li>
                   <li><a href="#" id="SIF-legend">SIF</a></li>
                   <li><a href="#" id="SBML-legend">SBML</a></li>
                 </ul>
@@ -521,7 +614,7 @@
           </div>
         </nav>
       </div>
-      
+
       <div id="sbgn-toolbar" class="read-mode-off">
         <div class="inside-menu">
           <div style="padding: 1px" class="sbgn-toolbar-element">
@@ -542,7 +635,7 @@
             <img id="select-mode-icon" src="app/img/toolbar/select.svg" title="Select / Edit">
           </div>
           <div style="padding: 1px" class="sbgn-toolbar-element">
-            <img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" style="width: 36px; object-fit: contain;">
+            <img id="add-node-mode-icon" src="app/img/nodes/unspecified-entity.svg" title="Create a new Unspecified Entity" style="width: 36px; object-fit: contain">
           </div>
           <div style="padding: 1px" class="sbgn-toolbar-element">
             <img id="add-edge-mode-icon" src="app/img/edges/consumption.svg" title="Create a new Consumption">
@@ -594,7 +687,7 @@
           </div>
 
           <div class="btn-group sbgn-toolbar-element sbgn-dd-list" role="group" id="align-list">
-            <button id="align-button" style="padding: 3px" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
+            <button id="align-button" style="padding: 3px" title="Align to First Selected: Align positions of selected nodes based on the first (if any) selected node&#10;Distribute Selected: Distribute positions of selected nodes evenly" type="button" class="btn" aria-haspopup="true" aria-expanded="false">
               <div style="height: 16px">
                 <img style="height: 16px; width: auto" id="sbgn-align-img" src="app/img/align/align.svg">
                 <!--<span style="float: right;" class="caret"></span>-->
@@ -616,6 +709,7 @@
               <li>
                 <a class="dd-list-href" href="#" id="align-horizontal-bottom-icon">&nbsp;<img src="app/img/align/align-horizontal-bottom.svg">&nbsp;&nbsp;Align Horizontal Bottom</a>
               </li>
+              <li class="divider"></li>
               <li>
                 <a class="dd-list-href" href="#" id="align-vertical-left-icon">&nbsp;<img src="app/img/align/align-vertical-left.svg">&nbsp;&nbsp;Align Vertical Left</a>
               </li>
@@ -624,6 +718,32 @@
               </li>
               <li>
                 <a class="dd-list-href" href="#" id="align-vertical-right-icon">&nbsp;<img src="app/img/align/align-vertical-right.svg">&nbsp;&nbsp;Align Vertical Right</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-left-icon">&nbsp;<img src="app/img/distribute/distribute-horizontal-left.svg"> Distribute Horizontal Left</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-center-icon">&nbsp;<img src="app/img/distribute/distribute-horizontal-center.svg"> Distribute Horizontal Center</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-right-icon">&nbsp;<img src="app/img/distribute/distribute-horizontal-right.svg"> Distribute Horizontal Right</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-horizontal-even-icon">&nbsp;<img src="app/img/distribute/distribute-horizontal-even-gap.svg"> Distribute Horizontal With Even Gaps</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-top-icon">&nbsp;<img src="app/img/distribute/distribute-vertical-top.svg"> Distribute Vertical Top</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-center-icon">&nbsp;<img src="app/img/distribute/distribute-vertical-center.svg"> Distribute Vertical Center</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-bottom-icon">&nbsp;<img src="app/img/distribute/distribute-vertical-bottom.svg"> Distribute Vertical Bottom</a>
+              </li>
+              <li>
+                <a class="dd-list-href" href="#" id="distribute-vertical-even-icon">&nbsp;<img src="app/img/distribute/distribute-vertical-even-gap.svg"> Distribute Vertical With Even Gaps</a>
               </li>
             </ul>
           </div>
@@ -718,6 +838,7 @@
                         <div id="map-tab-general-container"></div>
                       </div>
                     </div>
+
                     <div class="panel">
                       <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-label">
                         <p class="panel-title accordion-toggle">Labels</p>
@@ -726,6 +847,7 @@
                         <div id="map-tab-label-container"></div>
                       </div>
                     </div>
+
                     <div class="panel">
                       <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-rearrangement">
                         <p class="panel-title accordion-toggle">Arrangement</p>
@@ -742,12 +864,72 @@
                         <div id="map-tab-experiment-container"></div>
                       </div>
                     </div>
+
+                    <div class="panel" id="local-db-panel">
+                      <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-properties-local-db">
+                        <p class="panel-title accordion-toggle">Local Database</p>
+                      </div>
+                      <div id="sbgn-inspector-map-properties-local-db" class="panel-collapse collapse">
+                        <div id="map-tab-local-db-container"></div>
+                      </div>
+                    </div>
                     <div class="panel">
                       <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-color-scheme">
                         <p class="panel-title accordion-toggle">Color Scheme</p>
                       </div>
                       <div id="sbgn-inspector-map-color-scheme" class="panel-collapse collapse">
                         <div id="color-scheme-template-container"></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-annotation-layers">
+                        <p class="panel-title accordion-toggle">Annotation Layers</p>
+                      </div>
+                      <div id="sbgn-inspector-map-annotation-layers" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <!-- Top: Add Layer Button -->
+                          <div class="add-layer-section" style="margin-bottom: 10px; text-align: center;">
+                            <button type="button" class="btn btn-sm" style="padding: 0; text-decoration: none; outline: none; background: none; border: none; color: inherit;" title="Add a new layer">
+                              Add Layer <img width="16px" height="16px" src="app/img/add.svg" style="margin-left: 5px; vertical-align: middle;" alt="Add Layer" />
+                            </button>
+                          </div>
+                          
+                          <!-- Top: Display current layers -->
+                          <div class="annotation-layers-list">
+                            <!-- Layers will be dynamically generated by JavaScript in annotation-layers.js -->
+                          </div>
+                          
+                          <!-- Delete Element Button (appears when element is selected) -->
+                          <div class="annotation-element-delete" style="margin-bottom: 15px; display: none;">
+                            <button type="button" class="btn btn-danger btn-sm btn-block" id="delete-selected-element">
+                              <i class="fa fa-trash"></i> Delete Element
+                            </button>
+                          </div>
+                          
+                          <!-- Bottom: Container with 4 buttons -->
+                          <div class="annotation-layers-controls" style="margin-bottom: 15px; position: relative; text-align: center;">
+                            <div class="btn-group" role="group" style="display: inline-block;">
+                              <button type="button" class="btn btn-sm annotation-add-item-btn" id="annotation-add-item-btn" title="Add annotation item to current layer" style="display: flex; align-items: center; border: none; background: none; outline: none;">
+                                Add Item
+                                <img src="app/img/add.svg" width="16" height="16" style="margin-left: 6px; vertical-align: middle;" alt="Add" />
+                              </button>
+                              <ul class="dropdown-menu annotation-add-item-menu" id="annotation-add-item-menu" style="display: none; position: absolute; left: 0; top: 100%; z-index: 1001; min-width: 140px;">
+                                <li><a href="#" class="annotation-add-item-menu-entry" data-tool="Add Rectangle">Add Rectangle</a></li>
+                                <li><a href="#" class="annotation-add-item-menu-entry" data-tool="Add Text">Add Text</a></li>
+                                <li><a href="#" class="annotation-add-item-menu-entry" data-tool="Add Arrow">Add Arrow</a></li>
+                                <li><a href="#" class="annotation-add-item-menu-entry" data-tool="Add Image">Add Image</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-heading collapsed" data-toggle="collapse" data-target="#sbgn-inspector-map-simulation">
+                          <p class="panel-title accordion-toggle">Simulation</p>
+                        </div>
+                        <div id="sbgn-inspector-map-simulation" class="panel-collapse collapse">
+                          <div id="simulation-template-container"></div>
                       </div>
                     </div>
                   </div>
@@ -815,11 +997,11 @@
                             </div>
                           </div>
                         </div>
-                        
+
                         <div class="panel-body palette-panel-body">
                           <p class="palette-label">Logical Operators</p>
                           <div id="pd-node-palette" class="element-palette node-palette">
-                            <div class="paletteWrapper"> 
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/and.svg" language="PD" value="and" title="AND">
                               </div>
@@ -832,11 +1014,11 @@
                             </div>
                           </div>
                         </div>
-                        
+
                         <div class="panel-body palette-panel-body">
                           <p class="palette-label">Other Nodes</p>
                           <div id="pd-node-palette" class="element-palette node-palette">
-                            <div class="paletteWrapper"> 
+                            <div class="paletteWrapper">
                               <div class="paletteCol">
                                 <img src="app/img/nodes/compartment.svg" language="PD" value="compartment" title="Compartment">
                               </div>
@@ -886,6 +1068,29 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- Hybrid PD-AF Panel -->
+                    <div class="panel">
+                      <div id="Hybrid-PD-AF-palette-heading" class="panel-heading collapsed" data-toggle="collapse" data-target="#expand-collapse-hybrid-pd-af-nodes-palette">
+                        <p class="panel-title accordion-toggle">
+                          Hybrid PD-AF
+                        </p>
+                      </div>
+
+                      <div id="expand-collapse-hybrid-pd-af-nodes-palette" class="panel-collapse collapse">
+                        <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
+                          <p class="palette-label">Hybrid PD-AF Arcs</p>
+                          <div id="hybrid-pd-af-edge-palette" class="element-palette edge-palette">
+                            <div class="paletteWrapper">
+                              <div class="paletteCol">
+                                <img src="app/img/edges/performance-arc.svg" language="HybridPDAF" value="performance arc" title="Performance Arc">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Hybrid PD-AF Panel End -->
 
                     <!-- AF Nodes Panel -->
                     <div class="panel">
@@ -1023,7 +1228,7 @@
                             </div>
                           </div>
                         </div>
-                              
+
                         <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
                           <div id="sif-edge-palette" class="element-palette edge-palette">
                             <p class="palette-label">Connecting Edges</p>
@@ -1119,7 +1324,6 @@
                         <p class="panel-title accordion-toggle">SBML</p>
                       </div>
                       <div id="expand-collapse-sbml-nodes-palette" class="panel-collapse collapse">
-                            
                         <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
                           <p class="palette-label">Species</p>
                           <div id="sbml-node-palette" class="element-palette node-palette">
@@ -1131,6 +1335,9 @@
                                 <img src="app/img/nodes/RNA.svg" language="SBML" value="rna" title="RNA">
                               </div>
                               <div class="paletteCol">
+                                <img src="app/img/nodes/antisense-RNA.svg" language="SBML" value="antisense-rna" title="AntiSenseRNA">
+                              </div>
+                              <div class="paletteCol">
                                 <img src="app/img/nodes/protein.svg" language="SBML" value="protein" title="Protein">
                               </div>
                               <div class="paletteCol">
@@ -1140,10 +1347,10 @@
                                 <img src="app/img/nodes/ion-channel.svg" language="SBML" value="ion-channel" title="Ion Channel">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/nodes/ion.svg" language="SBML" value="ion" title="Ion">
+                                <img src="app/img/nodes/receptor.svg" language="SBML" value="receptor" title="Receptor">
                               </div>
                               <div class="paletteCol">
-                                <img src="app/img/nodes/receptor.svg" language="SBML" value="receptor" title="Receptor">
+                                <img src="app/img/nodes/ion.svg" language="SBML" value="ion" title="Ion">
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/nodes/simple-molecule.svg" language="SBML" value="simple-molecule" title="Simple Molecule">
@@ -1159,6 +1366,9 @@
                               </div>
                               <div class="paletteCol">
                                 <img src="app/img/nodes/phenotype-sbml.svg" language="SBML" value="phenotype-sbml" title="Phenotype">
+                              </div>
+                              <div class="paletteCol">
+                                <img src="app/img/nodes/complex-sbml.svg" language="SBML" value="complex-sbml" title="Complex">
                               </div>
                             </div>
                           </div>
@@ -1190,12 +1400,9 @@
                           </div>
                         </div>
                         <div class="panel-body palette-panel-body" style="padding-bottom: 0px">
-                          <p class="palette-label">Container Nodes</p>
+                          <p class="palette-label">Other Nodes</p>
                           <div id="sbml-node-palette" class="element-palette node-palette">
                             <div class="paletteWrapper">
-                              <div class="paletteCol">
-                                <img src="app/img/nodes/complex-sbml.svg" language="SBML" value="complex-sbml" title="Complex">
-                              </div>
                               <div class="paletteCol">
                                 <img src="app/img/nodes/compartment.svg" language="SBML" value="compartment" title="Compartment">
                               </div>
@@ -1343,6 +1550,21 @@
       </tbody>
     </table>
 
+    <div id="simulation_properties_table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- neighborhood query table will be shown here-->
+    </div>
+
+    <div id="function-definition-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
+
+    <div id="initial-assignment-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
+
+    <div id="rule-math-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="event-trigger-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="event-priority-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="event-delay-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="event-assignments-div" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="unit-definition-div" tabindex="-1" class="modal fade" role="dialog"></div>
+
     <div id="network-tabs-list-container" class="read-mode-off">
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
     </div>
@@ -1356,21 +1578,51 @@
     <div id="chemical-container" style="display: none"></div>
 
     <div id="query-neighborhood-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- push active tabs to local database table will be shown here-->
+    </div>
+    <div id="database-properties-table" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="merge-nodes-table" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="search-nodes-modal" tabindex="-1" class="modal fade" role="dialog"></div>
+    <div id="push-active-tabs-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- neighborhood query table will be shown here-->
     </div>
+    <div id="load-entire-content-table" class="modal fade" role="dialog" aria-hidden="true"></div>
+      <!-- neighborhood query table will be shown here-->
     
+    <div id="query-neighborhood-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- neighborhood query table will be shown here-->
+    </div>
+
     <div id="query-pathsbetween-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths between query table will be shown here-->
     </div>
-    
+    <div id="query-pathsbetween-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- paths between query table will be shown here-->
+    </div>
+
     <div id="query-pathsfromto-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths from to query table will be shown here-->
     </div>
-    
+
+    <div id="query-pathsfromto-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- paths from to query table will be shown here-->
+    </div>
+
     <div id="query-commonstream-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- common stream query table will be shown here-->
     </div>
-    
+    <div id="query-commonstream-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- common stream query table will be shown here-->
+    </div>
+
+    <div id="query-upstream-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- common stream query table will be shown here-->
+    </div>
+
+    <div id="query-downstream-localdatabase-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- common stream query table will be shown here-->
+    </div>
+
     <div id="query-pathsbyURI-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- paths by URI query table will be shown here-->
     </div>
@@ -1381,6 +1633,10 @@
 
     <div id="query-mapbyReactomeID-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map by Reactome query table will be shown here-->
+    </div>
+
+    <div id="sbml-kineticLaw-table" tabindex="-1" class="modal fade" role="dialog"></div>
+      <!-- sbml kinetic law will be shown here-->
     </div>
 
     <div id="prompt-save-table" tabindex="-1" class="modal fade" role="dialog">
@@ -1397,43 +1653,54 @@
     <div id="user-preferences-load-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- load dialog will be shown here-->
     </div>
-    
+
+    <div id="active-tab-push-error-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- confirmation dialog will be shown here-->
+    </div>
+    <div id="merge-nodes-error-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- confirmation dialog will be shown here-->
+    </div>
+
     <div id="prompt-confirmation-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-mapType-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
+    <div id="prompt-sifTopologyGrouping-table" tabindex="-1" class="modal fade" role="dialog">
+      <!-- sif topology grouping warning dialog will be shown here-->
+    </div>
+
     <div id="prompt-internal-server-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidQuery-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-requestTimedOut-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-duplicateGeneGiven-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-geneNotExist-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-emptyQueryResult-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidLengthLimit-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidURI-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
@@ -1445,60 +1712,62 @@
     <div id="prompt-invalidReactomeID-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidFile-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-fileConversionError-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
-    <div id="exportError-table" tabindex="-1" class="modal fade" role="dialog">
-    </div>
-    
+
+    <div id="exportError-table" tabindex="-1" class="modal fade" role="dialog"></div>
+
     <div id="prompt-sbmlConversionError-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidURL-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidImage-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="prompt-invalidEdge-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
     <div id="prompt-errorInvalidType-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    <div id="errorSifMap-table" tabindex="-1" class="modal fade" role="dialog">
-    </div>
+    <div id="errorSifMap-table" tabindex="-1" class="modal fade" role="dialog"></div>
     <div id="prompt-errorPD2AF-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- map type change confirmation dialog will be shown here-->
     </div>
-    
+
     <div id="sbgn-bricks-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- reaction templatequery table will be shown here -->
     </div>
-    
+
     <div id="grid-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- grid properties table will be shown here -->
     </div>
-    
+
     <div id="font-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn properties table will be shown here -->
     </div>
-    
+
     <div id="prompt-invalidSchematronFile-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- sbgn schematron validation message dialog will be shown here -->
     </div>
-    
+
     <div id="infobox-properties-table" tabindex="-1" class="modal fade" role="dialog">
       <!-- infobox properties table will be shown here -->
+    </div>
+
+    <div id="simulation-view" tabindex="-1" class="modal fade" role="dialog">
+      <!-- simulation data will be shown here-->
     </div>
 
     <div id="box"></div>
@@ -1534,6 +1803,22 @@
               <p class="address-text" style="margin-top: 20px; margin-bottom: 10px">
                 <a href="https://sbgn.github.io/referencecards" target="_blank" rel="nofollow">Reference Card</a>
                 -
+                <a href="https://sbgn.github.io/specifications" target="_blank" rel="nofollow">Specifications</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="PD-AF_legend_modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 600px">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="sbgn-frame" style="text-align: center">
+              <h2 class="sbgn-text">Hybrid PD-AF</h2>
+              <img src="app/img/hybrid-pd-af-legend.svg" alt="" class="centered img-responsive sbgn-legend">
+              <p class="address-text" style="margin-top: 20px; margin-bottom: 10px">
                 <a href="https://sbgn.github.io/specifications" target="_blank" rel="nofollow">Specifications</a>
               </p>
             </div>
@@ -1598,10 +1883,9 @@
 
                   <tr>
                     <td>
-                      <p id="build-timestamp" class="sbgn-text"></p>
+                      <p id="build-timestamp" class="sbgn-text">Last Update: 13.06.2025 15:18:55 (Türkiye)</p>
                     </td>
                   </tr>
-
 
                   <tr>
                     <td>
@@ -1646,6 +1930,345 @@
         </div>
       </div>
     </div>
+
+
+  <script type="text/template" id="search-nodes-template">
+  <div id="search-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 760px; max-width: 95vw;">
+    <div class="modal-content" data-modal-id="<%= modalId %>">
+      <div class="modal-header" style="background:#5a6; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" style="color:white;opacity:.8;">&times;</button>
+        <h4 class="modal-title">Find by Label</h4>
+      </div>
+
+      <div class="modal-body">
+        <!-- Row: Class, Label, Match, Merge -->
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-sm-4">
+            <label>Class type</label>
+            <select class="form-control" id="sn-class" style="font-size:12px !important">
+              <option value="any" selected>Any</option>
+              <!-- dynamically filled with listClassTypes -->
+            </select>
+          </div>
+
+          <div class="col-sm-4">
+            <label>Label</label>
+            <input type="text" class="form-control" id="sn-label" placeholder="Any" style="font-size:12px !important">
+          </div>
+
+          <div class="col-sm-2">
+            <label>Match</label>
+            <select class="form-control" id="sn-mode" style="padding-right:0px;font-size:12px !important">
+              <option value="contains" selected>contains</option>
+              <option value="equals">equals</option>
+            </select>
+          </div>
+
+          <div class="col-sm-2" style="margin-top:30px;">
+            <div class="checkbox" style="margin:0;">
+              <label
+                for="sn-merge"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Checking this keeps the current map content and merges the results, as opposed to replacing it."
+              >
+                <input type="checkbox" id="sn-merge" checked style="font-size:12px !important">
+                Merge
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info" id="sn-hint" style="margin-bottom:0;">
+          <strong>Tips:</strong>
+          <ul style="padding-left:10px; margin-top:5px;font-size:12px">
+            <li>Set both Class and Label to <em>Any</em> to return the whole graph.</li>
+            <li>Label matching is case-insensitive.</li>
+            <li>
+              If <strong>Merge</strong> is unchecked, the current map
+              will be cleared and replaced by the result.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="text-align:center;">
+        <button class="btn btn-default" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="sn-run">Find</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
+
+
+ <script type="text/template" id="merge-nodes-template">
+  <div id="merge-modal-<%= modalId %>" class="modal-dialog sbgn-modal-dialog" style="width: 900px; max-width: 95vw;">
+    <div class="modal-content" data-modal-id="<%= modalId %>">
+      <div class="modal-header" style="background: #0099cc; color: white;">
+        <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 0.8;">&times;</button>
+        <h4 class="modal-title">Merge Nodes</h4>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Node Titles -->
+        <div class="row text-center" style="margin-bottom: 15px;">
+          <div class="col-xs-6"><h4 id="merge-node-header-left" class="merge-node-title"></h4></div>
+          <div class="col-xs-6"><h4 id="merge-node-header-right" class="merge-node-title"></h4></div>
+        </div>
+
+        <!-- === LABEL SECTION === -->
+        <div class="merge-section-card">
+          <div class="merge-section-title">Label</div>
+          <div class="row merge-row">
+            <div class="col-sm-6 inline-box">
+              <input type="radio" class="label-radio layout-text" name="label-choice-<%= modalId %>" value="0">
+              <input id="label-input-<%= modalId %>-0" type="text" class="form-control label-input" data-node="0" placeholder="Node 1 label" disabled> 
+            </div>
+            <div class="col-sm-6 inline-box">
+              <input type="radio" class="label-radio layout-text" name="label-choice-<%= modalId %>" value="1">
+              <input id="label-input-<%= modalId %>-1" type="text" class="form-control label-input" data-node="1" placeholder="Node 2 label" disabled>
+            </div>
+          </div>
+        </div>
+
+        <!-- === MULTIMER SECTION === -->
+        <div class="merge-section-card" id="multimer-section">
+          <div class="merge-section-title">Multimer</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="multimer-node-radio layout-text"
+                      name="multimer-node-<%= modalId %>" value="0"> Take from
+              </label>
+              <div style="margin-top:6px;">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-0" value="true" disabled> True
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-0" value="false" disabled> False
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" class="multimer-node-radio layout-text"
+                      name="multimer-node-<%= modalId %>" value="1"> Take from
+              </label>
+              <div style="margin-top:6px;">
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-1" value="true" disabled> True
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" class="multimer-value-radio"
+                        name="multimer-value-<%= modalId %>-1" value="false" disabled> False
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === STATE VARIABLES SECTION === -->
+        <div class="merge-section-card" id="state-vars-section">
+          <div class="merge-section-title">State Variables</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="state-vars-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="state-vars-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === UNITS SECTION === -->
+        <div class="merge-section-card" id="units-section">
+          <div class="merge-section-title">Units of Information</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="units-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="units-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === CHILDREN SECTION (for complexes) === -->
+        <div id="children-section-<%= modalId %>" class="merge-section-card">
+          <div class="merge-section-title">Members</div>
+          <div class="row merge-row">
+            <div class="col-sm-6">
+              <div id="children-<%= modalId %>-0" class="list-group"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="children-<%= modalId %>-1" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="text-align:center;">
+        <button class="btn btn-default" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="confirm-merge-<%= modalId %>">Merge</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+  <script type="text/template" id="database-properties-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Database Properties</h4>
+          </div>
+          <div class="modal-body">
+            <h5>Node Class Counts</h5>
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+              <thead>
+                <tr>
+                  <th>Node Class</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody id="database-node-count-table">
+                <!-- dynamically filled rows go here -->
+              </tbody>
+            </table>
+            <br />
+            <h5>Edge Class Counts</h5>
+            <table class="table table-bordered table-condensed layout-table dialog-table" style="margin: auto;">
+              <thead>
+                <tr>
+                  <th>Edge Class</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody id="database-edge-count-table">
+                <!-- dynamically filled rows go here -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+
+
+
+    <!-- Merge Nodes -->
+
+    <script type="text/template" id="merge-nodes-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 800px; max-width: 95vw;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Merge Nodes</h4>
+          </div>
+
+          <div class="modal-body">
+            <!-- Labels -->
+            <h5 style="margin-top:0;">Label</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="label-choice" value="0"> Use Node 1
+                </label>
+                <input type="text" class="form-control label-input" data-node="0" placeholder="Node 1 label" disabled>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="label-choice" value="1"> Use Node 2
+                </label>
+                <input type="text" class="form-control label-input" data-node="1" placeholder="Node 2 label" disabled>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Multimer -->
+            <h5>Multimer</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="multimer-node" value="0"> Take from
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-0" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-0" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="radio-inline">
+                  <input type="radio" name="multimer-node" value="1"> Take from
+                </label>
+                <div style="margin-top:6px;">
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-1" value="true" disabled> True
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="multimer-value-1" value="false" disabled> False
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- State Variables -->
+            <h5>State Variables</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="state-vars-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="state-vars-1" class="list-group"></div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Units of Information -->
+            <h5>Units of Information</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6>Node 1</h6>
+                <div id="units-0" class="list-group"></div>
+              </div>
+              <div class="col-sm-6">
+                <h6>Node 2</h6>
+                <div id="units-1" class="list-group"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="text-align:center;">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" id="confirm-merge">Merge</button>
+          </div>
+        </div>
+      </div>
+    </script>
+    
+    
 
     <div id="quick_help_modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 520px">
@@ -1809,6 +2432,55 @@
     <script type="text/template" id="loading-small-template">
       <p class="sbgn-text"> <%= name %> </p>
       <img class="centered" src="app/img/loading-small.gif" height="auto" width="auto" align="middle">
+    </script>
+
+    <script type="text/template" id="unit-definition-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 700px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Set Unit</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="row" style="margin-bottom: 6px;">
+                      <div class="col-sm-6" style="padding-top: 10px;">
+                        <span class="caption-style-text">Unit Components</span>
+                      </div>
+                      <div class="col-sm-6" style="text-align: right;">
+                        <button id="add-unit-component" class="btn btn-default">Add Component</button>
+                        <button id="remove-unit-component" class="btn btn-default">Delete Selected</button>
+                      </div>
+                    </div>
+                    <div id="unit-components-container" style="height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                      <table class="table table-bordered table-sm simulation-table" style="margin-bottom: 0;">
+                        <thead>
+                          <tr>
+                            <th style="width: 20%;">Multiplier</th>
+                            <th style="width: 20%;">Scale</th>
+                            <th style="width: 40%;">Kind</th>
+                            <th style="width: 20%;">Exponent</th>
+                          </tr>
+                        </thead>
+                        <tbody id="unit-components-body" class="simulation-table-body">
+                          <!-- rows added dynamically; each row contains inputs for a component -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-unit-definition" class="btn btn-default">OK</button>
+            <button id="cancel-unit-definition" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
     </script>
 
     <script type="text/template" id="layout-settings-template">
@@ -2011,7 +2683,7 @@
               <select id="map-type" class="sbgn-input-medium layout-text">
                   <option value="PD" selected>PD</option>
                   <option value="AF">AF</option>
-                  <option value="HybridSbgn">PD+AF</option>
+                  <option value="HybridPDAF">Hybrid PD-AF</option>
                   <option value="SIF">SIF</option>
                   <option value="SBML">SBML</option>
                   <option value="HybridAny">PD+AF+SIF+SBML</option>
@@ -2070,6 +2742,16 @@
       </tr>
 
       <tr>
+      <td class="header">  
+      <span class="add-on layout-text" title="Enables entity state synchronization">Enable Entity State Synchronization </span>
+      </td>
+
+      <td>
+      <input id="enable-entity-state-synchronization" type="checkbox" class="layout-text" <% if (enableEntityStateSynchronization){ %> checked<%}%>>
+      </td>
+      </tr>
+
+      <tr>
       <td class="header">
       <span class="add-on layout-text" title="For maps of type SIF, whether or not macromolecules should be grouped with respect to topology (i.e. if two macromolecules have the same connectivity, they are grouped together with a compound node for reducing edge count)"> Enable Topology Grouping of SIF Nodes </span>
       </td>
@@ -2077,6 +2759,16 @@
       <td>
       <input id="enable-sif-topology-grouping" type="checkbox" class="layout-text" <% if (enableSIFTopologyGrouping){ %> checked<%}%>>
       </td>
+      </tr>
+
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Remember directory to persist">Remember Directory to Persist</span>
+        </td>
+  
+        <td>
+        <input id="remember-directory-to-persist" type="checkbox" class="layout-text" <% if (rememberDirectoryToPersist){ %> checked<%}%>>
+        </td>
       </tr>
 
       <tr>
@@ -2090,6 +2782,36 @@
       </td>
       </tr>
 
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Defines how close a node must be to a boundary to snap to it automatically.">Boundary Snap Threshold</span>
+        </td>
+  
+        <td>
+        <input id="boundary-snap-threshold" type="number" class="layout-text" min="0" max="200" step="1" value= <%= boundarySnapThreshold %>>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Whether or not to calculate boundary padding for boundary nodes.">Recalculate Margins for Boundary Nodes</span>
+        </td>
+  
+        <td>
+        <input id="calculate-boundary-padding" type="checkbox" class="layout-text" <% if (calculateBoundaryPadding){ %> checked<%}%>>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="header">  
+        <span class="add-on layout-text" title="Whether or not to store user profile"> Store User Profile </span>
+        </td>
+  
+        <td>
+        <input id="store-user-profile" type="checkbox" class="layout-text" <% if (storeUserProfile){ %> checked<%}%>>
+        </td>
+      </tr>
+
       </tbody>
       </table>
 
@@ -2097,6 +2819,109 @@
         <button class='btn btn-default' id='map-general-default-button'>Default</button>
       <div>
     </script>
+
+
+
+
+    <script type="text/template" id="map-tab-local-db-template">
+      <table class="table-condensed layout-table dialog-table map-panel-table">
+      <tbody>
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="EPN matching threshold (%)"> EPNs </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="epn-match" type='range' class="sbgn-input-small" min='0' max='100' value= <%= epnMatchingPercentage %> >
+              <span id="epn-match-value" class="add on layout-text" title="EPN matching threshold (%)"><%= epnMatchingPercentage %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process substrates matching threshold (%)"> Process Substrates </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="process-incoming" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processIncomingContribution %> >
+              <span id="process-incoming-contribution" class="add on layout-text" title="Process substrates matching threshold (%)"><%= processIncomingContribution %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process products matching threshold (%)"> Process Products </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="process-outgoing" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processOutgoingContribution %> >
+              <span id="process-outgoing-contribution" class="add on layout-text" title="Process products matching threshold (%)"><%= processOutgoingContribution %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process effectors matching threshold (%)"> Process Effectors </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="process-agent" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= processAgentContribution %> >
+              <span id="process-agent-contribution" class="add on layout-text" title="Process effectors matching threshold (%)"><%= processAgentContribution %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Process overall matching threshold (%)"> Process Overall </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="process-overall" type='range' class="sbgn-input-small" step='5' min='0' max='100' value= <%= overallProcessPercentage %> >
+              <span id="process-match-value" class="add on layout-text" title="Process overall matching threshold (%)"><%= overallProcessPercentage %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+              <span class="add-on layout-text" title="Complex matching threshold (%)"> Complexes </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <input id="complex-match" type='range' class="sbgn-input-small" min='0' max='100' value= <%= complexMatchPercentage %> >
+              <span id="complex-match-value" class="add on layout-text" title="Complex matching threshold (%)"><%= complexMatchPercentage %></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="header">
+            <span class="add-on layout-text" title="Simple Chemical Cloning">Simple Chemical Cloning</span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input id="simple_chemical_allow" type="checkbox" class="layout-text" <% if (allowSimpleChemicalCloning){ %> checked<%}%>>
+              <span class="add-on layout-text" title="Simple Chemical Cloning Threshold">Threshold</span>
+              <input id="simple_chemical_cloning" type="number" class="sbgn-input-small" <% if (!allowSimpleChemicalCloning){ %> disabled<%}%> step="1" min="1" value="<%= simpleChemicalCloningThreshold %>" style="width: 60px;">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+      <div style='text-align: center; margin-top: 5px;'>
+        <button class='btn btn-default' style='align: center;' id='local-database-default-button'>Default</button>
+      </div>
+    </script>
+
+
+
+
+
+
 
     <script type="text/template" id="map-tab-label-template">
       <table class="table-condensed layout-table dialog-table map-panel-table">
@@ -2201,6 +3026,60 @@
       <div style='text-align: center; margin-top: 5px;'>
         <button class='btn btn-default' style='align: center;' id='map-rearrangement-default-button'>Default</button>
       <div>
+    </script>
+
+    <script type="text/template" id="map-tab-simulation-template">
+      <div style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
+        <button class="btn btn-default" id="map-simulation-properties-button">Properties</button>
+      </div>
+      <div class="panel-body palette-panel-body" style="border-top: 1px solid #ddd; margin-top: 4px;">
+        <table class="table-condensed layout-table dialog-table map-panel-table">
+          <tbody>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Starting time for the simulation"> Start Time (s) </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-start" class="inspector-input-box" type="number" style="width: 50px;" value="0">
+              </td>
+            </tr>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Stopping time for the simulation"> End Time (s) </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-end" class="inspector-input-box" type="number" style="width: 50px;" value="10">
+              </td>
+            </tr>
+            <tr>
+              <td class="header">
+                <span class="add-on layout-text" title="Step count for the simulation"> Step Count </span>
+              </td>
+              <td>
+                <input id="inspector-simulation-step" class="inspector-input-box integer-input" type="number" min="0" style="width: 50px;" value="50">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align: center; margin-top: 5px;">
+        <button class="btn btn-default" id="map-simulate-button">Simulate</button>
+        <button class="btn btn-default" id="map-simulation-default-button">Default</button>
+      </div>
+    </script>
+
+    <script type="text/template" id="simulation-view-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 800px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Simulation Results</h4>
+              </div>
+              <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
+                <div id="simulation-plot"></div>
+              </div>
+          </div> 
+      </div>
     </script>
 
     <script type="text/template" id="map-tab-experiment-template">
@@ -2357,6 +3236,68 @@
       </div>
     </script>
 
+    <!--Neighborhood query template for localDB-->
+    <script type="text/template" id="query-neighborhood-localdatabase-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Neighborhood Query</h4>
+               </div>
+              <div class="modal-body">
+          <table class="table-condensed layout-table">
+              <tbody>
+                  <tr>
+                      <th colspan=2 style="padding-left: 0px;" align="left">
+                          <!--&emsp; are added to fill the row so that the distance between the -->
+                          <span class="add-on layout-text"> Find the neighbors of an entity within a certain distance &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</span>
+                      </th>
+                  </tr>
+
+                  <tr>
+                      <td style="padding-left: 40px;">
+                          <span class="add-on layout-text"> Gene Symbols: </span><br>
+                          <textarea id="query-neighborhood-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                      </td>
+
+                      <td style="padding-right: 5px;">
+                           <table frame="box" style="border-color: rgb(204, 204, 204)">
+                              <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-neighborhood-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                          </tbody>
+                                      </table>
+
+                                      <table style="margin-top: 7px">
+                                        <tbody>
+                                          <tr>
+                                            <td class="caption-style-text" style="padding-left: 0;">Remove Disconnected Nodes:</td>
+                                            <td><input id="query-neighborhood-localdatabase-checkbox" type="checkbox" class="layout-text" checked></td>
+                                          </tr>
+                                          <tr>
+                                            <td class="caption-style-text" style="padding-left: 0;">Remove Redundant Processes:</td>
+                                            <td><input id="query-neighborhood-localdatabase-redundant-checkbox" type="checkbox" class="layout-text" checked></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                   </td>
+
+                                </tr>
+                              </tbody>
+                      </table>
+                  </div>
+                  <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-neighborhood-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-neighborhood-localdatabase" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+    <!--Neighborhood query template for localDB ends-->
+
     <script type="text/template" id="query-pathsbetween-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
           <div class="modal-content">
@@ -2418,6 +3359,52 @@
               <div class="modal-footer" style="text-align: center">
                   <button id="save-query-pathsbetween" class="btn btn-default" >OK</button>
                   <button id="cancel-query-pathsbetween" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="query-pathsbetween-localdatabase-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Paths Between Query</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=2 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Find all paths of specified length limit between any two entities of the specified set </span>
+                          </th>
+                      </tr>
+
+                      <tr>
+                          <td style="padding-left: 40px;">
+                              <span class="add-on layout-text"> Gene Symbols: </span><br>
+                              <textarea id="query-pathsbetween-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-right: 5px;">
+                              <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                  <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-pathsbetween-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </td>
+
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-pathsbetween-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-pathsbetween-localdatabase" class="btn btn-default">Cancel</button>
               </div>
           </div>
       </div>
@@ -2570,6 +3557,150 @@
       </div>
     </script>
 
+    <!--Common stream temptae for local db query-->
+    <script type="text/template" id="query-commonstream-localdatabase-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Common Stream Query</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=2 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
+                          </th>
+                      </tr>
+
+                      <tr>
+                          <td style="padding-left: 40px;">
+                              <span class="add-on layout-text"> Gene Symbols: </span><br>
+                              <textarea id="query-commonstream-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-right: 5px;">
+                              <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                  <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-commonstream-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </td>
+
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-commonstream-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-commonstream-localdatabase" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+    <!--Common stream temptae for local db query ends here-->
+
+    <!--Common stream upstream template for local db query-->
+    <script type="text/template" id="query-upstream-localdatabase-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Common UpStream Query</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=2 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
+                          </th>
+                      </tr>
+
+                      <tr>
+                          <td style="padding-left: 40px;">
+                              <span class="add-on layout-text"> Gene Symbols: </span><br>
+                              <textarea id="query-upstream-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-right: 5px;">
+                              <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                  <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-upstream-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </td>
+
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-upstream-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-upstream-localdatabase" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+    <!--Common stream upstream template for local db query ends here-->
+
+    <!--Common stream downstream template for local db query-->
+    <script type="text/template" id="query-downstream-localdatabase-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Common DownStream Query</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=2 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Find molecules within the specified distance that are affecting or affected by a specific set of molecules in common</span>
+                          </th>
+                      </tr>
+
+                      <tr>
+                          <td style="padding-left: 40px;">
+                              <span class="add-on layout-text"> Gene Symbols: </span><br>
+                              <textarea id="query-downstream-localdatabase-gene-symbols" rows="4" cols="86" style="width: 200px;"><%= geneSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-right: 5px;">
+                              <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                  <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-downstream-localdatabase-length-limit" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </td>
+
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-downstream-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-downstream-localdatabase" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+    <!--Common stream downstream template for local db query ends here-->
+
     <script type="text/template" id="query-pathsbyURI-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
           <div class="modal-content">
@@ -2610,6 +3741,115 @@
           </div>
       </div>
     </script>
+    <script type="text/template" id="query-pathsfromto-template-localdatabase">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Paths From To Query</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=3 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text"> Find all paths of specified length limit from a set of source entities to a set of target entities </span>
+                          </th>
+                      </tr>
+
+                      <tr>
+                          <td style="padding-left: 5px;">
+                              <span class="add-on layout-text"> Source Symbols: </span><br>
+                              <textarea id="query-pathsfromto-source-symbols-localdatabase" rows="4" cols="80" style="width: 150px;"><%= sourceSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-left: 5px;">
+                              <span class="add-on layout-text"> Target Symbols: </span><br>
+                              <textarea id="query-pathsfromto-target-symbols-localdatabase" rows="4" cols="80" style="width: 150px;"><%= targetSymbols %></textarea>
+                          </td>
+
+                          <td style="padding-right: 5px;">
+                              <table frame="box" style="border-color: rgb(204, 204, 204)">
+                                  <tbody>
+                                  <caption style="text-align: left;">Stop Distance</caption>
+                                  <tr>
+                                      <td colspan=2>Length limit</td>
+                                      <td style="padding: 10px;"><input id="query-pathsfromto-length-limit-localdatabase" type="text" min="1" class="sbgn-input-small layout-text integer-input" style="width: 90px;" value= <%= lengthLimit %> > </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </td>
+
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="save-query-pathsfromto-localdatabase" class="btn btn-default" >OK</button>
+                  <button id="cancel-query-pathsfromto-localdatabase" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+
+    <!-- Local Database push merge/replace box -->
+    <script type="text/template" id="push-active-tabs-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"> <%=title %></h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table-condensed layout-table">
+                      <tbody>
+                      <tr>
+                          <th colspan=2 style="padding-left: 0px;" align="left">
+                              <span class="add-on layout-text">Do you want to replace or merge with database contents?</span>
+                          </th>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer" style="text-align: center">
+                  <button id="replace-push-active-tabs" class="btn btn-default" >Replace</button>
+                  <button id="merge-push-active-tabs" class="btn btn-default" >Merge</button>
+                  <button id="cancel-push-active-tabs" class="btn btn-default">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </script>
+
+
+    <script type="text/template" id="load-entire-content-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 540px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><%= title %></h4>
+          </div>
+
+          <div class="modal-body">
+            <span class="add-on layout-text" style="font-weight: bold;">
+              All unsaved changes will be lost. If you want to continue, replace it or merge database contents into it?
+            </span>
+          </div>
+
+          <div class="modal-footer" style="text-align: center">
+            <button id="replace-load-entire-content" class="btn btn-default">Replace</button>
+            <button id="merge-load-entire-content" class="btn btn-default">Merge</button>
+            <button id="cancel-load-entire-content" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+
+
+
+
+
+
 
     <script type="text/template" id="query-mapbyWPID-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 500px;">
@@ -2668,6 +3908,507 @@
                   <button id="cancel-query-mapbyReactomeID" class="btn btn-default">Cancel</button>
               </div>
           </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="simulation-properties-view-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-lg" style="width: 1000px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Simulation Properties</h4>
+          </div>
+          <div class="modal-body">
+            <div class="simulation-tabs-container row">
+              
+              <!-- Vertical Tabs -->
+              <div class="col-sm-3 simulation-tab-list">
+                <ul class="nav nav-pills nav-stacked" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#functions" role="tab" data-toggle="tab">Functions</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#custom-units" role="tab" data-toggle="tab">Custom Units</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#events" role="tab" data-toggle="tab">Events</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#parameters" role="tab" data-toggle="tab">Parameters</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#initial-assignments" role="tab" data-toggle="tab">Initial Assignments</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#rules" role="tab" data-toggle="tab">Rules</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Tab Content -->
+              <div class="col-sm-9 simulation-tab-content">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="functions">
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 70%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="function-definitions-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-fd-btn" class="btn btn-default">Add Function</button>
+                      <button id="delete-fd-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="custom-units">
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 70%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Unit</th>
+                          </tr>
+                        </thead>
+                        <tbody id="custom-units-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-custom-unit-btn" class="btn btn-default">Add Custom Unit</button>
+                      <button id="delete-custom-unit-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="events">
+                    <div class="simulation-table-wrapper">
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 25%;">
+                          <col style="width: 17.5%;">
+                          <col style="width: 17.5%;">
+                          <col style="width: 17.5%;">
+                          <col style="width: 17.5%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Trigger Time Values</th>
+                            <th>Trigger</th>
+                            <th>Priority</th>
+                            <th>Delay</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="events-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-event-btn" class="btn btn-default">Add Event</button>
+                      <button id="delete-event-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="parameters">
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 28.75%;">
+                          <col style="width: 28.75%;">
+                          <col style="width: 22.5%;">
+                          <col style="width: 15%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Units</th>
+                            <th>Constant</th>
+                          </tr>
+                        </thead>
+                        <tbody id="parameters-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-parameter-btn" class="btn btn-default">Add Parameter</button>
+                      <button id="delete-parameter-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="initial-assignments">
+                    <div class="simulation-table-wrapper" >
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 70%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Target</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="initial-assignments-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-ia-btn" class="btn btn-default">Add Assignment</button>
+                      <button id="delete-ia-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="rules">
+                    <div class="simulation-table-wrapper">
+                      <table class="table table-bordered table-sm simulation-table">
+                        <colgroup>
+                          <col style="width: 5%;">
+                          <col style="width: 25%;">
+                          <col style="width: 45%;">
+                          <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Type</th>
+                            <th>Target</th>
+                            <th>Math</th>
+                          </tr>
+                        </thead>
+                        <tbody id="rules-table-body" class="simulation-table-body">
+                          <!-- rows are added dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3 simulation-bottom-buttons">
+                      <button id="add-rule-btn" class="btn btn-default">Add Rule</button>
+                      <button id="delete-rule-btn" class="btn btn-default">Delete Selected</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+        
+    <script type="text/template" id="sbml-kinetic-law-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Kinetic Law</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-condensed layout-table" style="width: 100%">
+        <tbody>
+
+        <td style="padding-left: 30px; padding-right: 30px;">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                <span class="caption-style-text">Species</span>
+                </td>
+              </tr>
+              <tr>
+                <td id="kinetic-law-nodes" style="padding-left: 0px; padding-top: 0px"></td>
+              </tr>
+              <tr>
+                <td>
+                <span class="caption-style-text">Enter Kinetic Law</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 0px; padding-top: 0px">
+                  <textarea id="kinetic-law-field" type="text" style="width: 100%;"></textarea>
+                <td>
+              </tr>
+            <tbody>
+          </table>
+        </td>
+
+        </tr>
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button id="save-kinetic-law" class="btn btn-default" >OK</button>
+        <button id="cancel-kinetic-law" class="btn btn-default">Cancel</button>
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="function-definition-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 510px;" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Function Definition</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><span class="caption-style-text">Function Arguments (comma-separated)</span></td>
+                </tr>
+                <tr>
+                  <td><textarea id="function-args-field" type="text"  style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                  <td><span class="caption-style-text">Function Body</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="function-body-field" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-function-definition" class="btn btn-default">OK</button>
+            <button id="cancel-function-definition" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="initial-assignment-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 510px;" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Initial Assignment</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><span class="caption-style-text">Initial Assignment Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="initial-assignment-math-field" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-initial-assignment" class="btn btn-default">OK</button>
+            <button id="cancel-initial-assignment" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="rule-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 560px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Rule</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="caption-style-text">Expression</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="rule-math-field" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-rule" class="btn btn-default">OK</button>
+            <button id="cancel-rule" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="event-trigger-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 560px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Event Trigger</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td class="caption-style-text" style="padding-left: 0;">Initial Value:</td>
+                          <td style="padding-left: 6px;"><input id="event-trigger-initial-value" type="checkbox" class="layout-text"></td>
+                          <td class="caption-style-text" style="padding-left: 12px;">Persistent:</td>
+                          <td style="padding-left: 6px;"><input id="event-trigger-persistent" type="checkbox" class="layout-text"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="caption-style-text">Trigger Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="event-trigger-math" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-event-trigger" class="btn btn-default">OK</button>
+            <button id="cancel-event-trigger" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="event-priority-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 560px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Event Priority</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><span class="caption-style-text">Priority Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="event-priority-math" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-event-priority" class="btn btn-default">OK</button>
+            <button id="cancel-event-priority" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="event-delay-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 560px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Event Delay</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><span class="caption-style-text">Delay Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="event-delay-math" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-event-delay" class="btn btn-default">OK</button>
+            <button id="cancel-event-delay" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="event-assignments-modal-template">
+      <div class="modal-dialog sbgn-modal-dialog modal-dialog-centered" style="width: 650px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Event Actions</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table-condensed layout-table" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="row" style="margin-bottom: 6px;">
+                      <div class="col-sm-6" style="padding-top: 10px;">
+                        <span class="caption-style-text">Targets</span>
+                      </div>
+                      <div class="col-sm-6" style="text-align: right;">
+                        <button id="add-event-assignment" class="btn btn-default">Add Target</button>
+                        <button id="remove-event-assignment" class="btn btn-default">Delete Selected</button>
+                      </div>
+                    </div>
+                    <div id="event-assignment-targets-container" style="height: 144px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                      <table class="table table-condensed" style="margin-bottom: 0;">
+                        <tbody id="event-assignment-targets-body" class="simulation-table-body">
+                          <!-- target rows added dynamically; each row contains a single input -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="caption-style-text">Action Math</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <textarea id="event-assignment-math" type="text" style="width: 100%; height: 120px;"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer" style="text-align: center;">
+            <button id="save-event-assignments" class="btn btn-default">OK</button>
+            <button id="cancel-event-assignments" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
       </div>
     </script>
 
@@ -2978,6 +4719,37 @@
       </div>
     </script>
 
+    <!-- SIF Topology Grouping Warning-->
+    <script type="text/template" id="prompt-sifTopologyGrouping-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 700px;">
+      <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Warning</h4>
+      </div>
+      <div class="modal-body">
+      <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+      <tbody>
+      <tr>
+      <th style="padding-left: 0px;" align="left">
+      <span class="add-on layout-text">You are not allowed to change the topology of a SIF map while Enable Topology Grouping of SIF Nodes is true!</span>
+      </th>
+      </tr>
+
+      <tr id="prompt-sifTopologyGrouping-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+      <td>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+      <button id="prompt-sifTopologyGrouping-confirm" class="btn btn-default">Dismiss</button>
+      </div>
+      </div>
+      </div>
+    </script>
+
     <!-- Internal server error -->
     <script type="text/template" id="prompt-internal-server-template">
       <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
@@ -3015,14 +4787,14 @@
       <div class="modal-content">
       <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Error</h4>
+      <h4 class="modal-title"><%=title%></h4>
       </div>
       <div class="modal-body">
       <table class="table-condensed layout-table dialog-table" style="margin: auto;">
       <tbody>
       <tr>
       <th style="padding-left: 0px;" align="left">
-      <span class="add-on layout-text">Invalid query!</span>
+      <span class="add-on layout-text"><%=message%></span>
       </th>
       </tr>
 
@@ -3133,6 +4905,67 @@
       </div>
     </script>
 
+    <!-- Push Active Tab error result -->
+    <script type="text/template" id="active-tab-push-error-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 300px;">
+      <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Error</h4>
+      </div>
+      <div class="modal-body">
+      <table class="table-condensed layout-table dialog-table" style="margin: auto;">
+      <tbody>
+      <tr>
+      <th style="padding-left: 0px;" align="left">
+      <span class="add-on layout-text"><%= message %></span>
+      </th>
+      </tr>
+
+      <tr id="active-tab-push-error-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+      <td>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+      <button id="active-tab-push-error-confirm" class="btn btn-default">OK</button>
+      </div>
+      </div>
+      </div>
+    </script>
+   
+    <!-- Merge Nodes error result -->
+    <script type="text/template" id="merge-nodes-error-template">
+      <div class="modal-dialog sbgn-modal-dialog" style="width: 510px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Error</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table-condensed layout-table dialog-table">
+            <tbody>
+              <tr>
+                <th colspan=2 style="padding-left: 0px;" align="left">
+                  <span class="add-on layout-text"><%= message %></span>
+                </th>
+              </tr>
+
+              <tr id="merge-nodes-error-buttons" style="padding-bottom: 0px; margin-bottom: 0px;">
+                <td>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer" style="text-align: center">
+          <button id="merge-nodes-error-confirm" class="btn btn-default">OK</button>
+        </div>
+      </div>
+      </div>
+    </script>
 
     <!-- Empty query result -->
     <script type="text/template" id="prompt-emptyQueryResult-template">
@@ -4622,7 +6455,7 @@
               <% for(var scheme_id in schemes) { %>
                   <% if(schemes[scheme_id].isDisplayed) {%>
                       <div style="display:block; width:70%; margin:0 auto;">
-                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px " title="<%= schemes[scheme_id].name %>">
                               <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                   <%= schemes[scheme_id].previewHtml %>
                               </div>
@@ -4642,7 +6475,7 @@
               <% for(var scheme_id in schemes_gradient) { %>
                   <% if(schemes_gradient[scheme_id].isDisplayed) {%>
                       <div style="display:block; width:70%; margin:0 auto;">
-                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px " title="<%= schemes_gradient[scheme_id].name %>">
                               <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                   <%= schemes_gradient[scheme_id].previewHtml %>
                               </div>
@@ -4662,7 +6495,7 @@
               <% for(var scheme_id in schemes_3D) { %>
                   <% if(schemes_3D[scheme_id].isDisplayed) {%>
                       <div style="display:block; width:70%; margin:0 auto;">
-                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px ">
+                          <div id='map-color-scheme_<%= scheme_id%>' class="color-scheme-choice pointer-button" style="width:85%; float:left; padding: 5px " title="<%= schemes_3D[scheme_id].name %>">
                               <div id='map-color-scheme_preview_<%= scheme_id%>' style='width:100%; height:25px; float:left; border:<% if (current_scheme == scheme_id) print("3px"); else print("1px")%> solid black; display:block;'>
                                   <%= schemes_3D[scheme_id].previewHtml %>
                               </div>
@@ -4714,6 +6547,5 @@
       </div>
     </script>
   
-
 
 </body></html>

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://pathvisio.org/GPML/2013a" Name="Unknown" >
+  <Comment>[-:-]	Given input is not a valid SBGN-ML file.
+[ReducedPhysicalStimulationReaction:_85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb]	Unknown extension: curveStyle</Comment>
+  <Graphics BoardWidth="1503.9706192016602" BoardHeight="553.08740234375"/>
+  <DataNode TextLabel="ACh" GraphId="_06e41c55-1352-407e-9c4b-604d3f5f616b" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="548.9835205078125" CenterY="244.607421875" Width="30.0" Height="30.0" ZOrder="24" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="actin" GraphId="_0fbd0d13-c59b-48ab-240d-c262dd1bc480" Type="Protein" GroupRef="_85682413-94f7-8b3c-e052-59a72cd48e12">
+    <Comment></Comment>
+    <Graphics CenterX="1314.63330078125" CenterY="348.76708984375" Width="60.0" Height="30.0" ZOrder="9" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="choline" GraphId="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="225.5745391845703" CenterY="347.5133361816406" Width="30.0" Height="30.0" ZOrder="25" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="myosin" GraphId="_1ce3ffae-f9a7-09a1-c91f-bf176708c1d2" Type="Protein" GroupRef="_85682413-94f7-8b3c-e052-59a72cd48e12">
+    <Comment></Comment>
+    <Graphics CenterX="1314.63330078125" CenterY="305.51708984375" Width="60.0" Height="30.0" ZOrder="10" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="1269.2679443359375" CenterY="102.3162841796875" Width="30.0" Height="30.0" ZOrder="26" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="myosin" GraphId="_26a815b4-64c3-4797-9bfd-7dceafb3345d" Type="Protein" GroupRef="_1129b8c7-71da-4a6c-8681-3082e6f04a6c">
+    <Comment></Comment>
+    <Graphics CenterX="1130.8641357421875" CenterY="136.94503021240234" Width="60.0" Height="30.0" ZOrder="11" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="myosin" GraphId="_343e0d0d-eeac-5cf5-acec-bc15975650a3" Type="Protein" GroupRef="_04ea25d8-dfaa-7912-303f-be00b342fc27">
+    <Comment></Comment>
+    <Graphics CenterX="1105.4814453125" CenterY="324.3229675292969" Width="60.0" Height="30.0" ZOrder="12" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="nAChR" GraphId="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="876.1622924804688" CenterY="240.61325073242188" Width="60.0" Height="30.0" ZOrder="13" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="_5fcbfc9c-92a0-45b2-834b-ad8866d4008b" Type="Metabolite" GroupRef="_1129b8c7-71da-4a6c-8681-3082e6f04a6c">
+    <Comment></Comment>
+    <Graphics CenterX="1115.8641357421875" CenterY="180.19503784179688" Width="30.0" Height="30.0" ZOrder="27" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="Pi" GraphId="_6259ebd3-e879-4c70-b442-a602e5408989" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="1218.4940185546875" CenterY="450.7711181640625" Width="30.0" Height="30.0" ZOrder="28" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="CHT1" GraphId="_66737d5c-5193-43a2-baa6-094aa1c21654" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="310.630859375" CenterY="420.4772644042969" Width="60.0" Height="30.0" ZOrder="14" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="acetate" GraphId="_8ba53135-01b4-4a4b-b87d-a5971850cb39" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="521.9030456542969" CenterY="365.3892517089844" Width="30.0" Height="30.0" ZOrder="29" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="Ca2+" GraphId="_8c083cee-7025-4035-9201-1319da22340b" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="945.4303588867188" CenterY="166.67300415039062" Width="30.0" Height="30.0" ZOrder="30" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="actin" GraphId="_96e17352-dd50-0332-a224-954cd97fc3c2" Type="Protein" GroupRef="_04ea25d8-dfaa-7912-303f-be00b342fc27">
+    <Comment></Comment>
+    <Graphics CenterX="1105.4814453125" CenterY="367.5729675292969" Width="60.0" Height="30.0" ZOrder="15" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="vAChT" GraphId="_9886817c-7043-4de9-9895-0cd247f47190" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="194.38226318359375" CenterY="165.7393798828125" Width="60.0" Height="30.0" ZOrder="16" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="actin" GraphId="_9b7f467a-30eb-4b8e-a966-43692648a46e" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="1167.2320556640625" CenterY="254.10617065429688" Width="60.0" Height="30.0" ZOrder="17" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ACh" GraphId="a083be43-422d-9067-c688-661cec17e472" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="313.260009765625" CenterY="195.69638061523438" Width="30.0" Height="30.0" ZOrder="31" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="myosin" GraphId="a0a8dd07-644b-4646-a305-ef249fa67752" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="1281.5645751953125" CenterY="192.429443359375" Width="60.0" Height="30.0" ZOrder="18" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="a3f830ac-34e3-466a-62ac-642bc3e51777" Type="Metabolite" GroupRef="_04ea25d8-dfaa-7912-303f-be00b342fc27">
+    <Comment></Comment>
+    <Graphics CenterX="1163.7314453125" CenterY="324.3229675292969" Width="30.0" Height="30.0" ZOrder="32" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="Ca2+" GraphId="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="1023.3489990234375" CenterY="240.94546508789062" Width="30.0" Height="30.0" ZOrder="33" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="AChE" GraphId="b88b6460-4172-427f-abbe-d7c0f0a174ce" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="594.6239013671875" CenterY="312.71197509765625" Width="60.0" Height="30.0" ZOrder="19" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="SNARE" GraphId="be08c23c-dca4-43cd-b8a6-06f6ebdaf710" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="319.2381591796875" CenterY="296.1127014160156" Width="60.0" Height="30.0" ZOrder="20" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ChAT" GraphId="ce103257-dbf5-430f-9e6c-1745990341de" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="94.42057037353516" CenterY="288.9787902832031" Width="60.0" Height="30.0" ZOrder="21" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ACh" GraphId="d2531344-d005-4b92-afd2-14dcb7d40965" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="202.836181640625" CenterY="256.2698516845703" Width="30.0" Height="30.0" ZOrder="34" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="muscle&#10;contraction" GraphId="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" Type="Pathway">
+    <Comment></Comment>
+    <Graphics CenterX="1409.5499267578125" CenterY="386.0093994140625" Width="60.0" Height="30.0" ZOrder="22" FontSize="12" Valign="Middle" Color="000000" ShapeType="Hexagon" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="acetyl&#10;CoA" GraphId="ed79ab12-7b79-4a8a-80b3-c65181c076e4" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="136.54785919189453" CenterY="370.4961242675781" Width="30.0" Height="30.0" ZOrder="35" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="nAChR" GraphId="f3ac8950-6d69-4c5b-92dd-3020906ea2c8" Type="Protein">
+    <Comment></Comment>
+    <Graphics CenterX="754.89794921875" CenterY="296.98297119140625" Width="60.0" Height="30.0" ZOrder="23" FontSize="12" Valign="Middle" Color="000000" ShapeType="Rectangle" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="fb04887c-b0a0-4a2d-8cdd-a70826c659ee" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="1290.952392578125" CenterY="429.9017639160156" Width="30.0" Height="30.0" ZOrder="36" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <DataNode TextLabel="choline" GraphId="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" Type="Metabolite">
+    <Comment></Comment>
+    <Graphics CenterX="452.8648986816406" CenterY="308.98382568359375" Width="30.0" Height="30.0" ZOrder="37" FontSize="12" Valign="Middle" Color="000000" ShapeType="Oval" FillColor="ffffff"/>
+<Xref ID="" Database=""/>
+  </DataNode>
+  <Interaction GraphId="_3797d8d2-4f00-4d1f-9d85-ecad1e61746d">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="42" Color="000000" LineThickness="1.0">
+      <Point X="214.59524536132812" Y="245.98077392578125" GraphRef="d2531344-d005-4b92-afd2-14dcb7d40965"/>
+      <Point X="245.84327697753906" Y="209.3422393798828"/>
+      <Point X="295.0289306640625" Y="200.07693481445312" GraphRef="a083be43-422d-9067-c688-661cec17e472" ArrowHead="Arrow"/>
+      <Anchor Position="0.6206534936490167" Shape="None" GraphId="id10001"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10002">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="42" Color="000000" LineThickness="1.0">
+      <Point X="216.63067626953125" Y="181.3643798828125" GraphRef="_9886817c-7043-4de9-9895-0cd247f47190"/>
+      <Point X="245.84327697753906" Y="209.3422393798828" GraphRef="id10001" ArrowHead="mim-modification"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_96b935d7-083c-468d-8607-d3b70fff10a7">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="46" Color="000000" LineThickness="1.0">
+      <Point X="437.9981384277344" Y="313.79217529296875" GraphRef="fb8eb6bc-a39a-4361-b938-026a3b63a9b9"/>
+      <Point X="297.36273193359375" Y="362.714111328125"/>
+      <Point X="243.77099609375" Y="352.0356750488281" GraphRef="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9" ArrowHead="Arrow"/>
+      <Anchor Position="0.8138450306575445" Shape="None" GraphId="id10003"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10004">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="46" Color="000000" LineThickness="1.0">
+      <Point X="304.167724609375" Y="404.8522644042969" GraphRef="_66737d5c-5193-43a2-baa6-094aa1c21654"/>
+      <Point X="297.36273193359375" Y="362.714111328125" GraphRef="id10003" ArrowHead="mim-modification"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_97c2c87b-c5d2-41fb-97f6-a1001075cf08">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="47" Color="000000" LineThickness="1.0">
+      <Point X="1277.6839599609375" Y="285.33258056640625" GraphRef="_85682413-94f7-8b3c-e052-59a72cd48e12"/>
+      <Point X="1242.6834716796875" Y="256.353271484375"/>
+      <Point X="1242.6834716796875" Y="235.10328674316406"/>
+      <Point X="1200.9630126953125" Y="250.3607940673828" GraphRef="_9b7f467a-30eb-4b8e-a966-43692648a46e" ArrowHead="Arrow"/>
+      <Anchor Position="0.557930147829952" Shape="None" GraphId="id10005"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10006">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="47" Color="000000" LineThickness="1.0">
+      <Point X="1242.6834716796875" Y="235.10328674316406" GraphRef="id10005"/>
+      <Point X="1268.3245849609375" Y="210.57908630371094" GraphRef="a0a8dd07-644b-4646-a305-ef249fa67752" ArrowHead="Arrow"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="d756f4ab-9813-4d55-aa86-c37dc7f3b286">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="48" Color="000000" LineThickness="1.0">
+      <Point X="948.7745361328125" Y="181.93594360351562" GraphRef="_8c083cee-7025-4035-9201-1319da22340b"/>
+      <Point X="947.1401977539062" Y="222.97010803222656"/>
+      <Point X="1005.265869140625" Y="235.9892120361328" GraphRef="ac2f1b2b-2e6e-4647-84bd-c141925f4d85" ArrowHead="Arrow"/>
+      <Anchor Position="0.5409161342275876" Shape="None" GraphId="id10007"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10008">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="48" Color="000000" LineThickness="1.0">
+      <Point X="906.7872924804688" Y="233.99191284179688" GraphRef="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0"/>
+      <Point X="947.1215209960938" Y="225.2713623046875" GraphRef="id10007" ArrowHead="mim-modification"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_00ac7e0a-288f-42e0-b252-9bcb59027572">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="38" Color="000000" LineThickness="1.0">
+      <Point X="1257.884521484375" Y="113.01951599121094" GraphRef="_20e434c6-e738-4ae5-8a8a-e49f53fe85fb"/>
+      <Point X="1228.4168701171875" Y="150.71669006347656"/>
+      <Point X="1217.791748046875" Y="150.71669006347656"/>
+      <Point X="1176.2264404296875" Y="154.4718475341797" GraphRef="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" ArrowHead="Arrow"/>
+      <Anchor Position="0.533775381432346" Shape="None" GraphId="id10009"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10010">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="38" Color="000000" LineThickness="1.0">
+      <Point X="1257.822265625" Y="176.8999786376953" GraphRef="a0a8dd07-644b-4646-a305-ef249fa67752"/>
+      <Point X="1228.4168701171875" Y="150.71669006347656" GraphRef="id10009"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_85682413-94f7-8b3c-e052-59a72cd48e12-e889d01c-1eb1-4c83-8bd9-0160e9c2abcb">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="45" Color="000000" LineThickness="1.0">
+      <Point X="1356.88330078125" Y="353.3455505371094" GraphRef="_85682413-94f7-8b3c-e052-59a72cd48e12"/>
+      <Point X="1387.846435546875" Y="372.5488586425781" GraphRef="e889d01c-1eb1-4c83-8bd9-0160e9c2abcb" ArrowHead="mim-necessary-stimulation"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_264a7088-e810-4679-9c92-f06886510f98">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="40" Color="000000" LineThickness="1.0">
+      <Point X="769.5258178710938" Y="277.89923095703125" GraphRef="f3ac8950-6d69-4c5b-92dd-3020906ea2c8"/>
+      <Point X="785.0139770507812" Y="243.8316192626953"/>
+      <Point X="842.414794921875" Y="241.9620819091797" GraphRef="_4b4a1add-6cf6-47cb-b952-5ea0ceade9a0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4917121583663467" Shape="None" GraphId="id10011"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10012">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="40" Color="000000" LineThickness="1.0">
+      <Point X="564.6084594726562" Y="244.5582733154297" GraphRef="_06e41c55-1352-407e-9c4b-604d3f5f616b"/>
+      <Point X="781.8890380859375" Y="243.87486267089844" GraphRef="id10011" ArrowHead="mim-modification"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="d9e08f4b-94b8-4285-af36-f4159b56a2fc">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="49" Color="000000" LineThickness="1.0">
+      <Point X="328.7420654296875" Y="197.8050994873047" GraphRef="a083be43-422d-9067-c688-661cec17e472"/>
+      <Point X="478.3420715332031" Y="219.62840270996094"/>
+      <Point X="531.6729736328125" Y="237.40272521972656" GraphRef="_06e41c55-1352-407e-9c4b-604d3f5f616b" ArrowHead="Arrow"/>
+      <Anchor Position="0.8047699389712204" Shape="None" GraphId="id10013"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10014">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="49" Color="000000" LineThickness="1.0">
+      <Point X="347.82501220703125" Y="283.230712890625" GraphRef="be08c23c-dca4-43cd-b8a6-06f6ebdaf710"/>
+      <Point X="478.3420715332031" Y="219.62840270996094" GraphRef="id10013" ArrowHead="mim-modification"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_6865aebe-2564-4ff6-a15a-6bd07a3a0ef8">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="44" Color="000000" LineThickness="1.0">
+      <Point X="541.521240234375" Y="258.3353271484375" GraphRef="_06e41c55-1352-407e-9c4b-604d3f5f616b"/>
+      <Point X="527.6964111328125" Y="303.31451416015625"/>
+      <Point X="506.4463806152344" Y="303.31451416015625"/>
+      <Point X="471.5422058105469" Y="307.33465576171875" GraphRef="fb8eb6bc-a39a-4361-b938-026a3b63a9b9" ArrowHead="Arrow"/>
+      <Anchor Position="0.6214553734195796" Shape="None" GraphId="id10015"/>
+      <Anchor Position="0.5201346711067408" Shape="None" GraphId="id10017"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10016">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="44" Color="000000" LineThickness="1.0">
+      <Point X="506.4463806152344" Y="303.31451416015625" GraphRef="id10015"/>
+      <Point X="520.447998046875" Y="346.69580078125" GraphRef="_8ba53135-01b4-4a4b-b87d-a5971850cb39" ArrowHead="Arrow"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10018">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="44" Color="000000" LineThickness="1.0">
+      <Point X="563.9989013671875" Y="309.0009765625" GraphRef="b88b6460-4172-427f-abbe-d7c0f0a174ce"/>
+      <Point X="527.7630004882812" Y="304.6100769042969" GraphRef="id10017" ArrowHead="mim-catalysis"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_3a96c155-e828-4038-8384-4c25f4f1aaf6">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="43" Color="000000" LineThickness="1.0">
+      <Point X="1109.160888671875" Y="207.44503784179688" GraphRef="_1129b8c7-71da-4a6c-8681-3082e6f04a6c"/>
+      <Point X="1089.6883544921875" Y="240.67135620117188"/>
+      <Point X="1089.6883544921875" Y="251.2963409423828"/>
+      <Point X="1106.6361083984375" Y="294.16680908203125" GraphRef="_04ea25d8-dfaa-7912-303f-be00b342fc27" ArrowHead="Arrow"/>
+      <Anchor Position="0.45009038613935004" Shape="None" GraphId="id10019"/>
+      <Anchor Position="0.5454311708971382" Shape="None" GraphId="id10021"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10020">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="43" Color="000000" LineThickness="1.0">
+      <Point X="1136.6070556640625" Y="252.99647521972656" GraphRef="_9b7f467a-30eb-4b8e-a966-43692648a46e"/>
+      <Point X="1089.6883544921875" Y="240.67135620117188" GraphRef="id10019"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10022">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="43" Color="000000" LineThickness="1.0">
+      <Point X="1038.7872314453125" Y="243.35427856445312" GraphRef="ac2f1b2b-2e6e-4647-84bd-c141925f4d85"/>
+      <Point X="1090.0" Y="250.0" GraphRef="id10021" ArrowHead="mim-necessary-stimulation"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_2bdf0056-96f6-4184-a214-8c7cc7da6214">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="41" Color="000000" LineThickness="1.0">
+      <Point X="144.26817321777344" Y="356.91168212890625" GraphRef="ed79ab12-7b79-4a8a-80b3-c65181c076e4"/>
+      <Point X="168.9796905517578" Y="324.0550231933594"/>
+      <Point X="168.9796905517578" Y="313.4300231933594"/>
+      <Point X="193.28077697753906" Y="272.4023132324219" GraphRef="d2531344-d005-4b92-afd2-14dcb7d40965" ArrowHead="Arrow"/>
+      <Anchor Position="0.4534846804132912" Shape="None" GraphId="id10023"/>
+      <Anchor Position="0.5706826406966593" Shape="None" GraphId="id10025"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10024">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="41" Color="000000" LineThickness="1.0">
+      <Point X="212.18942260742188" Y="339.4523620605469" GraphRef="_135e2807-2b5c-4886-bbdf-d3c8bf433ab9"/>
+      <Point X="168.9796905517578" Y="324.0550231933594" GraphRef="id10023"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10026">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="41" Color="000000" LineThickness="1.0">
+      <Point X="124.67613983154297" Y="298.90093994140625" GraphRef="ce103257-dbf5-430f-9e6c-1745990341de"/>
+      <Point X="168.9796905517578" Y="313.4300231933594" GraphRef="id10025" ArrowHead="mim-catalysis"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="_1e9c2dbf-2a4d-48c9-9d47-de9c0314f5b8">
+  <Comment></Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="39" Color="000000" LineThickness="1.0">
+      <Point X="1190.9814453125" Y="372.2041015625" GraphRef="_04ea25d8-dfaa-7912-303f-be00b342fc27"/>
+      <Point X="1224.4769287109375" Y="390.34002685546875"/>
+      <Point X="1245.7269287109375" Y="390.34002685546875"/>
+      <Point X="1275.6519775390625" Y="419.0637512207031" GraphRef="fb04887c-b0a0-4a2d-8cdd-a70826c659ee" ArrowHead="Arrow"/>
+      <Anchor Position="0.5401104175222291" Shape="None" GraphId="id10027"/>
+      <Anchor Position="0.5401104175222291" Shape="None" GraphId="id10029"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10028">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="39" Color="000000" LineThickness="1.0">
+      <Point X="1245.7269287109375" Y="390.34002685546875" GraphRef="id10027"/>
+      <Point X="1223.4627685546875" Y="432.69146728515625" GraphRef="_6259ebd3-e879-4c70-b442-a602e5408989" ArrowHead="Arrow"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Interaction GraphId="id10030">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ConnectorType="Segmented" ZOrder="39" Color="000000" LineThickness="1.0">
+      <Point X="1245.7269287109375" Y="390.34002685546875" GraphRef="id10029"/>
+      <Point X="1269.936767578125" Y="362.6593322753906" GraphRef="_85682413-94f7-8b3c-e052-59a72cd48e12" ArrowHead="Arrow"/>
+    </Graphics>
+<Xref ID="" Database=""/>
+  </Interaction>
+  <Shape TextLabel="muscle cytosol" GraphId="_23d436e2-6633-42f2-98d0-00dbb962ac3d">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="1082.2239685058594" CenterY="276.543701171875" Width="745.9020385742188" Height="409.704833984375" ZOrder="1" FontSize="12" Valign="Bottom" ShapeType="Rectangle" LineThickness="3.0" Color="000000" FillColor="8080ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="synaptic button" GraphId="_82f19e9e-6aa2-42b3-8b5e-8cee17197085">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="206.82935333251953" CenterY="293.1083068847656" Width="316.06756591796875" Height="315.98785400390625" ZOrder="2" FontSize="12" Valign="Bottom" ShapeType="Rectangle" LineThickness="3.0" Color="000000" FillColor="8080ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="synaptic vesicle" GraphId="_9007194d-c2e6-4939-a795-be71ae35a60d">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="313.260009765625" CenterY="195.69638061523438" Width="61.25" Height="61.25" ZOrder="7" FontSize="12" Valign="Bottom" ShapeType="Rectangle" LineThickness="3.0" Color="000000" FillColor="8080ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="synaptic cleft" GraphId="e95a1256-8a47-4aaf-b3d8-7d8387d5a31d">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="531.2444076538086" CenterY="295.0088348388672" Width="218.00901794433594" Height="202.0108642578125" ZOrder="3" FontSize="12" Valign="Bottom" ShapeType="Rectangle" LineThickness="3.0" Color="000000" FillColor="8080ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="ER" GraphId="nwtN_d1535aaf-5d91-4108-9331-852d6acb876e">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="945.4303588867188" CenterY="166.67300415039062" Width="61.25" Height="61.25" ZOrder="8" FontSize="12" Valign="Bottom" ShapeType="Rectangle" LineThickness="3.0" Color="000000" FillColor="8080ff" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="_04ea25d8-dfaa-7912-303f-be00b342fc27" GraphId="_04ea25d8-dfaa-7912-303f-be00b342fc27" TextLabel="relaxed" Style="Complex"/>
+  <Group GroupId="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" GraphId="_1129b8c7-71da-4a6c-8681-3082e6f04a6c" TextLabel="myosin" Style="Complex"/>
+  <Group GroupId="_85682413-94f7-8b3c-e052-59a72cd48e12" GraphId="_85682413-94f7-8b3c-e052-59a72cd48e12" TextLabel="tense" Style="Complex"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax>
+</Biopax>
+</Pathway>

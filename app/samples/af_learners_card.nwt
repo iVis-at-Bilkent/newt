@@ -347,11 +347,11 @@
       <bbox x="-420" y="255" w="150" h="40"/>
     </glyph>
     <glyph id="98ffb654-d3fe-7f0c-a530-2f17191244c5" class="biological activity">
-      <label text="AND operator"/>
+      <label text="OR operator"/>
       <bbox x="322.385909259451" y="855" w="145.22818148109798" h="40"/>
     </glyph>
     <glyph id="dff5a328-6225-47b7-d0cd-5beb98b3c1b1" class="biological activity">
-      <label text="AND operator"/>
+      <label text="Delay operator"/>
       <bbox x="322.385909259451" y="955" w="145.22818148109798" h="40"/>
     </glyph>
     <glyph id="9e837abd-c4bb-fa2b-3baf-96d565cd8002" class="biological activity">
@@ -415,7 +415,7 @@
       <bbox x="-177.614090740549" y="855" w="145.22818148109798" h="40"/>
     </glyph>
     <glyph id="ccc599ec-72c8-15a4-ea1a-73095a95cd00" class="biological activity">
-      <label text="AND operator"/>
+      <label text="NOT operator"/>
       <bbox x="-177.614090740549" y="955" w="145.22818148109798" h="40"/>
     </glyph>
     <arc id="nwtE_33a7a8f1-aab1-493f-b9ab-e9dd0fb656ec" class="positive influence" source="nwtN_204de1ba-f7be-44ba-96d4-0dde8330c26f.2" target="829c5d58-0c3d-1514-932b-fb956c9d863e">

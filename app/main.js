@@ -11,6 +11,7 @@ require('bootstrap');
 
 var appUtilities = require('./js/app-utilities');
 var appMenu = require('./js/app-menu');
+var annotationLayers = require('./js/annotation-layers');
 
 // Get cy extension instances
 var cyPanzoom = require('cytoscape-panzoom');
@@ -68,6 +69,13 @@ $(document).ready(function () {
   // create a new network and access the related chise.js instance
   appUtilities.createNewNetwork();
 
+  // Initialize annotation layers system
+  annotationLayers.init();
+  
+  window.annotationLayers = annotationLayers;
+
+  window.networkIdToAnnotationLayersData = {};
+  
   // launch with model file if exists
   appUtilities.launchWithModelFile();
 });

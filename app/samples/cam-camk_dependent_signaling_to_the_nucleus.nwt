@@ -783,7 +783,7 @@
       <start x="659.136211133063" y="934.625"/>
       <end x="659.136211133063" y="990"/>
     </arc>
-    <arc id="arc25" class="catalysis" source="glyph30" target="glyph60">
+    <arc id="arc25" class="catalysis" source="glyph2" target="glyph60">
       <start x="948.5704508552702" y="812.75"/>
       <end x="845.5688101307315" y="976.0901908064852"/>
     </arc>
