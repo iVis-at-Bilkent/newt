@@ -68,11 +68,50 @@ module.exports = function (chiseInstance) {
     }
 
     var nodeJson = cyTarget.json();
+    var currentClass = cyTarget.data("class");
+    var currentFontSize = parseFloat(cyTarget.style("font-size"));
     var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
       return edge.json();
     });
+    var shouldPreserveLabelSize = [
+      "and",
+      "or",
+      "not",
+      "delay",
+      "unknown logical operator",
+      "process",
+      "omitted process",
+      "uncertain process",
+      "truncated process",
+      "association",
+      "dissociation"
+    ].indexOf(currentClass) >= 0 || [
+      "and",
+      "or",
+      "not",
+      "delay",
+      "unknown logical operator",
+      "process",
+      "omitted process",
+      "uncertain process",
+      "truncated process",
+      "association",
+      "dissociation"
+    ].indexOf(toClass) >= 0;
+    var shouldUseAssociationDefaultColors = cyTarget.data("language") === "SBML" && toClass === "association";
+    var associationDefaultProps = shouldUseAssociationDefaultColors ?
+      chiseInstance.elementUtilities.getDefaultProperties(toClass) || {} :
+      null;
 
     nodeJson.data.class = toClass;
+    if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
+      nodeJson.data["font-size"] = currentFontSize;
+      nodeJson.data.labelsize = currentFontSize;
+    }
+    if (shouldUseAssociationDefaultColors) {
+      nodeJson.data["background-color"] = associationDefaultProps["background-color"];
+      nodeJson.data["border-color"] = associationDefaultProps["border-color"];
+    }
 
     var actions = [
       { name: "remove", param: cyTarget },
@@ -84,6 +123,21 @@ module.exports = function (chiseInstance) {
     });
 
     cy.undoRedo().do("batch", actions);
+
+    if (shouldPreserveLabelSize) {
+      setTimeout(function () {
+        var recreatedNode = cy.getElementById(nodeJson.data.id);
+        if (recreatedNode.nonempty()) {
+          recreatedNode.data("font-size", currentFontSize);
+          recreatedNode.data("labelsize", currentFontSize);
+          recreatedNode.removeData("_labelSize");
+          recreatedNode.removeData("_labelWidth");
+          recreatedNode.removeData("_labelHeight");
+          recreatedNode.updateStyle();
+          cy.style().update();
+        }
+      }, 0);
+    }
 
     if (nodeJson.data.boundaryParentId) {
       setTimeout(function () {
