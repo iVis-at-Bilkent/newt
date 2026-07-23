@@ -805,6 +805,7 @@ appUtilities.getActiveNetworkPanel = function () {
 };
 
 appUtilities.defaultLayoutProperties = {
+  layoutStyle: "force-directed",
   name: "fcose",
   quality: "default",
   samplingType: true,
@@ -834,6 +835,19 @@ appUtilities.defaultLayoutProperties = {
   improveFlow: true,
   packComponents: true,
   parentSideAdhesion: 5,
+  orse : {
+    nodeRepulsion: 4500,
+    idealEdgeLength: 50,
+    edgeElasticity: 0.45,
+    maxIterations: 100,
+    initialCoolingFactor: 0.3,
+    orthogonalizationInterval: 10,
+    orthogonalityThresholdDeg: 10,
+    relaxAmountDeg: 5,
+    thresholdIncrementDeg: 5,
+    edgeSeparation: 8,
+    quasiOrthogonal: false,
+  },
   boundaryNodeConstraint: function (node) {
     var boundaryParentId = node.data('boundaryParentId');
     if (boundaryParentId && boundaryParentId.length > 0) {

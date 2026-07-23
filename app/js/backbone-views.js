@@ -276,9 +276,90 @@ var LayoutPropertiesView = Backbone.View.extend({
       preferences = {};
     }
 
-    var options = $.extend({}, currentLayoutProperties, preferences);
+    var layoutStyle = currentLayoutProperties.layoutStyle || "force-directed";
+    var fcosePreferences = preferences || {};
+    var options;
+
+    if (layoutStyle === "orthogonal") {
+      options = {
+        layoutStyle: layoutStyle,
+        name: "orse",
+        animate: "end",
+        fit: currentLayoutProperties.fit,
+        padding: currentLayoutProperties.padding,
+        nodeRepulsion: currentLayoutProperties.orse.nodeRepulsion,
+        idealEdgeLength: currentLayoutProperties.orse.idealEdgeLength,
+        edgeElasticity: currentLayoutProperties.orse.edgeElasticity,
+        maxIterations: currentLayoutProperties.orse.maxIterations,
+        initialCoolingFactor: currentLayoutProperties.orse.initialCoolingFactor,
+        orthogonalizationInterval: currentLayoutProperties.orse.orthogonalizationInterval,
+        orthogonalityThresholdDeg: currentLayoutProperties.orse.orthogonalityThresholdDeg,
+        relaxAmountDeg: currentLayoutProperties.orse.relaxAmountDeg,
+        thresholdIncrementDeg: currentLayoutProperties.orse.thresholdIncrementDeg,
+        edgeSeparation: currentLayoutProperties.orse.edgeSeparation,
+        quasiOrthogonal: currentLayoutProperties.orse.quasiOrthogonal,
+      };
+    } else {
+      options = {
+        layoutStyle: layoutStyle,
+        name: "fcose",
+        quality: currentLayoutProperties.quality,
+        samplingType: currentLayoutProperties.samplingType,
+        sampleSize: currentLayoutProperties.sampleSize,
+        nodeSeparation: currentLayoutProperties.nodeSeparation,
+        piTol: currentLayoutProperties.piTol,
+        nodeDimensionsIncludeLabels:
+          currentLayoutProperties.nodeDimensionsIncludeLabels,
+        nodeRepulsion: currentLayoutProperties.nodeRepulsion,
+        idealEdgeLength: currentLayoutProperties.idealEdgeLength,
+        edgeElasticity: currentLayoutProperties.edgeElasticity,
+        nestingFactor: currentLayoutProperties.nestingFactor,
+        gravity: currentLayoutProperties.gravity,
+        numIter: currentLayoutProperties.numIter,
+        fit: currentLayoutProperties.fit,
+        padding: currentLayoutProperties.padding,
+        animationEasing: currentLayoutProperties.animationEasing,
+        animate: currentLayoutProperties.animate,
+        animationDuration: currentLayoutProperties.animationDuration,
+        randomize: currentLayoutProperties.randomize,
+        tile: currentLayoutProperties.tile,
+        tilingPaddingVertical: currentLayoutProperties.tilingPaddingVertical,
+        tilingPaddingHorizontal: currentLayoutProperties.tilingPaddingHorizontal,
+        gravityRangeCompound: currentLayoutProperties.gravityRangeCompound,
+        gravityCompound: currentLayoutProperties.gravityCompound,
+        gravityRange: currentLayoutProperties.gravityRange,
+        initialEnergyOnIncremental:
+          currentLayoutProperties.initialEnergyOnIncremental,
+        improveFlow: currentLayoutProperties.improveFlow,
+        packComponents: currentLayoutProperties.packComponents,
+        parentSideAdhesion: currentLayoutProperties.parentSideAdhesion,
+        boundaryNodeConstraint: currentLayoutProperties.boundaryNodeConstraint,
+      };
+      options = $.extend({}, options, fcosePreferences);
+    }
 
     return options;
+  },
+  updateLayoutStyleInputs: function () {
+    var selectedStyle = $(this.el).find("#layout-style").val();
+    var isOrthogonal = selectedStyle === "orthogonal";
+
+    // force-directed layout parameters
+    $(this.el)
+    .find(".force-directed-layout-setting")
+    .toggle(!isOrthogonal)
+    .find("input, select, textarea")
+    .prop("disabled", isOrthogonal);
+
+    // orthogonal layout parameters
+    $(this.el)
+      .find(".orthogonal-layout-setting")
+      .toggle(isOrthogonal)
+      .find("input, select, textarea")
+      .prop("disabled", !isOrthogonal);
+  },
+  getLayoutNameForStyle: function (layoutStyle) {
+    return layoutStyle === "orthogonal" ? "orse" : "fcose";
   },
   applyLayout: function (preferences, notUndoable, _chiseInstance) {
     // if chise instance param is not set use the recently active chise instance
@@ -302,6 +383,14 @@ var LayoutPropertiesView = Backbone.View.extend({
     self.template = self.template(currentLayoutProperties);
     $(self.el).html(self.template);
 
+    self.updateLayoutStyleInputs();
+
+    $(document)
+      .off("change", "#layout-style")
+      .on("change", "#layout-style", function () {
+        self.updateLayoutStyleInputs();
+      });
+
     $(self.el).modal("show");
 
     $(document)
@@ -316,57 +405,103 @@ var LayoutPropertiesView = Backbone.View.extend({
           "currentLayoutProperties"
         );
 
-        currentLayoutProperties.nodeRepulsion = Number(
-          document.getElementById("node-repulsion").value
-        );
-        currentLayoutProperties.idealEdgeLength = Number(
-          document.getElementById("ideal-edge-length").value
-        );
-        currentLayoutProperties.edgeElasticity = Number(
-          document.getElementById("edge-elasticity").value
-        );
-        currentLayoutProperties.nestingFactor = Number(
-          document.getElementById("nesting-factor").value
-        );
-        currentLayoutProperties.gravity = Number(
-          document.getElementById("gravity").value
-        );
-        currentLayoutProperties.numIter = Number(
-          document.getElementById("num-iter").value
-        );
-        currentLayoutProperties.tile = document.getElementById("tile").checked;
-        currentLayoutProperties.packComponents = document.getElementById(
-          "pack-components"
-        ).checked
-          ? true
-          : false;
-        currentLayoutProperties.randomize =
-          !document.getElementById("incremental").checked;
-        currentLayoutProperties.gravityRangeCompound = Number(
-          document.getElementById("gravity-range-compound").value
-        );
-        currentLayoutProperties.gravityCompound = Number(
-          document.getElementById("gravity-compound").value
-        );
-        currentLayoutProperties.gravityRange = Number(
-          document.getElementById("gravity-range").value
-        );
-        currentLayoutProperties.tilingPaddingVertical = Number(
-          document.getElementById("tiling-padding-vertical").value
-        );
-        currentLayoutProperties.tilingPaddingHorizontal = Number(
-          document.getElementById("tiling-padding-horizontal").value
-        );
-        currentLayoutProperties.initialEnergyOnIncremental = Number(
-          document.getElementById("incremental-cooling-factor").value
-        );
-        currentLayoutProperties.improveFlow =
-          document.getElementById("improve-flow").checked;
+        currentLayoutProperties.layoutStyle =
+          $(self.el).find("#layout-style").val();
+
+        currentLayoutProperties.name =
+          self.getLayoutNameForStyle(currentLayoutProperties.layoutStyle);
+
+        // force-directed layout settings
+        if (currentLayoutProperties.layoutStyle === "force-directed") {
+          currentLayoutProperties.nodeRepulsion = Number(
+            document.getElementById("node-repulsion").value
+          );
+          currentLayoutProperties.idealEdgeLength = Number(
+            document.getElementById("ideal-edge-length").value
+          );
+          currentLayoutProperties.edgeElasticity = Number(
+            document.getElementById("edge-elasticity").value
+          );
+          currentLayoutProperties.nestingFactor = Number(
+            document.getElementById("nesting-factor").value
+          );
+          currentLayoutProperties.gravity = Number(
+            document.getElementById("gravity").value
+          );
+          currentLayoutProperties.numIter = Number(
+            document.getElementById("num-iter").value
+          );
+          currentLayoutProperties.tile = document.getElementById("tile").checked;
+          currentLayoutProperties.packComponents = document.getElementById(
+            "pack-components"
+          ).checked
+            ? true
+            : false;
+          currentLayoutProperties.randomize =
+            !document.getElementById("incremental").checked;
+          currentLayoutProperties.gravityRangeCompound = Number(
+            document.getElementById("gravity-range-compound").value
+          );
+          currentLayoutProperties.gravityCompound = Number(
+            document.getElementById("gravity-compound").value
+          );
+          currentLayoutProperties.gravityRange = Number(
+            document.getElementById("gravity-range").value
+          );
+          currentLayoutProperties.tilingPaddingVertical = Number(
+            document.getElementById("tiling-padding-vertical").value
+          );
+          currentLayoutProperties.tilingPaddingHorizontal = Number(
+            document.getElementById("tiling-padding-horizontal").value
+          );
+          currentLayoutProperties.initialEnergyOnIncremental = Number(
+            document.getElementById("incremental-cooling-factor").value
+          );
+          currentLayoutProperties.improveFlow =
+            document.getElementById("improve-flow").checked;
+        }
+
+        if (currentLayoutProperties.layoutStyle === "orthogonal") {
+          // ortogonal layout settings
+          currentLayoutProperties.orse.nodeRepulsion = Number(
+            document.getElementById("orse-node-repulsion").value
+          );
+          currentLayoutProperties.orse.idealEdgeLength = Number(
+            document.getElementById("orse-ideal-edge-length").value
+          );
+          currentLayoutProperties.orse.edgeElasticity = Number(
+            document.getElementById("orse-edge-elasticity").value
+          );
+          currentLayoutProperties.orse.maxIterations = Number(
+            document.getElementById("orse-max-iterations").value
+          );
+          currentLayoutProperties.orse.initialCoolingFactor = Number(
+            document.getElementById("orse-initial-cooling-factor").value
+          );
+          currentLayoutProperties.orse.orthogonalizationInterval = Number(
+            document.getElementById("orse-orth-interval").value
+          );
+          currentLayoutProperties.orse.orthogonalityThresholdDeg = Number(
+            document.getElementById("orse-orth-threshold").value
+          );
+          currentLayoutProperties.orse.relaxAmountDeg = Number(
+            document.getElementById("orse-relax-amount").value
+          );
+          currentLayoutProperties.orse.thresholdIncrementDeg = Number(
+            document.getElementById("orse-orth-increment").value
+          );
+          currentLayoutProperties.orse.edgeSeparation = Number(
+            document.getElementById("orse-edge-separation").value
+          );
+          currentLayoutProperties.orse.quasiOrthogonal =
+            document.getElementById("orse-quasi-orthogonal").checked;
+        }
+
         // reset currentLayoutProperties in scratch pad
         appUtilities.setScratch(
           cy,
-          currentLayoutProperties,
-          "currentLayoutProperties"
+          "currentLayoutProperties",
+          currentLayoutProperties
         );
 
         $(self.el).modal("toggle");
@@ -382,6 +517,8 @@ var LayoutPropertiesView = Backbone.View.extend({
         self.template = _.template($("#layout-settings-template").html());
         self.template = self.template(currentLayoutProperties);
         $(self.el).html(self.template);
+
+        self.updateLayoutStyleInputs();
       });
 
     return this;
