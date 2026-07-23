@@ -7,7 +7,7 @@ var _ = require('underscore');
 const databaseUtilities = require('./database-utilities');
 var annotationLayers = require('./annotation-layers');
 var IS_LOCAL_DATABASE = window.__ENV__.LOCAL_DATABASE==='true';
-var submenuIcon = 'app/img/submenu-indicator-default.svg';
+var submenuIcon = 'app/img/submenu-indicator-gray.svg';
 
 module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
@@ -922,7 +922,7 @@ module.exports = function (chiseInstance) {
       }).map(function (candidate) {
         return {
           idSuffix: candidate.replace(/\s+/g, '-'),
-          content: candidate.charAt(0).toUpperCase() + candidate.slice(1) + ' Node',
+          content: candidate.charAt(0).toUpperCase() + candidate.slice(1),
           toClass: candidate
         };
       }));
@@ -1565,7 +1565,6 @@ module.exports = function (chiseInstance) {
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
-    ur.action("convertEdgeType", appUndoActions.convertEdgeType, appUndoActions.convertEdgeType);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
@@ -1574,8 +1573,8 @@ module.exports = function (chiseInstance) {
     var contextMenus = cy.contextMenus({
       submenuIndicator: {
         src: submenuIcon,
-        width: 12,
-        height: 12
+        width: 5,
+        height: 9
       },
       menuItemClasses: ['custom-menu-item'],
     });
