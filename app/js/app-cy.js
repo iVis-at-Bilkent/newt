@@ -624,46 +624,46 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'modulation',
         submenuItems: [
-          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'stimulation', content: 'Stimulation', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'stimulation',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation', toClass: 'modulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'catalysis',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' },
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation', toClass: 'stimulation' },
+          { idSuffix: 'inhibition', content: 'Inhibition', toClass: 'inhibition' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'inhibition',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' }
+          { idSuffix: 'modulation', content: 'Modulation', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis', toClass: 'catalysis' },
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' }
         ]
       },
       {
         edgeClass: 'necessary stimulation',
         submenuItems: [
-          { idSuffix: 'modulation', content: 'Modulation Edge', toClass: 'modulation' },
-          { idSuffix: 'stimulation', content: 'Stimulation Edge', toClass: 'stimulation' },
-          { idSuffix: 'catalysis', content: 'Catalysis Edge', toClass: 'catalysis' },
-          { idSuffix: 'inhibition', content: 'Inhibition Edge', toClass: 'inhibition' }
+          { idSuffix: 'modulation', content: 'Modulation', toClass: 'modulation' },
+          { idSuffix: 'stimulation', content: 'Stimulation', toClass: 'stimulation' },
+          { idSuffix: 'catalysis', content: 'Catalysis', toClass: 'catalysis' },
+          { idSuffix: 'inhibition', content: 'Inhibition', toClass: 'inhibition' }
         ]
       }
     ];
@@ -1373,13 +1373,13 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'reacts-with',
         submenuItems: [
-          { idSuffix: 'used-to-produce', content: 'Used-to-produce Edge', toClass: 'used-to-produce' }
+          { idSuffix: 'used-to-produce', content: 'Used-to-produce', toClass: 'used-to-produce' }
         ]
       },
       {
         edgeClass: 'used-to-produce',
         submenuItems: [
-          { idSuffix: 'reacts-with', content: 'Reacts-with Edge', toClass: 'reacts-with' }
+          { idSuffix: 'reacts-with', content: 'Reacts-with', toClass: 'reacts-with' }
         ]
       }
     ];
@@ -1394,33 +1394,33 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'controls-production-of',
         submenuItems: [
-          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
-          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
-          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by', toClass: 'consumption-controled-by' }
         ]
       },
       {
         edgeClass: 'controls-transport-of-chemical',
         submenuItems: [
-          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
-          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' },
-          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of', toClass: 'controls-production-of' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects', toClass: 'chemical-affects' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by', toClass: 'consumption-controled-by' }
         ]
       },
       {
         edgeClass: 'chemical-affects',
         submenuItems: [
-          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
-          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
-          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by Edge', toClass: 'consumption-controled-by' }
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'consumption-controled-by', content: 'Consumption-controled-by', toClass: 'consumption-controled-by' }
         ]
       },
       {
         edgeClass: 'consumption-controled-by',
         submenuItems: [
-          { idSuffix: 'controls-production-of', content: 'Controls-production-of Edge', toClass: 'controls-production-of' },
-          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical Edge', toClass: 'controls-transport-of-chemical' },
-          { idSuffix: 'chemical-affects', content: 'Chemical-affects Edge', toClass: 'chemical-affects' }
+          { idSuffix: 'controls-production-of', content: 'Controls-production-of', toClass: 'controls-production-of' },
+          { idSuffix: 'controls-transport-of-chemical', content: 'Controls-transport-of-chemical', toClass: 'controls-transport-of-chemical' },
+          { idSuffix: 'chemical-affects', content: 'Chemical-affects', toClass: 'chemical-affects' }
         ]
       }
     ];
@@ -1489,33 +1489,33 @@ module.exports = function (chiseInstance) {
       {
         edgeClass: 'necessary stimulation',
         submenuItems: [
-          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
-          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'unknown influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' },
-          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence', toClass: 'negative influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'negative influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'positive-influence', content: 'Positive Influence Edge', toClass: 'positive influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence', toClass: 'unknown influence' },
+          { idSuffix: 'positive-influence', content: 'Positive Influence', toClass: 'positive influence' }
         ]
       },
       {
         edgeClass: 'positive influence',
         submenuItems: [
-          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation Edge', toClass: 'necessary stimulation' },
-          { idSuffix: 'unknown-influence', content: 'Unknown Influence Edge', toClass: 'unknown influence' },
-          { idSuffix: 'negative-influence', content: 'Negative Influence Edge', toClass: 'negative influence' }
+          { idSuffix: 'necessary-stimulation', content: 'Necessary Stimulation', toClass: 'necessary stimulation' },
+          { idSuffix: 'unknown-influence', content: 'Unknown Influence', toClass: 'unknown influence' },
+          { idSuffix: 'negative-influence', content: 'Negative Influence', toClass: 'negative influence' }
         ]
       }
     ];
