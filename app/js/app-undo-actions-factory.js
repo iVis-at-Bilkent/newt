@@ -7,6 +7,22 @@ var annotationLayers = require('./annotation-layers');
 module.exports = function (cy) {
   var appUndoActions = {};
 
+  function cloneUndoValue(key, value) {
+    if (value === undefined || value === null) {
+      return value;
+    }
+
+    if (key === "annotationsView") {
+      return value;
+    }
+
+    if (typeof value === "object") {
+      return $.extend(true, Array.isArray(value) ? [] : {}, value);
+    }
+
+    return value;
+  }
+
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
     var eles = param.eles; // a pure array of nodes, not a cy collection
@@ -30,6 +46,48 @@ module.exports = function (cy) {
     }
     else {
       eles._private.data[param.name] = param.valueMap;
+    }
+
+    return result;
+  };
+
+  appUndoActions.changeNodeTypeData = function (param) {
+    var ele = param.eleId ? cy.getElementById(param.eleId) : param.ele;
+    if (!ele || ele.empty()) {
+      return param;
+    }
+
+    var currentData = ele.data();
+    var currentKeys = Object.keys(currentData || {});
+    var targetData = param.targetData || {};
+    var targetKeys = Object.keys(targetData);
+    var result = {
+      eleId: ele.id(),
+      targetData: {}
+    };
+
+    currentKeys.forEach(function (key) {
+      result.targetData[key] = cloneUndoValue(key, currentData[key]);
+    });
+
+    cy.startBatch();
+
+    currentKeys.forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(targetData, key)) {
+        ele.removeData(key);
+      }
+    });
+
+    targetKeys.forEach(function (key) {
+      ele.data(key, cloneUndoValue(key, targetData[key]));
+    });
+
+    cy.endBatch();
+
+    ele.updateStyle();
+    cy.style().update();
+    if (typeof cy.forceRender === "function") {
+      cy.forceRender();
     }
 
     return result;

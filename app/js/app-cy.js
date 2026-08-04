@@ -19,6 +19,112 @@ module.exports = function (chiseInstance) {
   //("here");
   window.cy = cy;
 
+  function redrawCloneMarkerAfterTypeChange(nodeId, originalBgImage) {
+    var updatedNode = cy.getElementById(nodeId);
+    var needsSpecialCloneRedraw;
+
+    if (!updatedNode || updatedNode.empty() || !updatedNode.data("clonemarker")) {
+      return;
+    }
+
+    needsSpecialCloneRedraw =
+      updatedNode.data("class") === "unspecified entity" ||
+      updatedNode.data("class") === "perturbing agent";
+
+    if (!needsSpecialCloneRedraw) {
+      return;
+    }
+
+    chiseInstance.redrawCloneMarkers(updatedNode);
+    repairSpecialCloneMarkerLayers(updatedNode, originalBgImage);
+    updatedNode.updateStyle();
+    cy.style().update();
+  }
+
+  function repairSpecialCloneMarkerLayers(node, originalBgImage) {
+    if (!node || node.empty()) {
+      return;
+    }
+
+    var nodeClass = node.data("class");
+    if (nodeClass !== "unspecified entity" && nodeClass !== "perturbing agent") {
+      return;
+    }
+
+    var imageValue = node.data("background-image");
+    if (typeof imageValue !== "string" || !imageValue) {
+      return;
+    }
+
+    var imgs = imageValue.split(" ");
+    var userImage = originalBgImage;
+    if (typeof userImage === "string" && userImage.indexOf(" ") >= 0) {
+      userImage = userImage.split(" ")[0];
+    }
+
+    // Special clone-marker nodes need either a single clone layer or
+    // a two-layer stack of user image + clone marker. Repair malformed stacks.
+    if (userImage && imgs.length === 1 && imgs[0] !== userImage) {
+      node.data("background-image", userImage + " " + imgs[0]);
+      node.data("background-fit", "none none");
+      node.data("background-width", "100% 100%");
+      node.data("background-height", "100% 25%");
+      node.data("background-position-x", "50% 50%");
+      node.data("background-position-y", "50% 100%");
+      node.data("background-image-opacity", "1 1");
+      return;
+    }
+
+    if (!userImage && imgs.length === 1) {
+      node.data("background-fit", "none");
+      node.data("background-width", "100%");
+      node.data("background-height", "25%");
+      node.data("background-position-x", "50%");
+      node.data("background-position-y", "100%");
+      node.data("background-image-opacity", "1");
+      return;
+    }
+
+    if (imgs.length >= 2) {
+      node.data("background-height", "100% 25%");
+    }
+  }
+
+  function redrawBackgroundImageAfterTypeChange(nodeId) {
+    var updatedNode = cy.getElementById(nodeId);
+
+    if (!updatedNode || updatedNode.empty()) {
+      return;
+    }
+
+    var bgImage = updatedNode.data("background-image");
+    if (bgImage) {
+      updatedNode.data("background-image", bgImage);
+    }
+
+    updatedNode.updateStyle();
+    cy.style().update();
+    if (typeof cy.forceRender === "function") {
+      cy.forceRender();
+    }
+  }
+
+  function refreshNodeAfterTypeChange(nodeId, shouldSelect) {
+    setTimeout(function () {
+      var recreatedNode = cy.getElementById(nodeId);
+
+      if (!recreatedNode || recreatedNode.empty()) {
+        return;
+      }
+
+      window.requestAnimationFrame(function () {
+        recreatedNode.updateStyle();
+        cy.style().update();
+        cy.resize();
+      });
+    }, 0);
+  }
+
   function buildEdgeJson(edgeId, source, target, edgeParams, edgeExtraData) {
     var edgeJson = {
       group: "edges",
@@ -62,17 +168,107 @@ module.exports = function (chiseInstance) {
     ]);
   }
 
+  function cloneNodeTypeData(data) {
+    var cloned = {};
+
+    Object.keys(data || {}).forEach(function (key) {
+      var value = data[key];
+      if (key === "annotationsView") {
+        cloned[key] = value;
+      }
+      else if (value && typeof value === "object") {
+        cloned[key] = $.extend(true, Array.isArray(value) ? [] : {}, value);
+      }
+      else {
+        cloned[key] = value;
+      }
+    });
+
+    return cloned;
+  }
+
+  function syncDefaultBackgroundPropsForTypeChange(targetData, currentData, fromClass, toClass) {
+    if (!fromClass || !toClass || fromClass === toClass) {
+      return;
+    }
+
+    var fromDefaults = chiseInstance.elementUtilities.getDefaultProperties(fromClass) || {};
+    var toDefaults = chiseInstance.elementUtilities.getDefaultProperties(toClass) || {};
+    var backgroundKeys = [
+      "background-image",
+      "background-fit",
+      "background-image-opacity",
+      "background-position-x",
+      "background-position-y",
+      "background-width",
+      "background-height"
+    ];
+
+    backgroundKeys.forEach(function (key) {
+      var currentValue = currentData[key];
+      var fromDefaultValue = fromDefaults[key];
+
+      if (currentValue === undefined || currentValue !== fromDefaultValue) {
+        return;
+      }
+
+      if (toDefaults[key] === undefined) {
+        delete targetData[key];
+        return;
+      }
+
+      targetData[key] = toDefaults[key];
+    });
+  }
+
+  function extractPdUserImage(currentData) {
+    var imageValue = currentData["background-image"];
+    if (typeof imageValue !== "string" || !imageValue) {
+      return undefined;
+    }
+
+    var images = imageValue.split(" ");
+    for (var i = 0; i < images.length; i++) {
+      if (images[i].indexOf("%23838383") === -1) {
+        return images[i];
+      }
+    }
+
+    return undefined;
+  }
+
+  function normalizePdImageAndCloneLayersForTypeChange(targetData, currentData) {
+    var userImage = extractPdUserImage(currentData || {});
+
+    if (userImage) {
+      targetData["background-image"] = userImage;
+      targetData["background-fit"] = "none";
+      targetData["background-width"] = "100%";
+      targetData["background-height"] = "100%";
+      targetData["background-position-x"] = "50%";
+      targetData["background-position-y"] = "50%";
+      targetData["background-image-opacity"] = "1";
+      return;
+    }
+
+    delete targetData["background-image"];
+    delete targetData["background-fit"];
+    delete targetData["background-width"];
+    delete targetData["background-height"];
+    delete targetData["background-position-x"];
+    delete targetData["background-position-y"];
+    delete targetData["background-image-opacity"];
+  }
+
   function replaceNodeWithBatch(cyTarget, toClass) {
     if (!cyTarget || !toClass) {
       return;
     }
 
-    var nodeJson = cyTarget.json();
+    var currentJson = cyTarget.json();
+    var nodeId = currentJson.data.id;
     var currentClass = cyTarget.data("class");
     var currentFontSize = parseFloat(cyTarget.style("font-size"));
-    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
-      return edge.json();
-    });
     var shouldPreserveLabelSize = [
       "and",
       "or",
@@ -103,48 +299,36 @@ module.exports = function (chiseInstance) {
       chiseInstance.elementUtilities.getDefaultProperties(toClass) || {} :
       null;
 
-    nodeJson.data.class = toClass;
+    var targetData = cloneNodeTypeData(currentJson.data);
+    targetData["class"] = toClass;
     if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
-      nodeJson.data["font-size"] = currentFontSize;
-      nodeJson.data.labelsize = currentFontSize;
+      targetData["font-size"] = currentFontSize;
+      targetData["labelsize"] = currentFontSize;
     }
     if (shouldUseAssociationDefaultColors) {
-      nodeJson.data["background-color"] = associationDefaultProps["background-color"];
-      nodeJson.data["border-color"] = associationDefaultProps["border-color"];
+      targetData["background-color"] = associationDefaultProps["background-color"];
+      targetData["border-color"] = associationDefaultProps["border-color"];
     }
-
-    var actions = [
-      { name: "remove", param: cyTarget },
-      { name: "add", param: nodeJson }
-    ];
-
-    connectedEdgeJsons.forEach(function (edgeJson) {
-      actions.push({ name: "add", param: edgeJson });
+    cy.undoRedo().do("changeNodeTypeData", {
+      eleId: nodeId,
+      targetData: targetData
     });
-
-    cy.undoRedo().do("batch", actions);
+    redrawBackgroundImageAfterTypeChange(nodeId);
+    redrawCloneMarkerAfterTypeChange(nodeId, targetData["background-image"]);
 
     if (shouldPreserveLabelSize) {
-      setTimeout(function () {
-        var recreatedNode = cy.getElementById(nodeJson.data.id);
-        if (recreatedNode.nonempty()) {
-          recreatedNode.data("font-size", currentFontSize);
-          recreatedNode.data("labelsize", currentFontSize);
-          recreatedNode.removeData("_labelSize");
-          recreatedNode.removeData("_labelWidth");
-          recreatedNode.removeData("_labelHeight");
-          recreatedNode.updateStyle();
-          cy.style().update();
-        }
-      }, 0);
+      cyTarget.removeData("_labelSize");
+      cyTarget.removeData("_labelWidth");
+      cyTarget.removeData("_labelHeight");
+      cyTarget.updateStyle();
+      cy.style().update();
     }
 
-    if (nodeJson.data.boundaryParentId) {
+    if (cyTarget.data("boundaryParentId")) {
       setTimeout(function () {
-        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
-        var recreatedNode = cy.getElementById(nodeJson.data.id);
-        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
-          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        var boundaryParent = cy.getElementById(cyTarget.data("boundaryParentId"));
+        if (boundaryParent.nonempty() && cyTarget.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, cyTarget);
         }
       }, 0);
     }
@@ -156,9 +340,7 @@ module.exports = function (chiseInstance) {
     }
 
     var currentJson = cyTarget.json();
-    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
-      return edge.json();
-    });
+    var nodeId = currentJson.data.id;
     var auxUnitShapeNames = {
       'BA macromolecule': 'roundrectangle',
       'BA simple chemical': 'stadium',
@@ -167,22 +349,9 @@ module.exports = function (chiseInstance) {
       'BA complex': 'complex',
       'BA perturbing agent': 'perturbing agent'
     };
-    var nodeJson = {
-      group: currentJson.group,
-      data: $.extend(true, {}, currentJson.data),
-      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
-      removed: currentJson.removed,
-      selected: currentJson.selected,
-      selectable: currentJson.selectable,
-      locked: currentJson.locked,
-      grabbable: currentJson.grabbable,
-      pannable: currentJson.pannable,
-      classes: currentJson.classes
-    };
-    var statesAndInfos = nodeJson.data.statesandinfos || [];
-    var auxUnitLayouts = nodeJson.data.auxunitlayouts || {};
-
-    nodeJson.data.class = toClass;
+    var targetData = cloneNodeTypeData(currentJson.data);
+    var statesAndInfos = $.extend(true, [], currentJson.data.statesandinfos || []);
+    var auxUnitLayouts = $.extend(true, {}, currentJson.data.auxunitlayouts || {});
 
     statesAndInfos.forEach(function (unit) {
       if (unit && unit.style) {
@@ -203,23 +372,22 @@ module.exports = function (chiseInstance) {
       });
     });
 
-    var actions = [
-      { name: "remove", param: cyTarget },
-      { name: "add", param: nodeJson }
-    ];
-
-    connectedEdgeJsons.forEach(function (edgeJson) {
-      actions.push({ name: "add", param: edgeJson });
+    targetData["class"] = toClass;
+    targetData["statesandinfos"] = statesAndInfos;
+    targetData["auxunitlayouts"] = auxUnitLayouts;
+    cy.undoRedo().do("changeNodeTypeData", {
+      eleId: nodeId,
+      targetData: targetData
     });
+    redrawBackgroundImageAfterTypeChange(nodeId);
+    redrawCloneMarkerAfterTypeChange(nodeId, targetData["background-image"]);
 
-    cy.undoRedo().do("batch", actions);
 
-    if (nodeJson.data.boundaryParentId) {
+    if (cyTarget.data("boundaryParentId")) {
       setTimeout(function () {
-        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
-        var recreatedNode = cy.getElementById(nodeJson.data.id);
-        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
-          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        var boundaryParent = cy.getElementById(cyTarget.data("boundaryParentId"));
+        if (boundaryParent.nonempty() && cyTarget.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, cyTarget);
         }
       }, 0);
     }
@@ -231,25 +399,8 @@ module.exports = function (chiseInstance) {
     }
 
     var currentJson = cyTarget.json();
-    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
-      return edge.json();
-    });
-    var nodeJson = {
-      group: currentJson.group,
-      data: {
-        id: currentJson.data.id,
-        class: toClass,
-        language: currentJson.data.language
-      },
-      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
-      removed: currentJson.removed,
-      selected: currentJson.selected,
-      selectable: currentJson.selectable,
-      locked: currentJson.locked,
-      grabbable: currentJson.grabbable,
-      pannable: currentJson.pannable,
-      classes: currentJson.classes
-    };
+    var nodeId = currentJson.data.id;
+    var fromClass = currentJson.data.class;
     var keysToCopy = [
       'label',
       'parent',
@@ -272,6 +423,11 @@ module.exports = function (chiseInstance) {
       'border-width',
       'background-opacity',
       'background-image-opacity',
+      'background-fit',
+      'background-position-x',
+      'background-position-y',
+      'background-width',
+      'background-height',
       'color',
       'text-wrap',
       'font-family',
@@ -280,49 +436,48 @@ module.exports = function (chiseInstance) {
       'font-weight',
       'background-image',
       'image',
-      'annotationsView'
+      'annotationsView',
+      'infoboxCalculated'
     ];
+
+    var targetData = cloneNodeTypeData(currentJson.data);
+    targetData["class"] = toClass;
 
     keysToCopy.forEach(function (key) {
       if (currentJson.data[key] !== undefined) {
-        if (key === 'annotationsView') {
-          nodeJson.data[key] = currentJson.data[key];
-        }
-        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
-          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
-        }
-        else {
-          nodeJson.data[key] = currentJson.data[key];
-        }
+        targetData[key] = key === 'annotationsView'
+          ? currentJson.data[key]
+          : (currentJson.data[key] && typeof currentJson.data[key] === 'object')
+            ? $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key])
+            : currentJson.data[key];
       }
     });
 
-    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    syncDefaultBackgroundPropsForTypeChange(targetData, currentJson.data, fromClass, toClass);
+    normalizePdImageAndCloneLayersForTypeChange(targetData, currentJson.data);
+
+    targetData["statesandinfos"] = $.extend(true, [], currentJson.data.statesandinfos || []);
     if (currentJson.data.auxunitlayouts !== undefined) {
-      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+      targetData["auxunitlayouts"] = $.extend(true, {}, currentJson.data.auxunitlayouts);
     }
-    nodeJson.data.ports = currentJson.data.ports || [];
-
-    var actions = [
-      { name: "remove", param: cyTarget },
-      { name: "add", param: nodeJson }
-    ];
-
-    connectedEdgeJsons.forEach(function (edgeJson) {
-      actions.push({ name: "add", param: edgeJson });
+    targetData["ports"] = $.extend(true, [], currentJson.data.ports || []);
+    cy.undoRedo().do("changeNodeTypeData", {
+      eleId: nodeId,
+      targetData: targetData
     });
+    redrawBackgroundImageAfterTypeChange(nodeId);
+    redrawCloneMarkerAfterTypeChange(nodeId, targetData["background-image"]);
 
-    cy.undoRedo().do("batch", actions);
-
-    if (nodeJson.data.boundaryParentId) {
+    if (targetData["boundaryParentId"]) {
       setTimeout(function () {
-        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
-        var recreatedNode = cy.getElementById(nodeJson.data.id);
-        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
-          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        var boundaryParent = cy.getElementById(targetData["boundaryParentId"]);
+        var updatedNode = cy.getElementById(nodeId);
+        if (boundaryParent.nonempty() && updatedNode.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, updatedNode);
         }
       }, 0);
     }
+
   }
 
   function replaceSbmlNodeWithBatch(cyTarget, toClass) {
@@ -331,29 +486,9 @@ module.exports = function (chiseInstance) {
     }
 
     var currentJson = cyTarget.json();
+    var nodeId = currentJson.data.id;
+    var fromClass = currentJson.data.class;
     var defaultProps = chiseInstance.elementUtilities.getDefaultProperties(toClass);
-    var connectedEdgeJsons = cyTarget.connectedEdges().map(function (edge) {
-      return edge.json();
-    });
-    var nodeJson = {
-      group: currentJson.group,
-      data: {
-        id: currentJson.data.id,
-        class: toClass,
-        language: currentJson.data.language
-      },
-      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
-      removed: currentJson.removed,
-      selected: currentJson.selected,
-      selectable: currentJson.selectable,
-      locked: currentJson.locked,
-      grabbable: currentJson.grabbable,
-      pannable: currentJson.pannable,
-      classes: currentJson.classes
-    };
-
-    nodeJson.data['background-color'] = defaultProps['background-color'];
-    nodeJson.data['border-color'] = defaultProps['border-color'];
 
     var keysToCopy = [
       'label',
@@ -376,6 +511,11 @@ module.exports = function (chiseInstance) {
       'border-width',
       'background-opacity',
       'background-image-opacity',
+      'background-fit',
+      'background-position-x',
+      'background-position-y',
+      'background-width',
+      'background-height',
       'color',
       'text-wrap',
       'font-family',
@@ -384,46 +524,47 @@ module.exports = function (chiseInstance) {
       'font-weight',
       'background-image',
       'image',
-      'annotationsView'
+      'annotationsView',
+      'infoboxCalculated'
     ];
+
+    var targetData = cloneNodeTypeData(currentJson.data);
+    targetData["class"] = toClass;
+    targetData["background-color"] = defaultProps['background-color'];
+    targetData["border-color"] = defaultProps['border-color'];
 
     keysToCopy.forEach(function (key) {
-      if (currentJson.data[key] !== undefined) {
-        if (key === 'annotationsView') {
-          nodeJson.data[key] = currentJson.data[key];
-        }
-        else if (currentJson.data[key] && typeof currentJson.data[key] === 'object') {
-          nodeJson.data[key] = $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key]);
-        }
-        else {
-          nodeJson.data[key] = currentJson.data[key];
-        }
+      if (currentJson.data[key] === undefined) {
+        return;
       }
+
+      targetData[key] = key === 'annotationsView'
+        ? currentJson.data[key]
+        : (currentJson.data[key] && typeof currentJson.data[key] === 'object')
+          ? $.extend(true, Array.isArray(currentJson.data[key]) ? [] : {}, currentJson.data[key])
+          : currentJson.data[key];
     });
 
-    nodeJson.data.statesandinfos = currentJson.data.statesandinfos || [];
+    syncDefaultBackgroundPropsForTypeChange(targetData, currentJson.data, fromClass, toClass);
+
+    targetData['statesandinfos'] = currentJson.data.statesandinfos || [];
     if (currentJson.data.auxunitlayouts !== undefined) {
-      nodeJson.data.auxunitlayouts = currentJson.data.auxunitlayouts;
+      targetData['auxunitlayouts'] = currentJson.data.auxunitlayouts;
     }
-    nodeJson.data.ports = currentJson.data.ports || [];
-
-    var actions = [
-      { name: "remove", param: cyTarget },
-      { name: "add", param: nodeJson }
-    ];
-
-    connectedEdgeJsons.forEach(function (edgeJson) {
-      actions.push({ name: "add", param: edgeJson });
+    targetData['ports'] = currentJson.data.ports || [];
+    cy.undoRedo().do("changeNodeTypeData", {
+      eleId: nodeId,
+      targetData: targetData
     });
+    redrawBackgroundImageAfterTypeChange(nodeId);
+    redrawCloneMarkerAfterTypeChange(nodeId, targetData["background-image"]);
 
-    cy.undoRedo().do("batch", actions);
 
-    if (nodeJson.data.boundaryParentId) {
+    if (cyTarget.data("boundaryParentId")) {
       setTimeout(function () {
-        var boundaryParent = cy.getElementById(nodeJson.data.boundaryParentId);
-        var recreatedNode = cy.getElementById(nodeJson.data.id);
-        if (boundaryParent.nonempty() && recreatedNode.nonempty()) {
-          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, recreatedNode);
+        var boundaryParent = cy.getElementById(cyTarget.data("boundaryParentId"));
+        if (boundaryParent.nonempty() && cyTarget.nonempty()) {
+          chiseInstance.elementUtilities.addNodeOnBoundary(boundaryParent, cyTarget);
         }
       }, 0);
     }
@@ -1151,28 +1292,19 @@ module.exports = function (chiseInstance) {
       return;
     }
 
+
     var currentJson = cyTarget.json();
-    var nodeJson = {
-      group: currentJson.group,
-      data: $.extend(true, {}, currentJson.data),
-      position: currentJson.position ? $.extend(true, {}, currentJson.position) : undefined,
-      removed: currentJson.removed,
-      selected: currentJson.selected,
-      selectable: currentJson.selectable,
-      locked: currentJson.locked,
-      grabbable: currentJson.grabbable,
-      pannable: currentJson.pannable,
-      classes: currentJson.classes
-    };
+    var nodeId = currentJson.data.id;
 
-    nodeJson.data.class = toClass;
+    var targetData = cloneNodeTypeData(currentJson.data);
+    targetData["class"] = toClass;
+    cy.undoRedo().do("changeNodeTypeData", {
+      eleId: nodeId,
+      targetData: targetData
+    });
+    redrawBackgroundImageAfterTypeChange(nodeId);
+    redrawCloneMarkerAfterTypeChange(nodeId, targetData["background-image"]);
 
-    var actions = [
-      { name: "remove", param: cyTarget },
-      { name: "add", param: nodeJson }
-    ];
-
-    cy.undoRedo().do("batch", actions);
   }
 
   function createAfNodeTypeMenu(nodeClass, submenuItems) {
@@ -1544,6 +1676,7 @@ module.exports = function (chiseInstance) {
     var appUndoActions = appUndoActionsFactory(cy);
 
     // bind ur actions
+    ur.action("changeNodeTypeData", appUndoActions.changeNodeTypeData, appUndoActions.changeNodeTypeData);
     ur.action("changeDataDirty", appUndoActions.changeDataDirty, appUndoActions.changeDataDirty);
     ur.action("changeMenu", appUndoActions.changeMenu, appUndoActions.changeMenu);
     ur.action("refreshColorSchemeMenu", appUndoActions.refreshColorSchemeMenu, appUndoActions.refreshColorSchemeMenu);
