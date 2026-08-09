@@ -13,6 +13,7 @@ module.exports = function (chiseInstance) {
   var getExpandCollapseOptions = appUtilities.getExpandCollapseOptions.bind(appUtilities);
 //  var nodeQtipFunction = appUtilities.nodeQtipFunction.bind(appUtilities);
   var refreshUndoRedoButtonsStatus = appUtilities.refreshUndoRedoButtonsStatus.bind(appUtilities);
+  var typeChangeInvalidMessage = "This change violates the notation. Please see the Legend menu and specifications for help.";
 
   // use chise instance associated with chise instance
   var cy = chiseInstance.getCy();
@@ -157,9 +158,81 @@ module.exports = function (chiseInstance) {
     return edgeJson;
   }
 
+  function validateNodeTypeChangeEdges(node, toClass) {
+    var oldClass = node.data("class");
+    var isValid = true;
+
+    node.data("class", toClass);
+
+    node.connectedEdges().forEach(function (edge) {
+      if (
+        chiseInstance.elementUtilities.validateArrowEnds(
+          edge,
+          edge.source(),
+          edge.target(),
+          true
+        ) === "invalid"
+      ) {
+        isValid = false;
+      }
+    });
+
+    node.data("class", oldClass);
+
+    return isValid;
+  }
+
   function replaceEdgeWithBatch(cyTarget, newEdgeJson) {
     if (!cyTarget || !newEdgeJson) {
       return;
+    }
+
+    var sourceNode = cy.getElementById(newEdgeJson.data.source);
+    var targetNode = cy.getElementById(newEdgeJson.data.target);
+    var edgeForValidation = {
+      data: function (key) {
+        if (key === "class") {
+          return newEdgeJson.data["class"];
+        }
+
+        return newEdgeJson.data[key];
+      },
+      source: function () {
+        return sourceNode;
+      },
+      target: function () {
+        return targetNode;
+      }
+    };
+
+    var validation = chiseInstance.elementUtilities.validateArrowEnds(
+      edgeForValidation,
+      sourceNode,
+      targetNode,
+      true
+    );
+
+    if (validation === "invalid") {
+      if (appUtilities.promptInvalidEdgeWarning) {
+        appUtilities.promptInvalidEdgeWarning.render(typeChangeInvalidMessage);
+      }
+      return;
+    }
+
+    if (validation === "reverse") {
+      var swappedSource = newEdgeJson.data.source;
+      newEdgeJson.data.source = newEdgeJson.data.target;
+      newEdgeJson.data.target = swappedSource;
+
+      if (newEdgeJson.data.portsource !== undefined || newEdgeJson.data.porttarget !== undefined) {
+        var swappedPortSource = newEdgeJson.data.portsource;
+        newEdgeJson.data.portsource = newEdgeJson.data.porttarget;
+        newEdgeJson.data.porttarget = swappedPortSource;
+      }
+
+      if (appUtilities.promptReversedEdgeWarning) {
+        appUtilities.promptReversedEdgeWarning.render();
+      }
     }
 
     cy.undoRedo().do("batch", [
@@ -309,6 +382,13 @@ module.exports = function (chiseInstance) {
       targetData["background-color"] = associationDefaultProps["background-color"];
       targetData["border-color"] = associationDefaultProps["border-color"];
     }
+    if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
+      if (appUtilities.promptInvalidEdgeWarning) {
+        appUtilities.promptInvalidEdgeWarning.render(typeChangeInvalidMessage);
+      }
+      return;
+    }
+
     cy.undoRedo().do("changeNodeTypeData", {
       eleId: nodeId,
       targetData: targetData
@@ -375,6 +455,14 @@ module.exports = function (chiseInstance) {
     targetData["class"] = toClass;
     targetData["statesandinfos"] = statesAndInfos;
     targetData["auxunitlayouts"] = auxUnitLayouts;
+
+    if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
+      if (appUtilities.promptInvalidEdgeWarning) {
+        appUtilities.promptInvalidEdgeWarning.render(typeChangeInvalidMessage);
+      }
+      return;
+    }
+
     cy.undoRedo().do("changeNodeTypeData", {
       eleId: nodeId,
       targetData: targetData
@@ -461,6 +549,14 @@ module.exports = function (chiseInstance) {
       targetData["auxunitlayouts"] = $.extend(true, {}, currentJson.data.auxunitlayouts);
     }
     targetData["ports"] = $.extend(true, [], currentJson.data.ports || []);
+
+    if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
+      if (appUtilities.promptInvalidEdgeWarning) {
+        appUtilities.promptInvalidEdgeWarning.render(typeChangeInvalidMessage);
+      }
+      return;
+    }
+
     cy.undoRedo().do("changeNodeTypeData", {
       eleId: nodeId,
       targetData: targetData
@@ -552,6 +648,14 @@ module.exports = function (chiseInstance) {
       targetData['auxunitlayouts'] = currentJson.data.auxunitlayouts;
     }
     targetData['ports'] = currentJson.data.ports || [];
+
+    if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
+      if (appUtilities.promptInvalidEdgeWarning) {
+        appUtilities.promptInvalidEdgeWarning.render(typeChangeInvalidMessage);
+      }
+      return;
+    }
+
     cy.undoRedo().do("changeNodeTypeData", {
       eleId: nodeId,
       targetData: targetData

@@ -8464,11 +8464,13 @@ var PromptInvalidEdgeWarning = Backbone.View.extend({
     var self = this;
     self.template = _.template($("#prompt-invalidEdge-template").html());
   },
-  render: function () {
+  render: function (message) {
     var self = this;
     self.template = _.template($("#prompt-invalidEdge-template").html());
 
-    $(self.el).html(self.template);
+    $(self.el).html(self.template({
+      message: message || "Invalid edge type! Refer to Legend menu and specifications for help."
+    }));
     $(self.el).modal("show");
 
     $(document)
