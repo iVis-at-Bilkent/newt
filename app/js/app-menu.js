@@ -80,7 +80,12 @@ module.exports = function() {
     var chiseInstance = appUtilities.getActiveChiseInstance();
     var textXml = (new XMLSerializer()).serializeToString(chiseInstance.loadXMLDoc("app/samples/"+filename));
     validateSBGNML(textXml);
-    return chiseInstance.loadSample(filename, 'app/samples/', callback);
+    return chiseInstance.loadSample(filename, 'app/samples/', function () {
+      appUtilities.restoreBoundaryNodes();
+      if (typeof callback !== 'undefined') {
+        callback();
+      }
+    });
   }
 
   function updatePalette(mapType) {

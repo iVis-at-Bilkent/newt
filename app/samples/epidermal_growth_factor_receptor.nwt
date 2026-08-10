@@ -1,42 +1,43 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="activity flow">
     <extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.1.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#ffffffff"/>
+          <colorDefinition id="color_1" value="#ffffff7f"/>
           <colorDefinition id="color_2" value="#ececec"/>
-          <colorDefinition id="color_3" value="#555555"/>
-          <colorDefinition id="color_4" value="#ffffff"/>
+          <colorDefinition id="color_3" value="#ffffffff"/>
+          <colorDefinition id="color_4" value="#555555"/>
+          <colorDefinition id="color_5" value="#ffffff"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/bw1_3d.png"/>
           <backgroundImage id="image_2" value="http://newteditor.org/color-scheme-images/rb2_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff1ececec514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="5" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffffececec514normalnormalHelvetica000image_1none505010010010.5" idList="glyph0 glyph1">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="5" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="0.5"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph30 glyph39 glyph45 glyph38 glyph13 glyph9 glyph42 glyph36 glyph23 glyph4 glyph21 glyph28 glyph7 glyph22 glyph33 glyph26 glyph34 glyph14 glyph47 glyph25 glyph29 glyph41 glyph15 glyph40 glyph3 glyph20 glyph2 glyph27 glyph24 glyph12 glyph44 glyph11 glyph16 glyph35 glyph17 glyph37 glyph5 glyph10 glyph8 glyph46 nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54 glyph6 glyph18">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_1none505010010011" idList="glyph30 glyph39 glyph45 glyph38 glyph13 glyph9 glyph42 glyph36 glyph23 glyph4 glyph21 glyph28 glyph7 glyph22 glyph33 glyph26 glyph34 glyph14 glyph47 glyph25 glyph29 glyph41 glyph15 glyph40 glyph3 glyph20 glyph2 glyph27 glyph24 glyph12 glyph44 glyph11 glyph16 glyph35 glyph17 glyph37 glyph5 glyph10 glyph8 glyph46 nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54 glyph6 glyph18">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_2none5050100100" id-list="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_2none505010010011" idList="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" id-list="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8_0 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40_0 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fstadium" idList="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8_0 nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40_0 nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_5"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fellipse" id-list="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fellipse" idList="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_5"/>
           </style>
-          <style id="edge5555551.25" id-list="arc17 arc26 arc64 arc46 arc50 arc62 nwtE_865ef643-bbd9-4965-a7d7-86ac09fdccee arc42 arc51 arc52 nwtE_2ee4d24b-ece1-4e7b-b1a5-5078fbefc1ab nwtE_3f4674a6-5a2e-4379-b55c-ececa27c044c arc4 arc5 arc6 arc7 arc8 arc9 arc55 arc56 arc12 arc13 arc14 arc15 arc45 arc44 arc43 arc20 nwtE_d2365e40-7fdc-40de-ac2e-069b47737bbd arc22 arc23 arc24 arc61 arc18 arc27 arc28 arc29 arc30 arc31 arc32 arc33 arc34 arc19 arc21 nwtE_246f922b-1bb5-4919-8e18-068385a9d5b3 arc39 nwtE_57728f8d-2d61-4d37-aa3e-d6c925a8221f arc41 arc0 arc57 arc58 arc59 arc60 arc1 arc2 arc3 arc10 arc11 arc16 nwtE_b563cd4f-b5b9-49c8-984d-3e27b68b2a18 nwtE_ace78805-ba20-43c9-83f2-a4fc5f953392 nwtE_d3553fcd-5db0-47a2-99d6-166df0deee43 nwtE_cd2834bc-a01e-44dc-997c-f94bd7beb035 nwtE_8f1e67b8-80bb-4326-84e4-b6accc7a5377 nwtE_6ce94167-d117-4a13-ac18-585a08101fd3">
-            <g stroke="color_3" stroke-width="1.25"/>
+          <style id="edge5555551.25" idList="arc17 arc26 arc64 arc46 arc50 arc62 nwtE_865ef643-bbd9-4965-a7d7-86ac09fdccee arc42 arc51 arc52 nwtE_2ee4d24b-ece1-4e7b-b1a5-5078fbefc1ab nwtE_3f4674a6-5a2e-4379-b55c-ececa27c044c arc4 arc5 arc6 arc7 arc8 arc9 arc55 arc56 arc12 arc13 arc14 arc15 arc45 arc44 arc43 arc20 nwtE_d2365e40-7fdc-40de-ac2e-069b47737bbd arc22 arc23 arc24 arc61 arc18 arc27 arc28 arc29 arc30 arc31 arc32 arc33 arc34 arc19 arc21 nwtE_246f922b-1bb5-4919-8e18-068385a9d5b3 arc39 nwtE_57728f8d-2d61-4d37-aa3e-d6c925a8221f arc41 arc0 arc57 arc58 arc59 arc60 arc1 arc2 arc3 arc10 arc11 arc16 nwtE_b563cd4f-b5b9-49c8-984d-3e27b68b2a18 nwtE_ace78805-ba20-43c9-83f2-a4fc5f953392 nwtE_d3553fcd-5db0-47a2-99d6-166df0deee43 nwtE_cd2834bc-a01e-44dc-997c-f94bd7beb035 nwtE_8f1e67b8-80bb-4326-84e4-b6accc7a5377 nwtE_6ce94167-d117-4a13-ac18-585a08101fd3">
+            <g stroke="color_4" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
-      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
-
+      <nwt:mapProperties 
+        xmlns:nwt="https://newteditor.org/">
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -48,23 +49,46 @@
         <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
         <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
         <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <keepBendPointPositionsFixed>false</keepBendPointPositionsFixed>
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <epnMatchingPercentage>100</epnMatchingPercentage>
+        <processIncomingContribution>33</processIncomingContribution>
+        <processOutgoingContribution>33</processOutgoingContribution>
+        <processAgentContribution>33</processAgentContribution>
+        <overallProcessPercentage>100</overallProcessPercentage>
+        <complexMatchPercentage>100</complexMatchPercentage>
+        <allowSimpleChemicalCloning>false</allowSimpleChemicalCloning>
+        <simpleChemicalCloningThreshold>3</simpleChemicalCloningThreshold>
         <enablePorts>true</enablePorts>
+        <enableEntityStateSynchronization>false</enableEntityStateSynchronization>
         <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <rememberDirectoryToPersist>false</rememberDirectoryToPersist>
+        <storeUserProfile>false</storeUserProfile>
+        <boundarySnapThreshold>20</boundarySnapThreshold>
+        <calculateBoundaryPadding>false</calculateBoundaryPadding>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
         <mapColorScheme>opposed_grey_red2</mapColorScheme>
         <mapColorSchemeStyle>3D</mapColorSchemeStyle>
         <mapName>Epidermal growth factor receptor</mapName>
         <mapDescription>Oda et al., Mol Sys Biol, 2005</mapDescription>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
       </nwt:mapProperties>
+      <nwt:annotationLayers 
+        xmlns:nwt="https://newteditor.org/">
+        <layerCount>0</layerCount>
+        <layers>[]</layers>
+      </nwt:annotationLayers>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
           <w>1177.25</w>
           <h>945.7500000000002</h>
           <minW>0</minW>
@@ -73,6 +97,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
+          <boundaryNodes>glyph18</boundaryNodes>
         </nwt:extraInfo>
       </extension>
       <label text="cytosol"/>
@@ -228,7 +253,8 @@
     </glyph>
     <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
           <w>1142.25</w>
           <h>33.25</h>
           <minW>0</minW>
@@ -237,6 +263,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
+          <boundaryNodes/>
         </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
@@ -258,6 +285,9 @@
       <label text="Ca++"/>
       <bbox x="1008.6041628677258" y="955.2500000000003" w="70" h="35"/>
       <glyph id="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="simple chemical"/>
         <bbox x="1013.6041628677258" y="949.2500000000003" w="12" h="12"/>
@@ -267,6 +297,9 @@
       <label text="DAG"/>
       <bbox x="1113.6234907183896" y="955.2500000000003" w="70" h="35"/>
       <glyph id="nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="simple chemical"/>
         <bbox x="1118.6234907183896" y="949.2500000000003" w="12" h="12"/>
@@ -276,6 +309,9 @@
       <label text="PI3,4,5P3"/>
       <bbox x="503.88279654907797" y="771.0365598451452" w="70" h="35"/>
       <glyph id="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="simple chemical"/>
         <bbox x="508.88279654907797" y="765.0365598451452" w="12" h="12"/>
@@ -285,6 +321,9 @@
       <label text="Spry"/>
       <bbox x="493.5546476266527" y="519.8591884639911" w="60" h="30"/>
       <glyph id="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="unspecified entity"/>
         <bbox x="498.5546476266527" y="513.8591884639911" w="12" h="12"/>
@@ -294,279 +333,474 @@
       <label text="EGF"/>
       <bbox x="1030" y="107" w="60" h="30"/>
     </glyph>
-    <glyph id="glyph18" class="biological activity">
+    <glyph id="glyph18" class="biological activity" compartmentRef="glyph0">
       <label text="EFGR"/>
-      <bbox x="1030" y="207.1901444779761" w="60" h="30"/>
+      <bbox x="1030" y="200.875" w="60" h="30"/>
     </glyph>
     <arc id="arc17" class="positive influence" source="glyph18" target="glyph23">
-      <start x="1032.2748861102382" y="237.8151444779761"/>
-      <end x="878.4475436034749" y="324.50738445307525"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1033.6667756829029" y="231.5"/>
+      <end x="877.0207340681809" y="324.4470075808726"/>
     </arc>
     <arc id="arc26" class="negative influence" source="glyph40" target="glyph18">
-      <start x="1062.9231580484166" y="420.3750000000001"/>
-      <end x="1063.107049760232" y="238.7980909863506"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1062.839295854628" y="420.3750000000001"/>
+      <end x="1063.0180829590272" y="232.48388778389642"/>
     </arc>
     <arc id="arc64" class="positive influence" source="glyph37" target="glyph5">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="786.7165378849543" y="265.625"/>
-      <next x="773.1456418807978" y="358.4862954284528"/>
+      <next x="773.1456418807979" y="358.4862954284529"/>
       <end x="646.43783320584" y="419.81541767737036"/>
     </arc>
     <arc id="arc46" class="positive influence" source="glyph15" target="glyph11">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="819.1215940756774" y="899.6250000000002"/>
       <end x="919.8773968189646" y="955.6072253897585"/>
     </arc>
     <arc id="arc50" class="positive influence" source="glyph18" target="glyph17">
-      <start x="1064.9601503884242" y="237.8151444779761"/>
-      <next x="1131.5281141868513" y="447.51129336447843"/>
-      <end x="1063.0658525200754" y="865.2911326345443"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1064.9132668466686" y="231.5"/>
+      <next x="1131.5281141868513" y="443.3462160051605"/>
+      <end x="1063.0369971558896" y="865.2903736672208"/>
     </arc>
     <arc id="arc62" class="positive influence" source="glyph37" target="glyph17">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="790.4889094113929" y="265.625"/>
       <next x="799.3376810413168" y="358.48629542845197"/>
       <end x="1050.8611674595709" y="865.5754660552179"/>
     </arc>
     <arc id="nwtE_865ef643-bbd9-4965-a7d7-86ac09fdccee" class="positive influence" source="glyph17" target="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1057.1134089555856" y="899.6250000000002"/>
       <end x="1047.5203200986218" y="951.5520000785513"/>
     </arc>
     <arc id="arc42" class="positive influence" source="glyph15" target="glyph41">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="767.9366197183099" y="899.6250000000002"/>
       <end x="685.6505522325465" y="955.3722403768055"/>
     </arc>
     <arc id="arc51" class="unknown influence" source="glyph40" target="glyph17">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1060" y="451.6250000000001"/>
       <end x="1060" y="866.8125000000002"/>
     </arc>
     <arc id="arc52" class="negative influence" source="glyph27" target="glyph3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="549.6185728537946" y="988.3750000000002"/>
       <end x="536.5929421242922" y="1048.5642252438065"/>
     </arc>
     <arc id="nwtE_2ee4d24b-ece1-4e7b-b1a5-5078fbefc1ab" class="positive influence" source="nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40" target="glyph35">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1149.677946635716" y="990.8750000000003"/>
       <end x="1152.9094904151907" y="1046.421874971777"/>
     </arc>
     <arc id="nwtE_3f4674a6-5a2e-4379-b55c-ececa27c044c" class="positive influence" source="nwtN_6ee0b131-96f5-4f53-b1ac-ec75300b37b8" target="glyph35">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1065.2553007371396" y="990.8750000000003"/>
       <end x="1132.9390246831622" y="1047.5356477646008"/>
     </arc>
     <arc id="arc4" class="positive influence" source="glyph30" target="glyph45">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1278.0113631280992" y="265.625"/>
       <end x="1252.2645534243522" y="323.1890012487331"/>
     </arc>
     <arc id="arc5" class="positive influence" source="glyph30" target="glyph38">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1293.0113642190083" y="265.625"/>
       <end x="1322.562851470989" y="323.2608752004606"/>
     </arc>
     <arc id="arc6" class="positive influence" source="glyph39" target="glyph13">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1419" y="265.625"/>
       <end x="1419" y="322.9166600000001"/>
     </arc>
     <arc id="arc7" class="positive influence" source="glyph45" target="glyph9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1258.5759707013449" y="357.2916600000001"/>
       <end x="1315.2923602947972" y="418.08991526240476"/>
     </arc>
     <arc id="arc8" class="positive influence" source="glyph38" target="glyph9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1332" y="357.2916600000001"/>
       <end x="1332" y="417.2500000000001"/>
     </arc>
     <arc id="arc9" class="positive influence" source="glyph13" target="glyph9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1404.5896653293523" y="357.2916600000001"/>
       <end x="1348.5289482851672" y="418.07780576520577"/>
     </arc>
     <arc id="arc55" class="positive influence" source="glyph20" target="glyph2">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="758.5937829351004" y="988.3750000000002"/>
       <end x="783.1912173245574" y="1046.6624680768386"/>
     </arc>
     <arc id="arc56" class="positive influence" source="glyph27" target="glyph24">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="571.5978493041292" y="988.3750000000002"/>
       <end x="642.0095008293378" y="1047.5314130394963"/>
     </arc>
     <arc id="arc12" class="positive influence" source="glyph37" target="glyph4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="776.7272718347107" y="265.625"/>
       <end x="731.2030259022791" y="323.5841051895082"/>
     </arc>
     <arc id="arc13" class="positive influence" source="glyph37" target="glyph42">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="760.8749979545453" y="265.625"/>
       <end x="654.8567435801912" y="324.5240259244088"/>
     </arc>
     <arc id="arc14" class="positive influence" source="glyph37" target="glyph23">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="799.0568189132232" y="265.625"/>
       <end x="836.2518649416253" y="323.4139091181337"/>
     </arc>
     <arc id="arc15" class="positive influence" source="glyph37" target="glyph36">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="817.8068202768596" y="265.625"/>
       <end x="926.4462436149698" y="324.551704625625"/>
     </arc>
     <arc id="arc45" class="positive influence" source="glyph15" target="glyph44">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="802.9718309859155" y="899.6250000000002"/>
       <end x="845.1275539965665" y="954.6444178999308"/>
     </arc>
     <arc id="arc44" class="positive influence" source="glyph15" target="glyph20">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="784.1338028169014" y="899.6250000000002"/>
       <end x="760.1234048398674" y="954.2640466785072"/>
     </arc>
     <arc id="arc43" class="positive influence" source="glyph29" target="glyph41">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="650.112676056338" y="899.6250000000002"/>
       <end x="657.4685989795405" y="954.0281799528516"/>
     </arc>
     <arc id="arc20" class="positive influence" source="glyph4" target="glyph5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="699.7738528075016" y="357.2916600000001"/>
       <end x="632.5408082449085" y="418.27548357652165"/>
     </arc>
     <arc id="nwtE_d2365e40-7fdc-40de-ac2e-069b47737bbd" class="positive influence" source="glyph17" target="nwtN_fabb9a6d-32b3-4620-9494-8de70bdd3e40">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1075.602727239153" y="899.6250000000002"/>
       <end x="1128.3161950367248" y="952.4137158259244"/>
     </arc>
     <arc id="arc22" class="positive influence" source="glyph5" target="glyph40">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="643.625" y="436.0000000000001"/>
       <end x="1026.25" y="436.0000000000001"/>
     </arc>
     <arc id="arc23" class="positive influence" source="glyph5" target="glyph26">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="613" y="451.6250000000001"/>
       <end x="613" y="514.9167000000001"/>
     </arc>
     <arc id="arc24" class="positive influence" source="glyph5" target="glyph21">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="628.8383051746399" y="451.6250000000001"/>
       <end x="693.9370565586025" y="515.8470224423443"/>
     </arc>
     <arc id="arc61" class="negative influence" source="glyph35" target="glyph18">
-      <start x="1163.1678277107321" y="1049.5416000000002"/>
-      <next x="1202.2815171113587" y="982.8789819657019"/>
-      <next x="1202.333359367751" y="442.0643468123373"/>
-      <end x="1070.6581046454448" y="238.6546069744912"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1163.1109497422133" y="1049.5416000000002"/>
+      <next x="1202.286681333535" y="982.356419153454"/>
+      <next x="1202.343948507309" y="437.5889132997036"/>
+      <end x="1070.5717616834988" y="232.34150017721018"/>
     </arc>
     <arc id="arc18" class="positive influence" source="glyph18" target="glyph4">
-      <start x="1029.375" y="232.85769050672826"/>
-      <end x="750.5760925690449" y="329.9711656997248"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1029.375" y="227.10639821428572"/>
+      <end x="750.5589193829412" y="329.3592775598066"/>
     </arc>
     <arc id="arc27" class="negative influence" source="glyph15" target="glyph21">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="790.6662498716357" y="868.3750000000002"/>
       <next x="783.4976572902751" y="532.7668621613292"/>
       <end x="743.6249208112852" y="533.2686827576249"/>
     </arc>
     <arc id="arc28" class="positive influence" source="glyph21" target="glyph28">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="712" y="549.2917000000001"/>
       <end x="712" y="603.25"/>
     </arc>
     <arc id="arc29" class="positive influence" source="glyph28" target="glyph7">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="712" y="637.625"/>
       <end x="712" y="685.2500000000002"/>
     </arc>
     <arc id="arc30" class="positive influence" source="glyph7" target="glyph22">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="712" y="719.6250000000002"/>
       <end x="712" y="771.2500000000002"/>
     </arc>
     <arc id="arc31" class="positive influence" source="glyph22" target="glyph15">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="725.1316489361702" y="805.6250000000002"/>
       <end x="775.857778992324" y="865.9826737377022"/>
     </arc>
     <arc id="arc32" class="positive influence" source="glyph33" target="glyph34">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="465.9108396572306" y="265.625"/>
       <next x="464.24233123673116" y="558.0245496267032"/>
       <end x="518.3673268428507" y="604.3431551642739"/>
     </arc>
     <arc id="arc33" class="positive influence" source="glyph26" target="glyph34">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="599.9103724190085" y="549.2917000000001"/>
       <end x="554.0964215455709" y="603.9795036039002"/>
     </arc>
     <arc id="arc34" class="positive influence" source="glyph34" target="glyph14">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="538.9999999999999" y="637.625"/>
       <end x="538.9999999999999" y="685.2500000000002"/>
     </arc>
     <arc id="arc19" class="positive influence" source="glyph18" target="glyph40">
-      <start x="1057.0768419515834" y="237.8151444779761"/>
-      <end x="1056.50218035216" y="417.3032921613299"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1057.160704145372" y="231.5"/>
+      <end x="1056.6019944441248" y="417.30035067532384"/>
     </arc>
     <arc id="arc21" class="positive influence" source="glyph18" target="glyph5">
-      <start x="1056.0290474684668" y="237.8151444779761"/>
-      <next x="1027.495636278331" y="350.08910048866403"/>
-      <next x="949.047181080299" y="404.65286534113534"/>
-      <end x="646.736491964725" y="432.8529944124625"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1056.173498031758" y="231.5"/>
+      <next x="1028.5381895264002" y="344.3450211132631"/>
+      <next x="950.2478566940523" y="400.03405709300756"/>
+      <end x="646.7323794606197" y="432.4025958661667"/>
     </arc>
     <arc id="nwtE_246f922b-1bb5-4919-8e18-068385a9d5b3" class="negative influence" source="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54" target="glyph5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="549.3943787140508" y="519.2341884639911"/>
       <end x="605.1388437343525" y="452.52805867991157"/>
     </arc>
     <arc id="arc39" class="positive influence" source="glyph47" target="glyph25">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="436.9999999999999" y="899.6250000000002"/>
       <end x="436.9999999999999" y="954.0000000000002"/>
     </arc>
     <arc id="nwtE_57728f8d-2d61-4d37-aa3e-d6c925a8221f" class="positive influence" source="glyph5" target="nwtN_a5c45144-e1e1-482e-ae62-56e84f6e5b54">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="587.1602689126019" y="451.6250000000001"/>
       <end x="532.3285279312694" y="516.4121300892677"/>
     </arc>
     <arc id="arc41" class="positive influence" source="glyph29" target="glyph27">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="631.2746478873239" y="899.6250000000002"/>
       <end x="572.0089003978319" y="954.9916851546571"/>
     </arc>
     <arc id="arc0" class="positive influence" source="glyph6" target="glyph18">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1060" y="137.625"/>
-      <end x="1060" y="203.4401444779761"/>
+      <end x="1060" y="197.125"/>
     </arc>
     <arc id="arc57" class="positive influence" source="glyph12" target="glyph10">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="532.8936781609194" y="899.6250000000002"/>
       <end x="444.24380826017125" y="1126.4643729813265"/>
     </arc>
     <arc id="arc58" class="positive influence" source="glyph44" target="glyph8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="862.809869375907" y="988.3750000000002"/>
       <end x="896.4498454428693" y="1126.3389494651012"/>
     </arc>
     <arc id="arc59" class="positive influence" source="glyph11" target="glyph8">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="946.2195282295784" y="988.3750000000002"/>
       <end x="906.3779475446485" y="1126.3726266690774"/>
     </arc>
     <arc id="arc60" class="positive influence" source="glyph16" target="glyph46">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="1516" y="265.625"/>
       <end x="1516" y="1126.2500000000002"/>
     </arc>
     <arc id="arc1" class="positive influence" source="glyph18" target="glyph16">
-      <start x="1090.625" y="222.23217056799731"/>
-      <next x="1435.9268474056223" y="222.7060215565217"/>
-      <end x="1482.4171140655471" y="238.55283531287978"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1090.625" y="216.34093613349"/>
+      <next x="1436.234498227323" y="221.59912236374166"/>
+      <end x="1482.4310431697215" y="238.04761690046624"/>
     </arc>
     <arc id="arc2" class="positive influence" source="glyph18" target="glyph39">
-      <start x="1090.625" y="222.8587154920503"/>
-      <next x="1325.964730953988" y="227.99639133126198"/>
-      <end x="1385.3338965626433" y="242.0376887922956"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1090.625" y="217.08137021041327"/>
+      <next x="1326.2213611554546" y="226.36190675832194"/>
+      <end x="1385.3467408203735" y="241.42584016879943"/>
     </arc>
     <arc id="arc3" class="positive influence" source="glyph18" target="glyph30">
-      <start x="1090.625" y="225.97537481291823"/>
-      <end x="1251.2735999448605" y="245.8314386097271"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1090.625" y="220.51979166666666"/>
+      <end x="1251.2853334204087" y="244.88660890209533"/>
     </arc>
     <arc id="arc10" class="positive influence" source="glyph18" target="glyph33">
-      <start x="1029.375" y="222.4859755536687"/>
-      <next x="668.6933864792921" y="225.97008427890552"/>
-      <end x="499.72826815271776" y="246.00141151516513"/>
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
+      <start x="1029.375" y="216.4962406114327"/>
+      <next x="668.539599896815" y="223.81593382242585"/>
+      <end x="499.7242087850446" y="245.64017646394186"/>
     </arc>
     <arc id="arc11" class="positive influence" source="glyph18" target="glyph37">
-      <start x="1029.375" y="225.33286339075096"/>
-      <end x="822.7336745457822" y="246.5382707920842"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1029.375" y="219.73137684501845"/>
+      <end x="822.7255150546226" y="245.7531985194133"/>
     </arc>
     <arc id="arc16" class="positive influence" source="glyph18" target="glyph36">
-      <start x="1046.6605584115298" y="237.8151444779761"/>
-      <end x="973.3684768840642" y="323.66497306873765"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="1047.3302411304533" y="231.5"/>
+      <end x="972.6379687159512" y="323.6143621195338"/>
     </arc>
     <arc id="nwtE_b563cd4f-b5b9-49c8-984d-3e27b68b2a18" class="positive influence" source="glyph14" target="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="538.9783371369261" y="719.6250000000002"/>
       <end x="538.9122580386943" y="767.2865628485306"/>
     </arc>
     <arc id="nwtE_ace78805-ba20-43c9-83f2-a4fc5f953392" class="positive influence" source="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff" target="glyph47">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="519.5389966141861" y="806.6615598451452"/>
       <end x="455.95607045547126" y="866.2382997052366"/>
     </arc>
     <arc id="nwtE_d3553fcd-5db0-47a2-99d6-166df0deee43" class="positive influence" source="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff" target="glyph12">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="538.905049178404" y="806.6615598451452"/>
       <end x="538.9769800415197" y="865.2500023551914"/>
     </arc>
     <arc id="nwtE_cd2834bc-a01e-44dc-997c-f94bd7beb035" class="positive influence" source="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff" target="glyph29">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="559.6001445656566" y="806.6615598451452"/>
       <end x="627.7882643114542" y="866.3173453927726"/>
     </arc>
     <arc id="nwtE_8f1e67b8-80bb-4326-84e4-b6accc7a5377" class="positive influence" source="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff" target="glyph17">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="574.507796549078" y="795.0627022042835"/>
       <end x="1026.3011513691886" y="877.8267092349834"/>
     </arc>
     <arc id="nwtE_6ce94167-d117-4a13-ac18-585a08101fd3" class="positive influence" source="nwtN_0ebb93dd-bd78-4f36-8d64-6f0e83b1d3ff" target="glyph27">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="549.2954267003296" y="806.6615598451452"/>
       <next x="595.241439186458" y="886.6386131174138"/>
       <end x="562.0410313885833" y="954.3193838393299"/>

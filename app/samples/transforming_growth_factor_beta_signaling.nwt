@@ -1,15 +1,14 @@
-﻿<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <sbgn xmlns="http://sbgn.org/libsbgn/0.2">
   <map language="activity flow">
     <extension>
       <renderInformation 
-        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="4.2.0" background-color="#00000000">
+        xmlns="http://www.sbml.org/sbml/level3/version1/render/version1" id="renderInformation" program-name="sbgnviz" program-version="6.1.0" background-color="#00000000">
         <listOfColorDefinitions>
-          <colorDefinition id="color_1" value="#ffffff7f"/>
+          <colorDefinition id="color_1" value="#ffffffff"/>
           <colorDefinition id="color_2" value="#d8d8d8"/>
-          <colorDefinition id="color_3" value="#ffffffff"/>
-          <colorDefinition id="color_4" value="#555555"/>
-          <colorDefinition id="color_5" value="#ffffff"/>
+          <colorDefinition id="color_3" value="#555555"/>
+          <colorDefinition id="color_4" value="#ffffff"/>
         </listOfColorDefinitions>
         <listOfBackgroundImages>
           <backgroundImage id="image_1" value="http://newteditor.org/color-scheme-images/rb3_3d.png"/>
@@ -19,40 +18,40 @@
           <backgroundImage id="image_5" value="http://newteditor.org/color-scheme-images/rb4_3d.png"/>
         </listOfBackgroundImages>
         <listOfStyles>
-          <style id="nodeffffff0.5d8d8d81.2514normalnormalHelvetica000image_1none5050100100" id-list="glyph0 glyph1">
-            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffffd8d8d81.2514normalnormalHelvetica000image_1none505010010011" idList="glyph0 glyph1">
+            <g font-size="14" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_2" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_1none5050100100" id-list="glyph11 glyph7 glyph8 glyph18 glyph16 glyph19 glyph6 glyph12 glyph10 glyph9 glyph20 glyph17 glyph5 glyph13 glyph2">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_1none505010010011" idList="glyph11 glyph7 glyph8 glyph18 glyph16 glyph19 glyph6 glyph12 glyph10 glyph9 glyph20 glyph17 glyph5 glyph13 glyph2">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_1" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff15555551.25image_2none5050100100" id-list="glyph21 glyph22">
-            <g stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.25image_2none505010010011" idList="glyph21 glyph22">
+            <g stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_2" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_3none5050100100" id-list="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_3none505010010011" idList="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_3" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0froundrectangle" id-list="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4_0 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_5"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0froundrectangle" idList="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4_0 nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_4none5050100100" id-list="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_4none505010010011" idList="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_4" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fbottomroundrectangle" id-list="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_5"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fbottomroundrectangle" idList="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
           </style>
-          <style id="nodeffffff15555551.2511normalnormalHelvetica000image_5none5050100100" id-list="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3">
-            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_4" stroke-width="1.25" fill="color_3" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%"/>
+          <style id="nodeffffff5555551.2511normalnormalHelvetica000image_5none505010010011" idList="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3">
+            <g font-size="11" font-family="Helvetica" font-weight="normal" font-style="normal" font-color="#000" stroke="color_3" stroke-width="1.25" fill="color_1" background-image="image_5" background-fit="none" background-pos-x="50%" background-pos-y="50%" background-width="100%" background-height="100%" background-image-opacity="1" background-opacity="1"/>
           </style>
-          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fcomplex" id-list="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3_0">
-            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_4" stroke-width="2.25" fill="color_5"/>
+          <style id="infoboxffffff5555552.259normalnormalArial0f0f0fcomplex" idList="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3_0">
+            <g font-size="9" font-family="Arial" font-weight="normal" font-style="normal" font-color="#0f0f0f" stroke="color_3" stroke-width="2.25" fill="color_4"/>
           </style>
-          <style id="edge5555551.25" id-list="arc0 nwtE_08c3c741-9f52-4e29-9bef-d4b4a12c4831 nwtE_4b4b5d9a-d128-4adf-b0fd-1d1371d2dccd arc19 arc13 arc18 arc21 nwtE_71eb9812-7e46-4cdd-9c1d-fd704c804df6 nwtE_99bcc30c-eef3-44cc-9584-b241cd762539 nwtE_641d87b8-cbd5-4314-9604-8ae680b46777 nwtE_ea81e6a7-f602-4b8b-8682-717d4a6d2673 arc20 arc12 arc9 arc5 arc15 arc22 arc16 arc11 arc10 arc7 arc6 nwtE_d9b5f227-9479-4eac-a4d0-375c7e93c78e nwtE_f1c17a84-ce0f-4e6f-9dac-be6d5bb2cfc8">
-            <g stroke="color_4" stroke-width="1.25"/>
+          <style id="edge5555551.25" idList="arc0 nwtE_08c3c741-9f52-4e29-9bef-d4b4a12c4831 nwtE_4b4b5d9a-d128-4adf-b0fd-1d1371d2dccd arc19 arc13 arc18 arc21 nwtE_71eb9812-7e46-4cdd-9c1d-fd704c804df6 nwtE_99bcc30c-eef3-44cc-9584-b241cd762539 nwtE_641d87b8-cbd5-4314-9604-8ae680b46777 nwtE_ea81e6a7-f602-4b8b-8682-717d4a6d2673 arc20 arc12 arc9 arc5 arc15 arc22 arc16 arc11 arc10 arc7 arc6 nwtE_d9b5f227-9479-4eac-a4d0-375c7e93c78e nwtE_f1c17a84-ce0f-4e6f-9dac-be6d5bb2cfc8">
+            <g stroke="color_3" stroke-width="1.25"/>
           </style>
         </listOfStyles>
       </renderInformation>
-      <nwt:mapProperties xmlns:nwt="https://newteditor.org/">
-
+      <nwt:mapProperties 
+        xmlns:nwt="https://newteditor.org/">
         <compoundPadding>0</compoundPadding>
         <extraCompartmentPadding>14</extraCompartmentPadding>
         <extraComplexPadding>10</extraComplexPadding>
@@ -64,23 +63,46 @@
         <fitLabelsToInfoboxes>false</fitLabelsToInfoboxes>
         <recalculateLayoutOnComplexityManagement>true</recalculateLayoutOnComplexityManagement>
         <rearrangeOnComplexityManagement>true</rearrangeOnComplexityManagement>
+        <keepBendPointPositionsFixed>false</keepBendPointPositionsFixed>
         <animateOnDrawingChanges>true</animateOnDrawingChanges>
         <adjustNodeLabelFontSizeAutomatically>false</adjustNodeLabelFontSizeAutomatically>
+        <epnMatchingPercentage>100</epnMatchingPercentage>
+        <processIncomingContribution>33</processIncomingContribution>
+        <processOutgoingContribution>33</processOutgoingContribution>
+        <processAgentContribution>33</processAgentContribution>
+        <overallProcessPercentage>100</overallProcessPercentage>
+        <complexMatchPercentage>100</complexMatchPercentage>
+        <allowSimpleChemicalCloning>false</allowSimpleChemicalCloning>
+        <simpleChemicalCloningThreshold>3</simpleChemicalCloningThreshold>
         <enablePorts>true</enablePorts>
+        <enableEntityStateSynchronization>false</enableEntityStateSynchronization>
         <enableSIFTopologyGrouping>false</enableSIFTopologyGrouping>
+        <rememberDirectoryToPersist>false</rememberDirectoryToPersist>
+        <storeUserProfile>false</storeUserProfile>
+        <boundarySnapThreshold>20</boundarySnapThreshold>
+        <calculateBoundaryPadding>false</calculateBoundaryPadding>
         <allowCompoundNodeResize>true</allowCompoundNodeResize>
         <mapColorScheme>opposed_red_blue</mapColorScheme>
         <mapColorSchemeStyle>3D</mapColorSchemeStyle>
         <mapName>Transforming growth factor beta (TGFB) signaling</mapName>
         <mapDescription>Chaudhury and Howe, IUBMB Life, 2009</mapDescription>
+        <highlightColor>#0B9BCD</highlightColor>
+        <extraHighlightThickness>2</extraHighlightThickness>
+        <mapPD2AFConverted>false</mapPD2AFConverted>
         <defaultInfoboxHeight>12</defaultInfoboxHeight>
         <defaultInfoboxWidth>30</defaultInfoboxWidth>
         <rearrangeAfterExpandCollapse>true</rearrangeAfterExpandCollapse>
       </nwt:mapProperties>
+      <nwt:annotationLayers 
+        xmlns:nwt="https://newteditor.org/">
+        <layerCount>0</layerCount>
+        <layers>[]</layers>
+      </nwt:annotationLayers>
     </extension>
     <glyph id="glyph0" class="compartment">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
           <w>639.25</w>
           <h>463.375</h>
           <minW>0</minW>
@@ -89,6 +111,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
+          <boundaryNodes>glyph2</boundaryNodes>
         </nwt:extraInfo>
       </extension>
       <label text="cytosol"/>
@@ -136,7 +159,8 @@
     </glyph>
     <glyph id="glyph1" class="compartment" compartmentRef="glyph0">
       <extension>
-        <nwt:extraInfo  xmlns:nwt="https://newteditor.org/">
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
           <w>157.25</w>
           <h>231.75</h>
           <minW>0</minW>
@@ -145,6 +169,7 @@
           <WRBias>0</WRBias>
           <HTBias>0</HTBias>
           <HBBias>0</HBBias>
+          <boundaryNodes/>
         </nwt:extraInfo>
       </extension>
       <label text="nucleus"/>
@@ -176,6 +201,9 @@
       <label text="RSmad&#xA;Co-Smads"/>
       <bbox x="505" y="290.5" w="70" h="35"/>
       <glyph id="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="macromolecule"/>
         <bbox x="510" y="284.5" w="12" h="12"/>
@@ -185,6 +213,9 @@
       <label text="I-Smad"/>
       <bbox x="640.9999999999999" y="290.5" w="70" h="35"/>
       <glyph id="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="macromolecule"/>
         <bbox x="645.9999999999999" y="284.5" w="12" h="12"/>
@@ -194,15 +225,34 @@
       <label text="I-Smad"/>
       <bbox x="642.0035915650764" y="380.5" w="70" h="35"/>
       <glyph id="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="nucleic acid feature"/>
         <bbox x="647.0035915650764" y="374.5" w="12" h="12"/>
       </glyph>
     </glyph>
     <glyph id="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" class="biological activity" compartmentRef="glyph0">
+      <extension>
+        <nwt:extraInfo 
+          xmlns:nwt="https://newteditor.org/">
+          <w>70</w>
+          <h>35</h>
+          <minW>0</minW>
+          <minH>0</minH>
+          <WLBias>0</WLBias>
+          <WRBias>0</WRBias>
+          <HTBias>0</HTBias>
+          <HBBias>0</HBBias>
+        </nwt:extraInfo>
+      </extension>
       <label text="TAK&#xA;TAB"/>
       <bbox x="764" y="290.5" w="70" h="35"/>
       <glyph id="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3_0" class="unit of information">
+        <extension>
+          <visible>true</visible>
+        </extension>
         <label text=""/>
         <entity name="complex"/>
         <bbox x="769" y="284.5" w="12" h="12"/>
@@ -212,108 +262,180 @@
       <label text="TGFβ"/>
       <bbox x="510" y="38" w="60" h="30"/>
     </glyph>
-    <glyph id="glyph2" class="biological activity">
+    <glyph id="glyph2" class="biological activity" compartmentRef="glyph0">
       <label text="TGFβ&#xA;receptor"/>
-      <bbox x="510" y="112.28278498382133" w="60" h="30"/>
+      <bbox x="509.8502126265141" y="117.75" w="60" h="30"/>
     </glyph>
     <arc id="arc0" class="positive influence" source="glyph13" target="glyph2">
-      <start x="540" y="68.625"/>
-      <end x="540" y="108.53278498382133"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="539.9706529440663" y="68.625"/>
+      <end x="539.8854290832819" y="114.00000551198345"/>
     </arc>
     <arc id="nwtE_08c3c741-9f52-4e29-9bef-d4b4a12c4831" class="positive influence" source="glyph6" target="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="540" y="240.625"/>
       <end x="540" y="286.75"/>
     </arc>
     <arc id="nwtE_4b4b5d9a-d128-4adf-b0fd-1d1371d2dccd" class="negative influence" source="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282" target="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="640.3749999999999" y="308"/>
       <end x="576.625" y="308"/>
     </arc>
     <arc id="arc19" class="logic arc" source="glyph10" target="glyph22.1">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="761.0692784333347" y="413.625"/>
-      <next x="761.2835206004634" y="461.9449994609091"/>
+      <next x="761.2835206004634" y="461.944999460909"/>
       <end x="540" y="480.375"/>
     </arc>
     <arc id="arc13" class="positive influence" source="glyph19" target="glyph6">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="437.625" y="225"/>
       <end x="506.25" y="225"/>
     </arc>
     <arc id="arc18" class="logic arc" source="glyph12" target="glyph22.1">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="287.90461646350576" y="323.625"/>
       <next x="287.0184272965658" y="468.79371823335987"/>
       <end x="540" y="480.375"/>
     </arc>
     <arc id="arc21" class="logic arc" source="glyph21.2" target="glyph22.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="540" y="462.625"/>
       <end x="540" y="480.375"/>
     </arc>
     <arc id="nwtE_71eb9812-7e46-4cdd-9c1d-fd704c804df6" class="positive influence" source="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068" target="nwtN_c2ba92e8-25c0-4528-a50e-d7e46deaf282">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="676.8014793748873" y="379.875"/>
       <end x="676.2369569532099" y="329.2498057287598"/>
     </arc>
     <arc id="nwtE_99bcc30c-eef3-44cc-9584-b241cd762539" class="positive influence" source="glyph11" target="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="799" y="240.625"/>
       <end x="799" y="286.75"/>
     </arc>
     <arc id="nwtE_641d87b8-cbd5-4314-9604-8ae680b46777" class="positive influence" source="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" target="glyph10">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="791.3472222222222" y="326.125"/>
       <end x="768.8127598379733" y="379.4960951205894"/>
     </arc>
     <arc id="nwtE_ea81e6a7-f602-4b8b-8682-717d4a6d2673" class="positive influence" source="nwtN_52fdebc6-f82b-4a13-8640-938571eed1d3" target="glyph9">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="809.0694444444445" y="326.125"/>
       <end x="838.8018102845112" y="379.6432585121202"/>
     </arc>
     <arc id="arc20" class="logic arc" source="glyph9" target="glyph22.1">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="849.0636089091875" y="413.625"/>
       <next x="849.2997709071765" y="471.6362324785413"/>
       <end x="540" y="480.375"/>
     </arc>
     <arc id="arc12" class="negative influence" source="glyph16" target="glyph6">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="648.375" y="225"/>
       <end x="571.625" y="225"/>
     </arc>
     <arc id="arc9" class="positive influence" source="glyph7" target="glyph12">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="288" y="240.625"/>
       <end x="288" y="289.25"/>
     </arc>
     <arc id="arc5" class="positive influence" source="glyph2" target="glyph11">
-      <start x="570.625" y="138.83718540803164"/>
-      <end x="765.451175148484" y="212.3424798009432"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="570.4752126265141" y="143.65163445099955"/>
+      <end x="765.4309660461117" y="213.0503726681312"/>
     </arc>
     <arc id="arc15" class="logic arc" source="glyph20" target="glyph21.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="473.797131147541" y="396.625"/>
       <end x="540" y="421.375"/>
     </arc>
     <arc id="arc22" class="necessary stimulation" source="glyph22.2" target="glyph5">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="540" y="521.625"/>
       <end x="540" y="555.75"/>
     </arc>
     <arc id="arc16" class="logic arc" source="glyph17" target="glyph21.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="481.625" y="447.24719101123594"/>
       <end x="540" y="421.375"/>
     </arc>
     <arc id="arc11" class="negative influence" source="glyph18" target="glyph2">
-      <start x="710.375" y="159.25328502552003"/>
-      <end x="571.6078458584384" y="133.2139288566619"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="710.375" y="160.08994633851557"/>
+      <end x="571.4626026394919" y="137.8183602067427"/>
     </arc>
     <arc id="arc10" class="negative influence" source="glyph8" target="glyph2">
-      <start x="372.625" y="159.16621358651278"/>
-      <end x="508.3926641049738" y="133.30369752948437"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="372.625" y="160.00806070972277"/>
+      <end x="508.23823846656626" y="137.90281815027828"/>
     </arc>
     <arc id="arc7" class="positive influence" source="glyph2" target="glyph6">
-      <start x="540" y="142.90778498382133"/>
-      <end x="540" y="206.25"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="539.8755831166031" y="148.375"/>
+      <end x="539.9695554185819" y="206.25000411942716"/>
     </arc>
     <arc id="arc6" class="positive influence" source="glyph2" target="glyph7">
-      <start x="509.375" y="139.15814097537083"/>
-      <end x="321.5386176741049" y="211.99484002140508"/>
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
+      <start x="509.2252126265141" y="143.9676051810193"/>
+      <end x="321.55934636924394" y="212.70757558519995"/>
     </arc>
     <arc id="nwtE_d9b5f227-9479-4eac-a4d0-375c7e93c78e" class="necessary stimulation" source="nwtN_19a32de0-b3ef-405b-8b13-84c7ff7a0068" target="glyph5">
+      <extension>
+        <curveStyle>segments</curveStyle>
+      </extension>
       <start x="677.2707298145777" y="416.125"/>
       <next x="679.1087689713322" y="540.8336846543004"/>
       <next x="635.2272665490605" y="576.5479042975537"/>
       <end x="578.5845214678286" y="576.8168182604762"/>
     </arc>
     <arc id="nwtE_f1c17a84-ce0f-4e6f-9dac-be6d5bb2cfc8" class="logic arc" source="nwtN_161ecab2-f526-4b41-8217-6719914ae8c4" target="glyph21.1">
+      <extension>
+        <curveStyle>bezier</curveStyle>
+      </extension>
       <start x="540" y="326.125"/>
       <end x="540" y="421.375"/>
     </arc>
