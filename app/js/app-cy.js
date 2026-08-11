@@ -102,6 +102,17 @@ module.exports = function (chiseInstance) {
     if (bgImage) {
       updatedNode.data("background-image", bgImage);
     }
+    else if (typeof updatedNode.removeStyle === "function") {
+      updatedNode.removeStyle([
+        "background-image",
+        "background-fit",
+        "background-image-opacity",
+        "background-position-x",
+        "background-position-y",
+        "background-height",
+        "background-width"
+      ].join(" "));
+    }
 
     updatedNode.updateStyle();
     cy.style().update();
@@ -165,14 +176,14 @@ module.exports = function (chiseInstance) {
     node.data("class", toClass);
 
     node.connectedEdges().forEach(function (edge) {
-      if (
-        chiseInstance.elementUtilities.validateArrowEnds(
-          edge,
-          edge.source(),
-          edge.target(),
-          true
-        ) === "invalid"
-      ) {
+      var validationResult = chiseInstance.elementUtilities.validateArrowEnds(
+        edge,
+        edge.source(),
+        edge.target(),
+        true
+      );
+
+      if (validationResult !== "valid") {
         isValid = false;
       }
     });
@@ -333,6 +344,57 @@ module.exports = function (chiseInstance) {
     delete targetData["background-image-opacity"];
   }
 
+  function resetAssociationVisualsForTypeChange(targetData, defaultProps) {
+    defaultProps = defaultProps || {};
+
+    if (defaultProps["background-color"] !== undefined) {
+      targetData["background-color"] = defaultProps["background-color"];
+    }
+    targetData["background-opacity"] = defaultProps["background-opacity"] !== undefined ?
+      defaultProps["background-opacity"] :
+      "1";
+
+    if (defaultProps["border-color"] !== undefined) {
+      targetData["border-color"] = defaultProps["border-color"];
+    }
+
+    delete targetData["background-image"];
+    delete targetData["background-fit"];
+    delete targetData["background-width"];
+    delete targetData["background-height"];
+    delete targetData["background-position-x"];
+    delete targetData["background-position-y"];
+    delete targetData["background-image-opacity"];
+  }
+
+  function isTextLogicalOperator(nodeClass) {
+    return [
+      "and",
+      "or",
+      "not",
+      "unknown logical operator"
+    ].indexOf(nodeClass) >= 0;
+  }
+
+  function refreshLogicalOperatorLabelSize(nodes) {
+    (nodes || cy.collection()).forEach(function (node) {
+      if (!node || node.empty && node.empty() || !node.isNode || !node.isNode()) {
+        return;
+      }
+
+      if (!isTextLogicalOperator(node.data("class"))) {
+        return;
+      }
+
+      node.removeData("font-size");
+      node.removeData("labelsize");
+      node.removeData("_labelSize");
+      node.removeData("_labelWidth");
+      node.removeData("_labelHeight");
+      node.updateStyle();
+    });
+  }
+
   function replaceNodeWithBatch(cyTarget, toClass) {
     if (!cyTarget || !toClass) {
       return;
@@ -342,45 +404,57 @@ module.exports = function (chiseInstance) {
     var nodeId = currentJson.data.id;
     var currentClass = cyTarget.data("class");
     var currentFontSize = parseFloat(cyTarget.style("font-size"));
-    var shouldPreserveLabelSize = [
+    var logicalNodeTypes = [
       "and",
       "or",
       "not",
       "delay",
-      "unknown logical operator",
+      "unknown logical operator"
+    ];
+    var shouldResetLogicalLabelSize = currentClass === "delay" && [
+      "and",
+      "or",
+      "not"
+    ].indexOf(toClass) >= 0 || [
+      "and",
+      "or",
+      "not",
+      "unknown logical operator"
+    ].indexOf(currentClass) >= 0 && toClass === "delay";
+    var shouldPreserveLabelSize = logicalNodeTypes.concat([
       "process",
       "omitted process",
       "uncertain process",
       "truncated process",
       "association",
       "dissociation"
-    ].indexOf(currentClass) >= 0 || [
-      "and",
-      "or",
-      "not",
-      "delay",
-      "unknown logical operator",
+    ]).indexOf(currentClass) >= 0 || logicalNodeTypes.concat([
       "process",
       "omitted process",
       "uncertain process",
       "truncated process",
       "association",
       "dissociation"
-    ].indexOf(toClass) >= 0;
-    var shouldUseAssociationDefaultColors = cyTarget.data("language") === "SBML" && toClass === "association";
+    ]).indexOf(toClass) >= 0;
+    var shouldUseAssociationDefaultColors = (
+      cyTarget.data("language") === "PD" ||
+      cyTarget.data("language") === "SBML"
+    ) && toClass === "association";
     var associationDefaultProps = shouldUseAssociationDefaultColors ?
       chiseInstance.elementUtilities.getDefaultProperties(toClass) || {} :
       null;
 
     var targetData = cloneNodeTypeData(currentJson.data);
     targetData["class"] = toClass;
-    if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
+    if (shouldResetLogicalLabelSize) {
+      delete targetData["font-size"];
+      delete targetData["labelsize"];
+    } else if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
       targetData["font-size"] = currentFontSize;
       targetData["labelsize"] = currentFontSize;
     }
     if (shouldUseAssociationDefaultColors) {
-      targetData["background-color"] = associationDefaultProps["background-color"];
-      targetData["border-color"] = associationDefaultProps["border-color"];
+      resetAssociationVisualsForTypeChange(targetData, associationDefaultProps);
     }
     if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
       if (appUtilities.promptInvalidEdgeWarning) {
@@ -543,6 +617,12 @@ module.exports = function (chiseInstance) {
 
     syncDefaultBackgroundPropsForTypeChange(targetData, currentJson.data, fromClass, toClass);
     normalizePdImageAndCloneLayersForTypeChange(targetData, currentJson.data);
+    if (toClass === "association") {
+      resetAssociationVisualsForTypeChange(
+        targetData,
+        chiseInstance.elementUtilities.getDefaultProperties(toClass)
+      );
+    }
 
     targetData["statesandinfos"] = $.extend(true, [], currentJson.data.statesandinfos || []);
     if (currentJson.data.auxunitlayouts !== undefined) {
@@ -1213,7 +1293,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            replaceNodeWithBatch(cyTarget, item.toClass);
+            replacePdNodeWithBatch(cyTarget, item.toClass);
           }
         };
       })
@@ -1427,7 +1507,7 @@ module.exports = function (chiseInstance) {
               return;
             }
 
-            replaceAfAuxiliaryUnitWithBatch(cyTarget, item.toClass);
+            replaceNodeWithBatch(cyTarget, item.toClass);
           }
         };
       })
@@ -2794,6 +2874,7 @@ module.exports = function (chiseInstance) {
         if (node.isParent()) {
             cy.expandCollapse('get').clearVisualCue();
         }
+        refreshLogicalOperatorLabelSize(node.collection());
     });
 
     /*
@@ -2866,6 +2947,8 @@ module.exports = function (chiseInstance) {
     
     // To redraw expand/collapse cue after resize
     cy.on("nodeediting.resizeend", function (e, type, node) {
+      refreshLogicalOperatorLabelSize(node.collection());
+      cy.style().update();
       if(node.isParent() && node.selected())
         node.trigger("select");
     });
@@ -2889,8 +2972,10 @@ module.exports = function (chiseInstance) {
     cy.on("afterDo", function (event, actionName, args, res) {
       refreshUndoRedoButtonsStatus(cy);
 
-      if(actionName == "resize") {
+      if(actionName == "resize" || actionName == "resizeNodes") {
         var node = res.node;
+        refreshLogicalOperatorLabelSize(res.nodes || (node && node.collection()) || args.nodes);
+        cy.style().update();
         // ensure consistency of infoboxes through resizing
        /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
@@ -2910,8 +2995,10 @@ module.exports = function (chiseInstance) {
         document.getElementById('map-type').value = chiseInstance.getMapType();
       }
 
-      if(actionName == "resize") {
+      if(actionName == "resize" || actionName == "resizeNodes") {
         var node = res.node;
+        refreshLogicalOperatorLabelSize(res.nodes || (node && node.collection()) || args.nodes);
+        cy.style().update();
         // ensure consistency of infoboxes through resizing
        /*  if(node.data('statesandinfos').length > 0) {
           updateInfoBox(node);
@@ -2946,8 +3033,10 @@ module.exports = function (chiseInstance) {
         document.getElementById('map-type').value = chiseInstance.getMapType();
       }
 
-      if(actionName == "resize") {
+      if(actionName == "resize" || actionName == "resizeNodes") {
         var node = res.node;
+        refreshLogicalOperatorLabelSize(res.nodes || (node && node.collection()) || args.nodes);
+        cy.style().update();
         // ensure consistency of infoboxes through resizing
         /* if(node.data('statesandinfos').length > 0) {
          updateInfoBox(node);

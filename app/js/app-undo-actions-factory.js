@@ -23,6 +23,16 @@ module.exports = function (cy) {
     return value;
   }
 
+  function refreshConnectedEdges(ele) {
+    if (!ele || ele.empty || ele.empty() || !ele.isNode || !ele.isNode()) {
+      return;
+    }
+
+    ele.connectedEdges().forEach(function (edge) {
+      edge.updateStyle();
+    });
+  }
+
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
     var eles = param.eles; // a pure array of nodes, not a cy collection
@@ -85,6 +95,7 @@ module.exports = function (cy) {
     cy.endBatch();
 
     ele.updateStyle();
+    refreshConnectedEdges(ele);
     cy.style().update();
     if (typeof cy.forceRender === "function") {
       cy.forceRender();
