@@ -33,6 +33,22 @@ module.exports = function (cy) {
     });
   }
 
+  function relinkAuxiliaryUnits(ele) {
+    var units = ele.data("statesandinfos") || [];
+    var layouts = ele.data("auxunitlayouts") || {};
+    var unitsById = {};
+
+    units.forEach(function (unit) {
+      unitsById[unit.id] = unit;
+    });
+
+    Object.keys(layouts).forEach(function (side) {
+      layouts[side].units = layouts[side].units.map(function (unit) {
+        return unitsById[unit.id] || unit;
+      });
+    });
+  }
+
   appUndoActions.changeDataDirty = function (param) {
     var result = {};
     var eles = param.eles; // a pure array of nodes, not a cy collection
@@ -91,6 +107,8 @@ module.exports = function (cy) {
     targetKeys.forEach(function (key) {
       ele.data(key, cloneUndoValue(key, targetData[key]));
     });
+
+    relinkAuxiliaryUnits(ele);
 
     cy.endBatch();
 

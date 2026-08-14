@@ -344,29 +344,6 @@ module.exports = function (chiseInstance) {
     delete targetData["background-image-opacity"];
   }
 
-  function resetAssociationVisualsForTypeChange(targetData, defaultProps) {
-    defaultProps = defaultProps || {};
-
-    if (defaultProps["background-color"] !== undefined) {
-      targetData["background-color"] = defaultProps["background-color"];
-    }
-    targetData["background-opacity"] = defaultProps["background-opacity"] !== undefined ?
-      defaultProps["background-opacity"] :
-      "1";
-
-    if (defaultProps["border-color"] !== undefined) {
-      targetData["border-color"] = defaultProps["border-color"];
-    }
-
-    delete targetData["background-image"];
-    delete targetData["background-fit"];
-    delete targetData["background-width"];
-    delete targetData["background-height"];
-    delete targetData["background-position-x"];
-    delete targetData["background-position-y"];
-    delete targetData["background-image-opacity"];
-  }
-
   function isTextLogicalOperator(nodeClass) {
     return [
       "and",
@@ -436,14 +413,6 @@ module.exports = function (chiseInstance) {
       "association",
       "dissociation"
     ]).indexOf(toClass) >= 0;
-    var shouldUseAssociationDefaultColors = (
-      cyTarget.data("language") === "PD" ||
-      cyTarget.data("language") === "SBML"
-    ) && toClass === "association";
-    var associationDefaultProps = shouldUseAssociationDefaultColors ?
-      chiseInstance.elementUtilities.getDefaultProperties(toClass) || {} :
-      null;
-
     var targetData = cloneNodeTypeData(currentJson.data);
     targetData["class"] = toClass;
     if (shouldResetLogicalLabelSize) {
@@ -452,9 +421,6 @@ module.exports = function (chiseInstance) {
     } else if (shouldPreserveLabelSize && !isNaN(currentFontSize)) {
       targetData["font-size"] = currentFontSize;
       targetData["labelsize"] = currentFontSize;
-    }
-    if (shouldUseAssociationDefaultColors) {
-      resetAssociationVisualsForTypeChange(targetData, associationDefaultProps);
     }
     if (!validateNodeTypeChangeEdges(cyTarget, toClass)) {
       if (appUtilities.promptInvalidEdgeWarning) {
@@ -617,16 +583,25 @@ module.exports = function (chiseInstance) {
 
     syncDefaultBackgroundPropsForTypeChange(targetData, currentJson.data, fromClass, toClass);
     normalizePdImageAndCloneLayersForTypeChange(targetData, currentJson.data);
-    if (toClass === "association") {
-      resetAssociationVisualsForTypeChange(
-        targetData,
-        chiseInstance.elementUtilities.getDefaultProperties(toClass)
-      );
-    }
-
     targetData["statesandinfos"] = $.extend(true, [], currentJson.data.statesandinfos || []);
     if (currentJson.data.auxunitlayouts !== undefined) {
       targetData["auxunitlayouts"] = $.extend(true, {}, currentJson.data.auxunitlayouts);
+    }
+
+    if (!chiseInstance.elementUtilities.canHaveStateVariable(toClass)) {
+      targetData["statesandinfos"] = targetData["statesandinfos"].filter(function (unit) {
+        return unit.clazz !== "state variable";
+      });
+
+      Object.keys(targetData["auxunitlayouts"] || {}).forEach(function (side) {
+        var layout = targetData["auxunitlayouts"][side];
+        layout.units = layout.units.filter(function (unit) {
+          return unit.clazz !== "state variable";
+        });
+        if (layout.units.length === 0) {
+          delete targetData["auxunitlayouts"][side];
+        }
+      });
     }
     targetData["ports"] = $.extend(true, [], currentJson.data.ports || []);
 
