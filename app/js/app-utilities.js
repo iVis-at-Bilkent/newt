@@ -492,12 +492,17 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
       return currentGeneralProperties.adjustNodeLabelFontSizeAutomatically;
     },
     // whether to improve flow (swap nodes)
+    // Disabled for Orthogonal/OrSE: post-layout swaps move metabolites after
+    // bendpoints are written, which disrupts the computed orthogonal layout
     improveFlow: function () {
       var currentLayoutProperties = appUtilities.getScratch(
         newInst.getCy(),
         "currentLayoutProperties"
       );
-      return currentLayoutProperties.improveFlow;
+      return (
+        currentLayoutProperties.layoutStyle !== "orthogonal" &&
+        currentLayoutProperties.improveFlow
+      );
     },
     undoable: appUtilities.undoable,
     undoableDrag: function () {
