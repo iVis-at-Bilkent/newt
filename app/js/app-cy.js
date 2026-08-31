@@ -2879,16 +2879,24 @@ module.exports = function (chiseInstance) {
       var targetNode = node || e.target;
       if (!targetNode) return;
       var activeChiseInstance = appUtilities.getActiveChiseInstance();
-      var bNodes = cy.nodes().filter(function (ele) {
-        return ele.data('boundaryParentId') === targetNode.id();
+
+      var childCompartments = targetNode.descendants().filter(function (ele) {
+        return ele.data('class') === 'compartment';
       });
-      if (bNodes.length > 0) {
-        bNodes.each(function (bNode) {
-          activeChiseInstance.elementUtilities.freeNodeFromBoundary(targetNode, bNode);
-          bNode.data("boundaryParentId", targetNode.id());
-          activeChiseInstance.elementUtilities.changeParent(bNode, targetNode, undefined, undefined);
+      var compartments = targetNode.union(childCompartments);
+
+      compartments.each(function (comp) {
+        var bNodes = cy.nodes().filter(function (ele) {
+          return ele.data('boundaryParentId') === comp.id();
         });
-      }
+        if (bNodes.length > 0) {
+          bNodes.each(function (bNode) {
+            activeChiseInstance.elementUtilities.freeNodeFromBoundary(comp, bNode);
+            bNode.data("boundaryParentId", comp.id());
+            activeChiseInstance.elementUtilities.changeParent(bNode, comp, undefined, undefined);
+          });
+        }
+      });
     });
 
     //Fixes info box locations after expand collapse
@@ -2901,15 +2909,24 @@ module.exports = function (chiseInstance) {
       var targetNode = node || e.target;
       if (!targetNode) return;
       var activeChiseInstance = appUtilities.getActiveChiseInstance();
-      var bNodes = cy.nodes().filter(function (ele) {
-        return ele.data('boundaryParentId') === targetNode.id();
+
+      var childCompartments = targetNode.descendants().filter(function (ele) {
+        return ele.data('class') === 'compartment';
       });
-      if (bNodes.length > 0) {
-        bNodes.each(function (bNode) {
-          var changedNodes = activeChiseInstance.elementUtilities.changeParent(bNode, null, undefined, undefined);
-          activeChiseInstance.elementUtilities.addNodeOnBoundary(targetNode, changedNodes[0]);
+      var compartments = targetNode.union(childCompartments);
+
+      compartments.each(function (comp) {
+        var bNodes = cy.nodes().filter(function (ele) {
+          return ele.data('boundaryParentId') === comp.id();
         });
-      }
+        if (bNodes.length > 0) {
+          bNodes.each(function (bNode) {
+            var newParent = comp.parent().nonempty() ? comp.parent() : null;
+            var changedNodes = activeChiseInstance.elementUtilities.changeParent(bNode, newParent, undefined, undefined);
+            activeChiseInstance.elementUtilities.addNodeOnBoundary(comp, changedNodes[0]);
+          });
+        }
+      });
     });
 
     cy.on("expandcollapse.beforeexpand",function(event){
