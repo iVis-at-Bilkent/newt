@@ -1821,6 +1821,7 @@ module.exports = function (chiseInstance) {
     cytoscapeExtensionsAndContextMenu();
     bindCyEvents();
     cy.style().selector('core').style({'active-bg-opacity': 0});
+    cy.style().selector('node[boundaryParentId]').style({ 'z-index': 10 });
     // If undo extension, register undo/redo actions
     if (appUtilities.undoable) {
       registerUndoRedoActions();
