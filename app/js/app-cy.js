@@ -1907,7 +1907,16 @@ module.exports = function (chiseInstance) {
         }
       },
       // function that handles edge reconnection
-      handleReconnectEdge: chiseInstance.elementUtilities.addEdge,
+      handleReconnectEdge: function (source, target, edgeParams, location) {
+        var annotations = edgeParams && edgeParams.annotations;
+        var newEdge = chiseInstance.elementUtilities.addEdge(source, target, edgeParams, location);
+
+        if (newEdge && newEdge.nonempty && newEdge.nonempty() && annotations) {
+          newEdge.data('annotations', jquery.extend(true, {}, annotations));
+        }
+
+        return newEdge;
+      },
       zIndex: 999,
       enableMultipleAnchorRemovalOption: true,
     });
