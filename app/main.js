@@ -60,6 +60,15 @@ libs.cytoscape = cytoscape;
 libs.sbgnviz = sbgnviz;
 libs.tippy = tippy;
 
+window.addEventListener('beforeunload', function (event) {
+  var message = 'Are you sure you want to leave this web page?';
+
+  event.preventDefault();
+  event.returnValue = message;
+
+  return message;
+});
+
 
 $(document).ready(function () {
 
