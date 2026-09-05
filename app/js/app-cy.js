@@ -1900,6 +1900,7 @@ module.exports = function (chiseInstance) {
     if (args && args.options) {
       delete args.options.layoutPropertiesBefore;
       delete args.options.layoutPropertiesAfter;
+      delete args.options.edgeEditingBefore;
     }
   }
 
@@ -1917,6 +1918,14 @@ module.exports = function (chiseInstance) {
     });
 
     return style;
+  }
+
+  function classListHasClass(classes, className) {
+    if (Array.isArray(classes)) {
+      return classes.indexOf(className) >= 0;
+    }
+
+    return typeof classes === 'string' && classes.split(/\s+/).indexOf(className) >= 0;
   }
 
   function saveEdgeState(edges, dataNames) {
@@ -1947,7 +1956,86 @@ module.exports = function (chiseInstance) {
     return result;
   }
 
-  function restoreEdgeState(snapshot, dataNames) {
+  function saveEdgeStateFromJsons(jsons, dataNames) {
+    var result = {};
+
+    (jsons || []).forEach(function(eleJson) {
+      var data = {};
+      var classes = {};
+      var style = {};
+      var eleData = eleJson && eleJson.data;
+      var eleStyle = eleJson && eleJson.style;
+
+      if (!eleData || eleData.source === undefined || eleData.target === undefined || eleData.id === undefined) {
+        return;
+      }
+
+      dataNames.forEach(function(name) {
+        data[name] = {
+          exists: Object.prototype.hasOwnProperty.call(eleData, name),
+          value: copyEdgeStateValue(eleData[name])
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        classes[className] = classListHasClass(eleJson.classes, className);
+      });
+
+      edgeEditingStyleNames.forEach(function(name) {
+        style[name] = {
+          exists: !!(eleStyle && Object.prototype.hasOwnProperty.call(eleStyle, name)),
+          value: eleStyle ? copyEdgeStateValue(eleStyle[name]) : undefined
+        };
+      });
+
+      result[eleData.id] = {
+        data: data,
+        classes: classes,
+        style: style
+      };
+    });
+
+    return result;
+  }
+
+  function initRestoredAnchorPoints(edges) {
+    var edgeEditing = cy.edgeEditing && cy.edgeEditing('get');
+
+    if (edgeEditing && edgeEditing.initAnchorPoints && edges && edges.length > 0) {
+      edgeEditing.initAnchorPoints(edges);
+    }
+  }
+
+  function savedArrayLength(edgeState, name) {
+    var dataState = edgeState && edgeState.data && edgeState.data[name];
+
+    return dataState && dataState.exists && Array.isArray(dataState.value)
+      ? dataState.value.length
+      : 0;
+  }
+
+  function shouldInitRestoredAnchorPoints(edgeState) {
+    var hasBendPositions = savedArrayLength(edgeState, 'bendPointPositions') > 0;
+    var hasControlPositions = savedArrayLength(edgeState, 'controlPointPositions') > 0;
+    var hasCompleteBendState =
+      savedArrayLength(edgeState, 'cyedgebendeditingWeights') > 0 &&
+      savedArrayLength(edgeState, 'cyedgebendeditingDistances') > 0 &&
+      !!(edgeState.classes && edgeState.classes['edgebendediting-hasbendpoints']);
+    var hasCompleteControlState =
+      savedArrayLength(edgeState, 'cyedgecontroleditingWeights') > 0 &&
+      savedArrayLength(edgeState, 'cyedgecontroleditingDistances') > 0 &&
+      !!(edgeState.classes && edgeState.classes['edgecontrolediting-hascontrolpoints']);
+
+    return (hasBendPositions && !hasCompleteBendState) ||
+      (hasControlPositions && !hasCompleteControlState);
+  }
+
+  function restoreEdgeState(snapshot, dataNames, options) {
+    var restoredEdges = cy.collection();
+    var edgesToInit = cy.collection();
+
+    options = options || {};
+
     Object.keys(snapshot || {}).forEach(function(id) {
       var edge = cy.getElementById(id);
       var edgeState = snapshot[id];
@@ -1993,6 +2081,18 @@ module.exports = function (chiseInstance) {
         edge.removeStyle(stylesToRemove.join(' '));
       }
 
+      restoredEdges = restoredEdges.union(edge);
+
+      if (options.initAnchorPoints && shouldInitRestoredAnchorPoints(edgeState)) {
+        edgesToInit = edgesToInit.union(edge);
+      }
+    });
+
+    if (options.initAnchorPoints) {
+      initRestoredAnchorPoints(edgesToInit);
+    }
+
+    restoredEdges.forEach(function(edge) {
       edge.trigger('cyedgeediting.changeAnchorPoints');
     });
   }
@@ -2005,12 +2105,26 @@ module.exports = function (chiseInstance) {
     return saveEdgeState(edges, layoutEdgeDataNames);
   }
 
+  function saveLayoutEdgeStateFromJsons(jsons) {
+    return saveEdgeStateFromJsons(jsons, layoutEdgeDataNames);
+  }
+
+  function extractEdgeStateFromOptions(args, propertyName) {
+    return args && args.options && args.options[propertyName] !== undefined
+      ? copyEdgeStateValue(args.options[propertyName])
+      : undefined;
+  }
+
   function restoreEdgeEditingState(snapshot) {
-    restoreEdgeState(snapshot, edgeEditingDataNames);
+    restoreEdgeState(snapshot, edgeEditingDataNames, {
+      initAnchorPoints: true
+    });
   }
 
   function restoreLayoutEdgeState(snapshot) {
-    restoreEdgeState(snapshot, layoutEdgeDataNames);
+    restoreEdgeState(snapshot, layoutEdgeDataNames, {
+      initAnchorPoints: true
+    });
   }
 
   function buildEmptyEdgeState(edges, dataNames) {
@@ -2044,7 +2158,9 @@ module.exports = function (chiseInstance) {
   }
 
   function clearAllEdgeBends() {
-    restoreLayoutEdgeState(buildEmptyEdgeState(cy.edges(), layoutEdgeDataNames));
+    restoreEdgeState(buildEmptyEdgeState(cy.edges(), layoutEdgeDataNames), layoutEdgeDataNames, {
+      initAnchorPoints: false
+    });
   }
 
   function useDefaultEndpointAttachment() {
@@ -2086,6 +2202,12 @@ module.exports = function (chiseInstance) {
   }
 
   function registerLayoutEdgeStateEvents() {
+    $(document).on('newtBeforeUndoableLayout', function(event, layoutCy, layoutOptions) {
+      if (layoutCy === cy && layoutOptions && layoutOptions.edgeEditingBefore === undefined) {
+        layoutOptions.edgeEditingBefore = saveLayoutEdgeState(cy.edges());
+      }
+    });
+
     cy.on('beforeUndo', function(event, actionName, args) {
       if (actionName === 'layout' && args && !args.edgeEditingAfter) {
         args.edgeEditingAfter = saveLayoutEdgeState(cy.edges());
@@ -2156,7 +2278,10 @@ module.exports = function (chiseInstance) {
 
       function(args) {
         if (args.firstTime && !args.edgeEditingBefore) {
-          args.edgeEditingBefore = saveLayoutEdgeState(cy.edges());
+          args.edgeEditingBefore = extractEdgeStateFromOptions(args, 'edgeEditingBefore') ||
+            (args.allElements
+            ? saveLayoutEdgeStateFromJsons(args.allElements)
+            : saveLayoutEdgeState(cy.edges()));
         }
 
         if (args.firstTime && !args.layoutPropertiesBefore) {

@@ -376,6 +376,11 @@ var LayoutPropertiesView = Backbone.View.extend({
         {},
         appUtilities.getScratch(chiseInstance.getCy(), "currentLayoutProperties")
       );
+
+      $(document).trigger("newtBeforeUndoableLayout", [
+        chiseInstance.getCy(),
+        options
+      ]);
     }
 
     chiseInstance.performLayout(options, notUndoable);
