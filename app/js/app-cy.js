@@ -1862,10 +1862,45 @@ module.exports = function (chiseInstance) {
     'source-endpoint',
     'target-endpoint'
   ];
+  var layoutPropertiesBeforeNextLayoutScratchName = 'layoutPropertiesBeforeNextLayout';
   var bendsBeforeDrag = null;
 
   function copyEdgeStateValue(value) {
     return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  }
+
+  function saveCurrentLayoutProperties() {
+    return copyEdgeStateValue(appUtilities.getScratch(cy, 'currentLayoutProperties'));
+  }
+
+  function restoreLayoutProperties(layoutProperties) {
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, 'currentLayoutProperties', copyEdgeStateValue(layoutProperties));
+    }
+  }
+
+  function consumeLayoutPropertiesBeforeNextLayout() {
+    var layoutProperties = appUtilities.getScratch(cy, layoutPropertiesBeforeNextLayoutScratchName);
+
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, layoutPropertiesBeforeNextLayoutScratchName, undefined);
+      return copyEdgeStateValue(layoutProperties);
+    }
+
+    return saveCurrentLayoutProperties();
+  }
+
+  function extractLayoutPropertiesFromOptions(args, propertyName) {
+    return args && args.options && args.options[propertyName] !== undefined
+      ? copyEdgeStateValue(args.options[propertyName])
+      : undefined;
+  }
+
+  function removeLayoutPropertyMetadataFromOptions(args) {
+    if (args && args.options) {
+      delete args.options.layoutPropertiesBefore;
+      delete args.options.layoutPropertiesAfter;
+    }
   }
 
   function saveEdgeEditingStyles(edge) {
@@ -2055,17 +2090,23 @@ module.exports = function (chiseInstance) {
       if (actionName === 'layout' && args && !args.edgeEditingAfter) {
         args.edgeEditingAfter = saveLayoutEdgeState(cy.edges());
       }
+
+      if (actionName === 'layout' && args && !args.layoutPropertiesAfter) {
+        args.layoutPropertiesAfter = saveCurrentLayoutProperties();
+      }
     });
 
     cy.on('afterUndo', function(event, actionName, args, res) {
       if (actionName === 'layout') {
         restoreLayoutEdgeState((args && args.edgeEditingBefore) || (res && res.edgeEditingBefore));
+        restoreLayoutProperties((args && args.layoutPropertiesBefore) || (res && res.layoutPropertiesBefore));
       }
     });
 
     cy.on('afterRedo', function(event, actionName, args, res) {
       if (actionName === 'layout') {
         restoreLayoutEdgeState((args && args.edgeEditingAfter) || (res && res.edgeEditingAfter));
+        restoreLayoutProperties((args && args.layoutPropertiesAfter) || (res && res.layoutPropertiesAfter));
       }
     });
   }
@@ -2118,6 +2159,20 @@ module.exports = function (chiseInstance) {
           args.edgeEditingBefore = saveLayoutEdgeState(cy.edges());
         }
 
+        if (args.firstTime && !args.layoutPropertiesBefore) {
+          args.layoutPropertiesBefore =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesBefore') ||
+            consumeLayoutPropertiesBeforeNextLayout();
+        }
+
+        if (args.firstTime && !args.layoutPropertiesAfter) {
+          args.layoutPropertiesAfter =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesAfter') ||
+            saveCurrentLayoutProperties();
+        }
+
+        removeLayoutPropertyMetadataFromOptions(args);
+
         if (args.firstTime) {
           clearAllEdgeBends();
           useDefaultEndpointAttachment();
@@ -2125,8 +2180,11 @@ module.exports = function (chiseInstance) {
 
         var result = defaultLayout._do(args);
 
+        restoreLayoutProperties(args.layoutPropertiesAfter);
         result.edgeEditingBefore = args.edgeEditingBefore;
         result.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
 
         return result;
       },
@@ -2135,9 +2193,13 @@ module.exports = function (chiseInstance) {
         var result;
 
         args.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+        args.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
         result = defaultLayout._undo(args);
+        restoreLayoutProperties(args.layoutPropertiesBefore);
         result.edgeEditingBefore = args.edgeEditingBefore;
         result.edgeEditingAfter = args.edgeEditingAfter;
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter;
 
         return result;
       }
