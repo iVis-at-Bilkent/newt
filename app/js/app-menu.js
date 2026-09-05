@@ -1465,6 +1465,22 @@ module.exports = function() {
       chiseInstance.highlightSelected(cy.elements(':selected'));
     });
 
+    $("#highlight-unannotated").click(function (e) {
+
+      // use active chise instance
+      var chiseInstance = appUtilities.getActiveChiseInstance();
+
+      // use cy instance associated with chise instance
+      var cy = chiseInstance.getCy();
+
+      var unannotatedElements = cy.elements().filter(function (element) {
+        var annotations = element.data('annotations');
+        return !annotations || $.isEmptyObject(annotations);
+      });
+
+      chiseInstance.highlightSelected(unannotatedElements);
+    });
+
     $("#highlight-processes-of-selected").click(function (e) {
 
       // use active chise instance
