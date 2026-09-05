@@ -1828,9 +1828,327 @@ module.exports = function (chiseInstance) {
     }
   });
 
+  // edge state fields used by drag and layout undo/redo wrappers
+  var edgeEditingDataNames = [
+    'bendPointPositions',
+    'controlPointPositions',
+    'cyedgebendeditingWeights',
+    'cyedgebendeditingDistances',
+    'cyedgecontroleditingWeights',
+    'cyedgecontroleditingDistances'
+  ];
+  var layoutEdgeDataNames = edgeEditingDataNames.concat([
+    'rigid',
+    'orientation',
+    'isPhase2Edge',
+    'isPhase2Dummy',
+    'originalEdge',
+    'segmentIndex',
+    'quasiStub'
+  ]);
+  var edgeEditingClassNames = [
+    'edgebendediting-hasbendpoints',
+    'edgebendediting-hasmultiplebendpoints',
+    'edgecontrolediting-hascontrolpoints',
+    'edgecontrolediting-hasmultiplecontrolpoints'
+  ];
+  var edgeEditingStyleNames = [
+    'curve-style',
+    'segment-weights',
+    'segment-distances',
+    'edge-distances',
+    'control-point-weights',
+    'control-point-distances',
+    'source-endpoint',
+    'target-endpoint'
+  ];
+  var bendsBeforeDrag = null;
+
+  function copyEdgeStateValue(value) {
+    return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  }
+
+  function saveEdgeEditingStyles(edge) {
+    var style = {};
+
+    edgeEditingStyleNames.forEach(function(name) {
+      var parsedStyle = edge.pstyle && edge.pstyle(name);
+      var hasBypass = !!(parsedStyle && parsedStyle.bypass);
+
+      style[name] = {
+        exists: hasBypass,
+        value: hasBypass ? edge.style(name) : undefined
+      };
+    });
+
+    return style;
+  }
+
+  function saveEdgeState(edges, dataNames) {
+    var result = {};
+
+    edges.forEach(function(edge) {
+      var data = {};
+      var classes = {};
+
+      dataNames.forEach(function(name) {
+        data[name] = {
+          exists: edge.data(name) !== undefined,
+          value: copyEdgeStateValue(edge.data(name))
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        classes[className] = edge.hasClass(className);
+      });
+
+      result[edge.id()] = {
+        data: data,
+        classes: classes,
+        style: saveEdgeEditingStyles(edge)
+      };
+    });
+
+    return result;
+  }
+
+  function restoreEdgeState(snapshot, dataNames) {
+    Object.keys(snapshot || {}).forEach(function(id) {
+      var edge = cy.getElementById(id);
+      var edgeState = snapshot[id];
+
+      if (!edge || edge.length === 0 || !edgeState) {
+        return;
+      }
+
+      dataNames.forEach(function(name) {
+        var dataState = edgeState.data && edgeState.data[name];
+
+        if (dataState && dataState.exists) {
+          edge.data(name, copyEdgeStateValue(dataState.value));
+        }
+        else {
+          edge.removeData(name);
+        }
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        if (edgeState.classes && edgeState.classes[className]) {
+          edge.addClass(className);
+        }
+        else {
+          edge.removeClass(className);
+        }
+      });
+
+      var stylesToRemove = [];
+
+      edgeEditingStyleNames.forEach(function(name) {
+        var styleState = edgeState.style && edgeState.style[name];
+
+        if (styleState && styleState.exists) {
+          edge.style(name, copyEdgeStateValue(styleState.value));
+        }
+        else {
+          stylesToRemove.push(name);
+        }
+      });
+
+      if (stylesToRemove.length > 0) {
+        edge.removeStyle(stylesToRemove.join(' '));
+      }
+
+      edge.trigger('cyedgeediting.changeAnchorPoints');
+    });
+  }
+
+  function saveEdgeEditingState(edges) {
+    return saveEdgeState(edges, edgeEditingDataNames);
+  }
+
+  function saveLayoutEdgeState(edges) {
+    return saveEdgeState(edges, layoutEdgeDataNames);
+  }
+
+  function restoreEdgeEditingState(snapshot) {
+    restoreEdgeState(snapshot, edgeEditingDataNames);
+  }
+
+  function restoreLayoutEdgeState(snapshot) {
+    restoreEdgeState(snapshot, layoutEdgeDataNames);
+  }
+
+  function buildEmptyEdgeState(edges, dataNames) {
+    var snapshotToRestore = {};
+
+    edges.forEach(function(edge) {
+      snapshotToRestore[edge.id()] = {
+        data: {},
+        classes: {},
+        style: {}
+      };
+
+      dataNames.forEach(function(name) {
+        snapshotToRestore[edge.id()].data[name] = {
+          exists: false
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        snapshotToRestore[edge.id()].classes[className] = false;
+      });
+
+      edgeEditingStyleNames.forEach(function(name) {
+        snapshotToRestore[edge.id()].style[name] = {
+          exists: false
+        };
+      });
+    });
+
+    return snapshotToRestore;
+  }
+
+  function clearAllEdgeBends() {
+    restoreLayoutEdgeState(buildEmptyEdgeState(cy.edges(), layoutEdgeDataNames));
+  }
+
+  function useDefaultEndpointAttachment() {
+    cy.edges().removeStyle('source-endpoint target-endpoint edge-distances segment-weights segment-distances curve-style');
+  }
+
+  function getEdgesFromBends(bends) {
+    var edges = cy.collection();
+
+    Object.keys(bends || {}).forEach(function(id) {
+      var edge = cy.getElementById(id);
+
+      if (edge && edge.length > 0) {
+        edges = edges.union(edge);
+      }
+    });
+
+    return edges;
+  }
+
+  function saveBends(edges) {
+    return saveEdgeEditingState(edges);
+  }
+
+  function restoreBends(bends) {
+    restoreEdgeEditingState(bends);
+  }
+
+  function registerDragBendSnapshotEvents() {
+    cy.on('grab', 'node', function() {
+      var nodes = this.selected()
+        ? cy.nodes(':visible').filter(':selected')
+        : cy.collection([this]);
+
+      bendsBeforeDrag = saveBends(
+        nodes.union(nodes.descendants()).connectedEdges()
+      );
+    });
+  }
+
+  function registerLayoutEdgeStateEvents() {
+    cy.on('beforeUndo', function(event, actionName, args) {
+      if (actionName === 'layout' && args && !args.edgeEditingAfter) {
+        args.edgeEditingAfter = saveLayoutEdgeState(cy.edges());
+      }
+    });
+
+    cy.on('afterUndo', function(event, actionName, args, res) {
+      if (actionName === 'layout') {
+        restoreLayoutEdgeState((args && args.edgeEditingBefore) || (res && res.edgeEditingBefore));
+      }
+    });
+
+    cy.on('afterRedo', function(event, actionName, args, res) {
+      if (actionName === 'layout') {
+        restoreLayoutEdgeState((args && args.edgeEditingAfter) || (res && res.edgeEditingAfter));
+      }
+    });
+  }
+
+  function registerEdgeAwareDragUndo(ur, defaultDrag) {
+    ur.action(
+      "drag",
+
+      function(args) {
+        var result = defaultDrag._do(args);
+        var edges;
+
+        if (args.firstTime) {
+          edges = getEdgesFromBends(bendsBeforeDrag);
+
+          result.bendsBefore = bendsBeforeDrag;
+          result.bendsAfter = saveBends(edges);
+
+          bendsBeforeDrag = null;
+        }
+        else {
+          restoreBends(args.bendsAfter);
+
+          result.bendsBefore = args.bendsBefore;
+          result.bendsAfter = args.bendsAfter;
+        }
+
+        return result;
+      },
+
+      function(args) {
+        var result = defaultDrag._undo(args);
+
+        restoreBends(args.bendsBefore);
+
+        result.bendsBefore = args.bendsBefore;
+        result.bendsAfter = args.bendsAfter;
+
+        return result;
+      }
+    );
+  }
+
+  function registerEdgeAwareLayoutUndo(ur, defaultLayout) {
+    ur.action(
+      "layout",
+
+      function(args) {
+        if (args.firstTime && !args.edgeEditingBefore) {
+          args.edgeEditingBefore = saveLayoutEdgeState(cy.edges());
+        }
+
+        if (args.firstTime) {
+          clearAllEdgeBends();
+          useDefaultEndpointAttachment();
+        }
+
+        var result = defaultLayout._do(args);
+
+        result.edgeEditingBefore = args.edgeEditingBefore;
+        result.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+
+        return result;
+      },
+
+      function(args) {
+        var result;
+
+        args.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+        result = defaultLayout._undo(args);
+        result.edgeEditingBefore = args.edgeEditingBefore;
+        result.edgeEditingAfter = args.edgeEditingAfter;
+
+        return result;
+      }
+    );
+  }
+
   function registerUndoRedoActions() { // only if undoRedo is set
     // get ur extension instance for cy
     var ur = cy.undoRedo();
+    var defaultDrag = ur.actions.drag;
+    var defaultLayout = ur.actions.layout;
 
     // generate an instance of app undo actions with related cy
     var appUndoActions = appUndoActionsFactory(cy);
@@ -1858,6 +2176,11 @@ module.exports = function (chiseInstance) {
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
+
+    registerDragBendSnapshotEvents();
+    registerLayoutEdgeStateEvents();
+    registerEdgeAwareDragUndo(ur, defaultDrag);
+    registerEdgeAwareLayoutUndo(ur, defaultLayout);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
