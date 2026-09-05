@@ -361,10 +361,28 @@ var LayoutPropertiesView = Backbone.View.extend({
   getLayoutNameForStyle: function (layoutStyle) {
     return layoutStyle === "orthogonal" ? "orse" : "fcose";
   },
-  applyLayout: function (preferences, notUndoable, _chiseInstance) {
+  applyLayout: function (preferences, notUndoable, _chiseInstance, layoutPropertiesBefore) {
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
     var options = this.getLayoutOptions(preferences, _chiseInstance);
+
+    if (!notUndoable) {
+      if (layoutPropertiesBefore !== undefined) {
+        options.layoutPropertiesBefore = $.extend(true, {}, layoutPropertiesBefore);
+      }
+
+      options.layoutPropertiesAfter = $.extend(
+        true,
+        {},
+        appUtilities.getScratch(chiseInstance.getCy(), "currentLayoutProperties")
+      );
+
+      $(document).trigger("newtBeforeUndoableLayout", [
+        chiseInstance.getCy(),
+        options
+      ]);
+    }
+
     chiseInstance.performLayout(options, notUndoable);
   },
   render: function () {
@@ -404,6 +422,7 @@ var LayoutPropertiesView = Backbone.View.extend({
           cy,
           "currentLayoutProperties"
         );
+        var layoutPropertiesBefore = $.extend(true, {}, currentLayoutProperties);
 
         currentLayoutProperties.layoutStyle =
           $(self.el).find("#layout-style").val();
@@ -502,6 +521,11 @@ var LayoutPropertiesView = Backbone.View.extend({
           cy,
           "currentLayoutProperties",
           currentLayoutProperties
+        );
+        appUtilities.setScratch(
+          cy,
+          "layoutPropertiesBeforeNextLayout",
+          layoutPropertiesBefore
         );
 
         $(self.el).modal("toggle");
