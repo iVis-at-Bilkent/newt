@@ -1828,9 +1828,514 @@ module.exports = function (chiseInstance) {
     }
   });
 
+  // edge state fields used by drag and layout undo/redo wrappers
+  var edgeEditingDataNames = [
+    'bendPointPositions',
+    'controlPointPositions',
+    'cyedgebendeditingWeights',
+    'cyedgebendeditingDistances',
+    'cyedgecontroleditingWeights',
+    'cyedgecontroleditingDistances'
+  ];
+  var layoutEdgeDataNames = edgeEditingDataNames.concat([
+    'rigid',
+    'orientation',
+    'isPhase2Edge',
+    'isPhase2Dummy',
+    'originalEdge',
+    'segmentIndex',
+    'quasiStub'
+  ]);
+  var edgeEditingClassNames = [
+    'edgebendediting-hasbendpoints',
+    'edgebendediting-hasmultiplebendpoints',
+    'edgecontrolediting-hascontrolpoints',
+    'edgecontrolediting-hasmultiplecontrolpoints'
+  ];
+  var edgeEditingStyleNames = [
+    'curve-style',
+    'segment-weights',
+    'segment-distances',
+    'edge-distances',
+    'control-point-weights',
+    'control-point-distances',
+    'source-endpoint',
+    'target-endpoint'
+  ];
+  var layoutPropertiesBeforeNextLayoutScratchName = 'layoutPropertiesBeforeNextLayout';
+  var bendsBeforeDrag = null;
+
+  function copyEdgeStateValue(value) {
+    return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  }
+
+  function saveCurrentLayoutProperties() {
+    return copyEdgeStateValue(appUtilities.getScratch(cy, 'currentLayoutProperties'));
+  }
+
+  function restoreLayoutProperties(layoutProperties) {
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, 'currentLayoutProperties', copyEdgeStateValue(layoutProperties));
+    }
+  }
+
+  function consumeLayoutPropertiesBeforeNextLayout() {
+    var layoutProperties = appUtilities.getScratch(cy, layoutPropertiesBeforeNextLayoutScratchName);
+
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, layoutPropertiesBeforeNextLayoutScratchName, undefined);
+      return copyEdgeStateValue(layoutProperties);
+    }
+
+    return saveCurrentLayoutProperties();
+  }
+
+  function extractLayoutPropertiesFromOptions(args, propertyName) {
+    return args && args.options && args.options[propertyName] !== undefined
+      ? copyEdgeStateValue(args.options[propertyName])
+      : undefined;
+  }
+
+  function removeLayoutPropertyMetadataFromOptions(args) {
+    if (args && args.options) {
+      delete args.options.layoutPropertiesBefore;
+      delete args.options.layoutPropertiesAfter;
+      delete args.options.edgeEditingBefore;
+    }
+  }
+
+  function saveEdgeEditingStyles(edge) {
+    var style = {};
+
+    edgeEditingStyleNames.forEach(function(name) {
+      var parsedStyle = edge.pstyle && edge.pstyle(name);
+      var hasBypass = !!(parsedStyle && parsedStyle.bypass);
+
+      style[name] = {
+        exists: hasBypass,
+        value: hasBypass ? edge.style(name) : undefined
+      };
+    });
+
+    return style;
+  }
+
+  function classListHasClass(classes, className) {
+    if (Array.isArray(classes)) {
+      return classes.indexOf(className) >= 0;
+    }
+
+    return typeof classes === 'string' && classes.split(/\s+/).indexOf(className) >= 0;
+  }
+
+  function saveEdgeState(edges, dataNames) {
+    var result = {};
+
+    edges.forEach(function(edge) {
+      var data = {};
+      var classes = {};
+
+      dataNames.forEach(function(name) {
+        data[name] = {
+          exists: edge.data(name) !== undefined,
+          value: copyEdgeStateValue(edge.data(name))
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        classes[className] = edge.hasClass(className);
+      });
+
+      result[edge.id()] = {
+        data: data,
+        classes: classes,
+        style: saveEdgeEditingStyles(edge)
+      };
+    });
+
+    return result;
+  }
+
+  function saveEdgeStateFromJsons(jsons, dataNames) {
+    var result = {};
+
+    (jsons || []).forEach(function(eleJson) {
+      var data = {};
+      var classes = {};
+      var style = {};
+      var eleData = eleJson && eleJson.data;
+      var eleStyle = eleJson && eleJson.style;
+
+      if (!eleData || eleData.source === undefined || eleData.target === undefined || eleData.id === undefined) {
+        return;
+      }
+
+      dataNames.forEach(function(name) {
+        data[name] = {
+          exists: Object.prototype.hasOwnProperty.call(eleData, name),
+          value: copyEdgeStateValue(eleData[name])
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        classes[className] = classListHasClass(eleJson.classes, className);
+      });
+
+      edgeEditingStyleNames.forEach(function(name) {
+        style[name] = {
+          exists: !!(eleStyle && Object.prototype.hasOwnProperty.call(eleStyle, name)),
+          value: eleStyle ? copyEdgeStateValue(eleStyle[name]) : undefined
+        };
+      });
+
+      result[eleData.id] = {
+        data: data,
+        classes: classes,
+        style: style
+      };
+    });
+
+    return result;
+  }
+
+  function initRestoredAnchorPoints(edges) {
+    var edgeEditing = cy.edgeEditing && cy.edgeEditing('get');
+
+    if (edgeEditing && edgeEditing.initAnchorPoints && edges && edges.length > 0) {
+      edgeEditing.initAnchorPoints(edges);
+    }
+  }
+
+  function savedArrayLength(edgeState, name) {
+    var dataState = edgeState && edgeState.data && edgeState.data[name];
+
+    return dataState && dataState.exists && Array.isArray(dataState.value)
+      ? dataState.value.length
+      : 0;
+  }
+
+  function shouldInitRestoredAnchorPoints(edgeState) {
+    var hasBendPositions = savedArrayLength(edgeState, 'bendPointPositions') > 0;
+    var hasControlPositions = savedArrayLength(edgeState, 'controlPointPositions') > 0;
+    var hasCompleteBendState =
+      savedArrayLength(edgeState, 'cyedgebendeditingWeights') > 0 &&
+      savedArrayLength(edgeState, 'cyedgebendeditingDistances') > 0 &&
+      !!(edgeState.classes && edgeState.classes['edgebendediting-hasbendpoints']);
+    var hasCompleteControlState =
+      savedArrayLength(edgeState, 'cyedgecontroleditingWeights') > 0 &&
+      savedArrayLength(edgeState, 'cyedgecontroleditingDistances') > 0 &&
+      !!(edgeState.classes && edgeState.classes['edgecontrolediting-hascontrolpoints']);
+
+    return (hasBendPositions && !hasCompleteBendState) ||
+      (hasControlPositions && !hasCompleteControlState);
+  }
+
+  function restoreEdgeState(snapshot, dataNames, options) {
+    var restoredEdges = cy.collection();
+    var edgesToInit = cy.collection();
+
+    options = options || {};
+
+    Object.keys(snapshot || {}).forEach(function(id) {
+      var edge = cy.getElementById(id);
+      var edgeState = snapshot[id];
+
+      if (!edge || edge.length === 0 || !edgeState) {
+        return;
+      }
+
+      dataNames.forEach(function(name) {
+        var dataState = edgeState.data && edgeState.data[name];
+
+        if (dataState && dataState.exists) {
+          edge.data(name, copyEdgeStateValue(dataState.value));
+        }
+        else {
+          edge.removeData(name);
+        }
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        if (edgeState.classes && edgeState.classes[className]) {
+          edge.addClass(className);
+        }
+        else {
+          edge.removeClass(className);
+        }
+      });
+
+      var stylesToRemove = [];
+
+      edgeEditingStyleNames.forEach(function(name) {
+        var styleState = edgeState.style && edgeState.style[name];
+
+        if (styleState && styleState.exists) {
+          edge.style(name, copyEdgeStateValue(styleState.value));
+        }
+        else {
+          stylesToRemove.push(name);
+        }
+      });
+
+      if (stylesToRemove.length > 0) {
+        edge.removeStyle(stylesToRemove.join(' '));
+      }
+
+      restoredEdges = restoredEdges.union(edge);
+
+      if (options.initAnchorPoints && shouldInitRestoredAnchorPoints(edgeState)) {
+        edgesToInit = edgesToInit.union(edge);
+      }
+    });
+
+    if (options.initAnchorPoints) {
+      initRestoredAnchorPoints(edgesToInit);
+    }
+
+    restoredEdges.forEach(function(edge) {
+      edge.trigger('cyedgeediting.changeAnchorPoints');
+    });
+  }
+
+  function saveEdgeEditingState(edges) {
+    return saveEdgeState(edges, edgeEditingDataNames);
+  }
+
+  function saveLayoutEdgeState(edges) {
+    return saveEdgeState(edges, layoutEdgeDataNames);
+  }
+
+  function saveLayoutEdgeStateFromJsons(jsons) {
+    return saveEdgeStateFromJsons(jsons, layoutEdgeDataNames);
+  }
+
+  function extractEdgeStateFromOptions(args, propertyName) {
+    return args && args.options && args.options[propertyName] !== undefined
+      ? copyEdgeStateValue(args.options[propertyName])
+      : undefined;
+  }
+
+  function restoreEdgeEditingState(snapshot) {
+    restoreEdgeState(snapshot, edgeEditingDataNames, {
+      initAnchorPoints: true
+    });
+  }
+
+  function restoreLayoutEdgeState(snapshot) {
+    restoreEdgeState(snapshot, layoutEdgeDataNames, {
+      initAnchorPoints: true
+    });
+  }
+
+  function buildEmptyEdgeState(edges, dataNames) {
+    var snapshotToRestore = {};
+
+    edges.forEach(function(edge) {
+      snapshotToRestore[edge.id()] = {
+        data: {},
+        classes: {},
+        style: {}
+      };
+
+      dataNames.forEach(function(name) {
+        snapshotToRestore[edge.id()].data[name] = {
+          exists: false
+        };
+      });
+
+      edgeEditingClassNames.forEach(function(className) {
+        snapshotToRestore[edge.id()].classes[className] = false;
+      });
+
+      edgeEditingStyleNames.forEach(function(name) {
+        snapshotToRestore[edge.id()].style[name] = {
+          exists: false
+        };
+      });
+    });
+
+    return snapshotToRestore;
+  }
+
+  function clearAllEdgeBends() {
+    restoreEdgeState(buildEmptyEdgeState(cy.edges(), layoutEdgeDataNames), layoutEdgeDataNames, {
+      initAnchorPoints: false
+    });
+  }
+
+  function useDefaultEndpointAttachment() {
+    cy.edges().removeStyle('source-endpoint target-endpoint edge-distances segment-weights segment-distances curve-style');
+  }
+
+  function getEdgesFromBends(bends) {
+    var edges = cy.collection();
+
+    Object.keys(bends || {}).forEach(function(id) {
+      var edge = cy.getElementById(id);
+
+      if (edge && edge.length > 0) {
+        edges = edges.union(edge);
+      }
+    });
+
+    return edges;
+  }
+
+  function saveBends(edges) {
+    return saveEdgeEditingState(edges);
+  }
+
+  function restoreBends(bends) {
+    restoreEdgeEditingState(bends);
+  }
+
+  function registerDragBendSnapshotEvents() {
+    cy.on('grab', 'node', function() {
+      var nodes = this.selected()
+        ? cy.nodes(':visible').filter(':selected')
+        : cy.collection([this]);
+
+      bendsBeforeDrag = saveBends(
+        nodes.union(nodes.descendants()).connectedEdges()
+      );
+    });
+  }
+
+  function registerLayoutEdgeStateEvents() {
+    $(document).on('newtBeforeUndoableLayout', function(event, layoutCy, layoutOptions) {
+      if (layoutCy === cy && layoutOptions && layoutOptions.edgeEditingBefore === undefined) {
+        layoutOptions.edgeEditingBefore = saveLayoutEdgeState(cy.edges());
+      }
+    });
+
+    cy.on('beforeUndo', function(event, actionName, args) {
+      if (actionName === 'layout' && args && !args.edgeEditingAfter) {
+        args.edgeEditingAfter = saveLayoutEdgeState(cy.edges());
+      }
+
+      if (actionName === 'layout' && args && !args.layoutPropertiesAfter) {
+        args.layoutPropertiesAfter = saveCurrentLayoutProperties();
+      }
+    });
+
+    cy.on('afterUndo', function(event, actionName, args, res) {
+      if (actionName === 'layout') {
+        restoreLayoutEdgeState((args && args.edgeEditingBefore) || (res && res.edgeEditingBefore));
+        restoreLayoutProperties((args && args.layoutPropertiesBefore) || (res && res.layoutPropertiesBefore));
+      }
+    });
+
+    cy.on('afterRedo', function(event, actionName, args, res) {
+      if (actionName === 'layout') {
+        restoreLayoutEdgeState((args && args.edgeEditingAfter) || (res && res.edgeEditingAfter));
+        restoreLayoutProperties((args && args.layoutPropertiesAfter) || (res && res.layoutPropertiesAfter));
+      }
+    });
+  }
+
+  function registerEdgeAwareDragUndo(ur, defaultDrag) {
+    ur.action(
+      "drag",
+
+      function(args) {
+        var result = defaultDrag._do(args);
+        var edges;
+
+        if (args.firstTime) {
+          edges = getEdgesFromBends(bendsBeforeDrag);
+
+          result.bendsBefore = bendsBeforeDrag;
+          result.bendsAfter = saveBends(edges);
+
+          bendsBeforeDrag = null;
+        }
+        else {
+          restoreBends(args.bendsAfter);
+
+          result.bendsBefore = args.bendsBefore;
+          result.bendsAfter = args.bendsAfter;
+        }
+
+        return result;
+      },
+
+      function(args) {
+        var result = defaultDrag._undo(args);
+
+        restoreBends(args.bendsBefore);
+
+        result.bendsBefore = args.bendsBefore;
+        result.bendsAfter = args.bendsAfter;
+
+        return result;
+      }
+    );
+  }
+
+  function registerEdgeAwareLayoutUndo(ur, defaultLayout) {
+    ur.action(
+      "layout",
+
+      function(args) {
+        if (args.firstTime && !args.edgeEditingBefore) {
+          args.edgeEditingBefore = extractEdgeStateFromOptions(args, 'edgeEditingBefore') ||
+            (args.allElements
+            ? saveLayoutEdgeStateFromJsons(args.allElements)
+            : saveLayoutEdgeState(cy.edges()));
+        }
+
+        if (args.firstTime && !args.layoutPropertiesBefore) {
+          args.layoutPropertiesBefore =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesBefore') ||
+            consumeLayoutPropertiesBeforeNextLayout();
+        }
+
+        if (args.firstTime && !args.layoutPropertiesAfter) {
+          args.layoutPropertiesAfter =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesAfter') ||
+            saveCurrentLayoutProperties();
+        }
+
+        removeLayoutPropertyMetadataFromOptions(args);
+
+        if (args.firstTime) {
+          clearAllEdgeBends();
+          useDefaultEndpointAttachment();
+        }
+
+        var result = defaultLayout._do(args);
+
+        restoreLayoutProperties(args.layoutPropertiesAfter);
+        result.edgeEditingBefore = args.edgeEditingBefore;
+        result.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
+
+        return result;
+      },
+
+      function(args) {
+        var result;
+
+        args.edgeEditingAfter = args.edgeEditingAfter || saveLayoutEdgeState(cy.edges());
+        args.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
+        result = defaultLayout._undo(args);
+        restoreLayoutProperties(args.layoutPropertiesBefore);
+        result.edgeEditingBefore = args.edgeEditingBefore;
+        result.edgeEditingAfter = args.edgeEditingAfter;
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter;
+
+        return result;
+      }
+    );
+  }
+
   function registerUndoRedoActions() { // only if undoRedo is set
     // get ur extension instance for cy
     var ur = cy.undoRedo();
+    var defaultDrag = ur.actions.drag;
+    var defaultLayout = ur.actions.layout;
 
     // generate an instance of app undo actions with related cy
     var appUndoActions = appUndoActionsFactory(cy);
@@ -1858,6 +2363,11 @@ module.exports = function (chiseInstance) {
     ur.action("loadMore", appUndoActions.loadMore, appUndoActions.loadMoreUndo);
     ur.action("annotationSetElement", appUndoActions.annotationSetElement, appUndoActions.annotationSetElement);
     ur.action("annotationSetLayer", appUndoActions.annotationSetLayer, appUndoActions.annotationSetLayer);
+
+    registerDragBendSnapshotEvents();
+    registerLayoutEdgeStateEvents();
+    registerEdgeAwareDragUndo(ur, defaultDrag);
+    registerEdgeAwareLayoutUndo(ur, defaultLayout);
   }
 
   function cytoscapeExtensionsAndContextMenu() {
