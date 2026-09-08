@@ -8720,23 +8720,25 @@ var ReactionTemplateView = Backbone.View.extend({
     moleculeData,
     complexLabel,
     reverse,
-    chiseInstance
+    chiseInstance,
+    createdNodes,
+    createdEdges
   ) {
     const self = this;
     const cy = chiseInstance.getCy();
-    const selectedNodes = cy.nodes(":selected");
-    const selectedEdges = cy.edges(":selected");
-    const process = selectedNodes.filter("node[class='process']")[0];
-    let complex = selectedNodes.filter(function (node) {
+    const nodes = createdNodes || cy.nodes(":selected");
+    const edges = createdEdges || cy.edges(":selected");
+    const process = nodes.filter("node[class='process']")[0];
+    let complex = nodes.filter(function (node) {
       return (
         node.data("class") === "complex" && node.data("label") === complexLabel
       );
     })[0];
     if (!complex || complex.empty()) {
-      complex = selectedNodes.filter("node[class='complex']")[0];
+      complex = nodes.filter("node[class='complex']")[0];
     }
 
-    const freeNodes = selectedNodes.filter(function (node) {
+    const freeNodes = nodes.filter(function (node) {
       if (
         !process ||
         node.parent().nonempty() ||
@@ -8747,7 +8749,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
       return node
         .connectedEdges()
-        .intersection(selectedEdges)
+        .intersection(edges)
         .filter(function (edge) {
           return reverse
             ? edge.data("source") === process.id() &&
@@ -8776,9 +8778,14 @@ var ReactionTemplateView = Backbone.View.extend({
 
     cy.style().update();
   },
-  updateCreatedDegradationInputType: function (molecule, chiseInstance) {
+  updateCreatedDegradationInputType: function (
+    molecule,
+    chiseInstance,
+    createdNodes
+  ) {
     const cy = chiseInstance.getCy();
-    const inputNode = cy.nodes(":selected").filter(function (node) {
+    const nodes = createdNodes || cy.nodes(":selected");
+    const inputNode = nodes.filter(function (node) {
       return (
         node.data("label") === molecule.name &&
         node.data("class") === "macromolecule"
@@ -8789,6 +8796,15 @@ var ReactionTemplateView = Backbone.View.extend({
     cy.style().update();
   },
   createComplexProteinFormation: function (params, chiseInstance) {
+    const cy = chiseInstance.getCy();
+    const nodeIds = {};
+    const edgeIds = {};
+    cy.nodes().forEach(function (node) {
+      nodeIds[node.id()] = true;
+    });
+    cy.edges().forEach(function (edge) {
+      edgeIds[edge.id()] = true;
+    });
     const labels = params.inputData.map(function (molecule) {
       return molecule.name;
     });
@@ -8800,23 +8816,40 @@ var ReactionTemplateView = Backbone.View.extend({
       params.orientation,
       params.reverse
     );
+    const createdNodes = cy.nodes().filter(function (node) {
+      return !nodeIds[node.id()];
+    });
+    const createdEdges = cy.edges().filter(function (edge) {
+      return !edgeIds[edge.id()];
+    });
     this.updateCreatedUnspecifiedEpnTypes(
       params.inputData,
       params.complexLabel,
       params.reverse,
-      chiseInstance
+      chiseInstance,
+      createdNodes,
+      createdEdges
     );
   },
   createDegradation: function (params, chiseInstance) {
+    const cy = chiseInstance.getCy();
+    const nodeIds = {};
+    cy.nodes().forEach(function (node) {
+      nodeIds[node.id()] = true;
+    });
     chiseInstance.createDegradation(
       {
         name: params.macromolecule.name,
       },
       params.orientation
     );
+    const createdNodes = cy.nodes().filter(function (node) {
+      return !nodeIds[node.id()];
+    });
     this.updateCreatedDegradationInputType(
       params.macromolecule,
-      chiseInstance
+      chiseInstance,
+      createdNodes
     );
   },
   addInputFieldForMetabolicReaction: function () {
