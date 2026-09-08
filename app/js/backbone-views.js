@@ -8530,6 +8530,26 @@ var PromptReversedEdgeWarning = Backbone.View.extend({
 });
 
 var ReactionTemplateView = Backbone.View.extend({
+  getUnspecifiedEpnTypeOptions: function (defaultValue) {
+    const options = [
+      { label: "Macromolecule", value: "macromolecule" },
+      { label: "Simple Chemical", value: "simple chemical" },
+      { label: "Unspecified Entity", value: "unspecified entity" },
+      { label: "Nucleic Acid Feature", value: "nucleic acid feature" },
+      { label: "Complex", value: "complex" },
+      { label: "Perturbing Agent", value: "perturbing agent" },
+    ];
+
+    return options.sort(function (first, second) {
+      if (first.value === defaultValue) {
+        return -1;
+      } else if (second.value === defaultValue) {
+        return 1;
+      }
+
+      return 0;
+    });
+  },
   updatePreview: function () {
     let self = this;
     const brickType = $("#brick-type-select").val();
@@ -8570,28 +8590,13 @@ var ReactionTemplateView = Backbone.View.extend({
         );
       } else if (brickType === "association") {
         const params = self.getAssociationParameters();
-        self.chiseInstance.createComplexProteinFormation(
-          params.inputLabels,
-          params.complexLabel,
-          params.regulator,
-          params.orientation,
-          params.reverse
-        );
+        self.createComplexProteinFormation(params, self.chiseInstance);
       } else if (brickType === "dissociation") {
         const params = self.getDissociationParameters();
-        self.chiseInstance.createComplexProteinFormation(
-          params.inputLabels,
-          params.complexLabel,
-          params.regulator,
-          params.orientation,
-          params.reverse
-        );
+        self.createComplexProteinFormation(params, self.chiseInstance);
       } else if (brickType === "degradation") {
         const params = self.getDegradationParameters();
-        self.chiseInstance.createDegradation(
-          params.macromolecule,
-          params.orientation
-        );
+        self.createDegradation(params, self.chiseInstance);
       } else if (brickType === "transcription") {
         const params = self.getTranscriptionParameters();
         self.chiseInstance.createTranscription(
@@ -8648,7 +8653,7 @@ var ReactionTemplateView = Backbone.View.extend({
 
     return imgElement;
   },
-  createRowElement: function (listOfDropdownOptions) {
+  createRowElement: function (listOfDropdownOptions, listOfDropdownValues) {
     const tableRowElement = document.createElement("tr");
     const inputFieldTableDataElement = document.createElement("td");
     const dropdownTableDataElement = document.createElement("td");
@@ -8661,7 +8666,8 @@ var ReactionTemplateView = Backbone.View.extend({
     ];
     const dropdownElement = this.createDropdownElement(
       listOfDropdownOptions,
-      dropdownCSSClasses
+      dropdownCSSClasses,
+      listOfDropdownValues
     );
 
     const inputFieldCSSClasses = [
@@ -8685,6 +8691,133 @@ var ReactionTemplateView = Backbone.View.extend({
     tableRowElement.appendChild(imgTableDataElement);
 
     return tableRowElement;
+  },
+  createUnspecifiedEpnRowElement: function (defaultValue) {
+    const options = this.getUnspecifiedEpnTypeOptions(defaultValue);
+    const optionLabels = options.map(function (option) {
+      return option.label;
+    });
+    const optionValues = options.map(function (option) {
+      return option.value;
+    });
+
+    return this.createRowElement(optionLabels, optionValues);
+  },
+  setNodeClass: function (node, nodeClass, chiseInstance) {
+    if (!node || node.empty() || node.data("class") === nodeClass) {
+      return;
+    }
+
+    node.data("class", nodeClass);
+    node.removeData("bbox");
+    chiseInstance.elementUtilities.extendNodeDataWithClassDefaults(
+      node.data(),
+      nodeClass
+    );
+    node.updateStyle();
+  },
+  updateCreatedUnspecifiedEpnTypes: function (
+    moleculeData,
+    complexLabel,
+    reverse,
+    chiseInstance
+  ) {
+    const self = this;
+    const cy = chiseInstance.getCy();
+    const selectedNodes = cy.nodes(":selected");
+    const selectedEdges = cy.edges(":selected");
+    const process = selectedNodes.filter("node[class='process']")[0];
+    let complex = selectedNodes.filter(function (node) {
+      return (
+        node.data("class") === "complex" && node.data("label") === complexLabel
+      );
+    })[0];
+    if (!complex || complex.empty()) {
+      complex = selectedNodes.filter("node[class='complex']")[0];
+    }
+
+    const freeNodes = selectedNodes.filter(function (node) {
+      if (
+        !process ||
+        node.parent().nonempty() ||
+        node.data("class") !== "macromolecule"
+      ) {
+        return false;
+      }
+
+      return node
+        .connectedEdges()
+        .intersection(selectedEdges)
+        .filter(function (edge) {
+          return reverse
+            ? edge.data("source") === process.id() &&
+                edge.data("target") === node.id()
+            : edge.data("source") === node.id() &&
+                edge.data("target") === process.id();
+        })
+        .nonempty();
+    });
+    const complexChildren =
+      complex && complex.nonempty()
+        ? complex.children().filter("node[class='macromolecule']")
+        : cy.collection();
+
+    moleculeData.forEach(function (molecule, index) {
+      self.setNodeClass(freeNodes[index], molecule.type, chiseInstance);
+
+      if (complexChildren[index]) {
+        self.setNodeClass(
+          complexChildren[index],
+          molecule.type,
+          chiseInstance
+        );
+      }
+    });
+
+    cy.style().update();
+  },
+  updateCreatedDegradationInputType: function (molecule, chiseInstance) {
+    const cy = chiseInstance.getCy();
+    const inputNode = cy.nodes(":selected").filter(function (node) {
+      return (
+        node.data("label") === molecule.name &&
+        node.data("class") === "macromolecule"
+      );
+    })[0];
+
+    this.setNodeClass(inputNode, molecule.type, chiseInstance);
+    cy.style().update();
+  },
+  createComplexProteinFormation: function (params, chiseInstance) {
+    const labels = params.inputData.map(function (molecule) {
+      return molecule.name;
+    });
+
+    chiseInstance.createComplexProteinFormation(
+      labels,
+      params.complexLabel,
+      params.regulator,
+      params.orientation,
+      params.reverse
+    );
+    this.updateCreatedUnspecifiedEpnTypes(
+      params.inputData,
+      params.complexLabel,
+      params.reverse,
+      chiseInstance
+    );
+  },
+  createDegradation: function (params, chiseInstance) {
+    chiseInstance.createDegradation(
+      {
+        name: params.macromolecule.name,
+      },
+      params.orientation
+    );
+    this.updateCreatedDegradationInputType(
+      params.macromolecule,
+      chiseInstance
+    );
   },
   addInputFieldForMetabolicReaction: function () {
     const inputOptions = ["Simple Chemical"];
@@ -8783,15 +8916,17 @@ var ReactionTemplateView = Backbone.View.extend({
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
   addAssociationInput: function () {
-    const inputOptions = ["Macromolecule"];
-    const tableRowElement = this.createRowElement(inputOptions);
+    const tableRowElement = this.createUnspecifiedEpnRowElement(
+      "macromolecule"
+    );
 
     const lastTableRowElement = $("#association-input-table tr:last");
     $(tableRowElement).insertBefore(lastTableRowElement);
   },
   addDissociationOutput: function () {
-    const inputOptions = ["Macromolecule"];
-    const tableRowElement = this.createRowElement(inputOptions);
+    const tableRowElement = this.createUnspecifiedEpnRowElement(
+      "macromolecule"
+    );
 
     const lastTableRowElement = $("#dissociation-output-table tr:last");
     $(tableRowElement).insertBefore(lastTableRowElement);
@@ -9067,6 +9202,22 @@ var ReactionTemplateView = Backbone.View.extend({
       })
       .toArray();
 
+    const inputTypes = $(
+      "#sbgn-brick-middle-row #association-input-table :input.template-reaction-molecule-type :selected"
+    )
+      .map(function () {
+        return $(this).val();
+      })
+      .toArray();
+
+    const inputData = [];
+    inputLabels.forEach(function (label, index) {
+      inputData.push({
+        name: label,
+        type: inputTypes[index],
+      });
+    });
+
     const complexLabel = $("#association-complex-name").val();
 
     const hasRegulator = $("#association-regulator-checkbox").prop("checked");
@@ -9092,7 +9243,7 @@ var ReactionTemplateView = Backbone.View.extend({
     const orientation = $("#metabolic-reaction-orientation-select").val();
 
     return {
-      inputLabels: inputLabels,
+      inputData: inputData,
       complexLabel: complexLabel,
       regulator: regulator,
       orientation: orientation,
@@ -9107,6 +9258,22 @@ var ReactionTemplateView = Backbone.View.extend({
         return $(this).val();
       })
       .toArray();
+
+    const inputTypes = $(
+      "#sbgn-brick-middle-row #dissociation-output-table :input.template-reaction-molecule-type :selected"
+    )
+      .map(function () {
+        return $(this).val();
+      })
+      .toArray();
+
+    const inputData = [];
+    inputLabels.forEach(function (label, index) {
+      inputData.push({
+        name: label,
+        type: inputTypes[index],
+      });
+    });
 
     const complexLabel = $("#dissociation-complex-name").val();
 
@@ -9133,7 +9300,7 @@ var ReactionTemplateView = Backbone.View.extend({
     const orientation = $("#metabolic-reaction-orientation-select").val();
 
     return {
-      inputLabels: inputLabels,
+      inputData: inputData,
       complexLabel: complexLabel,
       regulator: regulator,
       orientation: orientation,
@@ -9143,6 +9310,7 @@ var ReactionTemplateView = Backbone.View.extend({
   getDegradationParameters: function () {
     const macromolecule = {
       name: $("#degradation-input-name").val(),
+      type: $("#degradation-input-type").val(),
     };
 
     const orientation = $("#metabolic-reaction-orientation-select").val();
@@ -9327,8 +9495,20 @@ var ReactionTemplateView = Backbone.View.extend({
         self.updatePreview();
       });
 
+      const inputMoleculeTypeSelector =
+        inputTableId + " :input.template-reaction-molecule-type";
+      $(document).on("change", inputMoleculeTypeSelector, function () {
+        self.updatePreview();
+      });
+
       const outputSelector = outputTableId + " " + inputFieldSelector;
       $(document).on("input", outputSelector, function () {
+        self.updatePreview();
+      });
+
+      const outputMoleculeTypeSelector =
+        outputTableId + " :input.template-reaction-molecule-type";
+      $(document).on("change", outputMoleculeTypeSelector, function () {
         self.updatePreview();
       });
     });
@@ -9349,6 +9529,10 @@ var ReactionTemplateView = Backbone.View.extend({
     });
 
     $(document).on("input", "#degradation-input-name", function () {
+      self.updatePreview();
+    });
+
+    $(document).on("change", "#degradation-input-type", function () {
       self.updatePreview();
     });
 
@@ -9645,28 +9829,13 @@ var ReactionTemplateView = Backbone.View.extend({
         );
       } else if (templateType === "association") {
         const params = self.getAssociationParameters();
-        chiseInstance.createComplexProteinFormation(
-          params.inputLabels,
-          params.complexLabel,
-          params.regulator,
-          params.orientation,
-          params.reverse
-        );
+        self.createComplexProteinFormation(params, chiseInstance);
       } else if (templateType === "dissociation") {
         const params = self.getDissociationParameters();
-        chiseInstance.createComplexProteinFormation(
-          params.inputLabels,
-          params.complexLabel,
-          params.regulator,
-          params.orientation,
-          params.reverse
-        );
+        self.createComplexProteinFormation(params, chiseInstance);
       } else if (templateType === "degradation") {
         const params = self.getDegradationParameters();
-        chiseInstance.createDegradation(
-          params.macromolecule,
-          params.orientation
-        );
+        self.createDegradation(params, chiseInstance);
       } else if (templateType === "transcription") {
         const params = self.getTranscriptionParameters();
         chiseInstance.createTranscription(params.label, params.orientation);

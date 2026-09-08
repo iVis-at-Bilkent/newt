@@ -5634,6 +5634,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Simple Chemical" selected>Simple Chemical</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5659,6 +5660,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Simple Chemical" selected>Simple Chemical</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button' width='16px' height='16px' name='1' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5739,6 +5741,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Macromolecule"> Macromolecule </option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5760,6 +5763,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Macromolecule"> Macromolecule </option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5800,6 +5804,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Macromolecule"> Macromolecule </option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5821,6 +5826,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: 120px'>
         <option value="Macromolecule"> Macromolecule </option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5860,7 +5866,13 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Macromolecule">Macromolecule</option>
+        <option value="macromolecule">Macromolecule</option>
+        <option value="simple chemical">Simple Chemical</option>
+        <option value="unspecified entity">Unspecified Entity</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5871,7 +5883,13 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Macromolecule">Macromolecule</option>
+        <option value="macromolecule">Macromolecule</option>
+        <option value="simple chemical">Simple Chemical</option>
+        <option value="unspecified entity">Unspecified Entity</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5898,7 +5916,8 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Complex">Complex</option>
+        <option value="complex">Complex</option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5938,7 +5957,8 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Complex">Complex</option>
+        <option value="complex">Complex</option>
+        </select>
         </td>
         </tr>
         </table>
@@ -5959,7 +5979,13 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Macromolecule">Macromolecule</option>
+        <option value="macromolecule">Macromolecule</option>
+        <option value="simple chemical">Simple Chemical</option>
+        <option value="unspecified entity">Unspecified Entity</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5970,7 +5996,13 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Macromolecule">Macromolecule</option>
+        <option value="macromolecule">Macromolecule</option>
+        <option value="simple chemical">Simple Chemical</option>
+        <option value="unspecified entity">Unspecified Entity</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
+        </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
         </td>
@@ -5988,8 +6020,14 @@
         <div class="thin-blue-border" style="padding: 10px; margin-top: 40px; width: fit-content;">
         <label for="degradation-input-name" class="layout-text" style="font: inherit;">Input:</label>
         <input id="degradation-input-name" type='text' class="template-reaction-textbox sbgn-input-medium layout-text"></input>
-        <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
-        <option value="Macromolecule">Macromolecule</option>
+        <select id="degradation-input-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: 120px'>
+        <option value="macromolecule">Macromolecule</option>
+        <option value="simple chemical">Simple Chemical</option>
+        <option value="unspecified entity">Unspecified Entity</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
+        </select>
         </div>
         </td>
         </tr>
@@ -6031,6 +6069,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content'>
         <option value="empty-set">Empty Set</option>
+        </select>
         </td>
         </tr>
         </table>
@@ -6051,7 +6090,8 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content;'>
-        <option value="Macromolecule">Nucleic Acid Feature</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
+        </select>
         </td>
         </tr>
         </table>
@@ -6085,6 +6125,7 @@
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content'>
         <option value="empty set">Empty Set</option>
+        </select>
         </td>
         </tr>
         </table>
@@ -6105,7 +6146,8 @@
         </td>
         <td>
         <select class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content;'>
-        <option value="Macromolecule">Macromolecule</option>
+        <option value="macromolecule">Macromolecule</option>
+        </select>
         </td>
         </tr>
         </table>
