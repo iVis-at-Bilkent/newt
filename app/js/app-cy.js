@@ -1828,9 +1828,94 @@ module.exports = function (chiseInstance) {
     }
   });
 
+  function copyUndoRedoValue(value) {
+    return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  }
+
+  function saveCurrentLayoutProperties() {
+    return copyUndoRedoValue(appUtilities.getScratch(cy, 'currentLayoutProperties'));
+  }
+
+  function restoreLayoutProperties(layoutProperties) {
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, 'currentLayoutProperties', copyUndoRedoValue(layoutProperties));
+    }
+  }
+
+  function consumeLayoutPropertiesBeforeNextLayout() {
+    const layoutPropertiesBeforeNextLayoutScratchName = 'layoutPropertiesBeforeNextLayout';
+    var layoutProperties = appUtilities.getScratch(cy, layoutPropertiesBeforeNextLayoutScratchName);
+
+    if (layoutProperties !== undefined) {
+      appUtilities.setScratch(cy, layoutPropertiesBeforeNextLayoutScratchName, undefined);
+      return copyUndoRedoValue(layoutProperties);
+    }
+
+    return saveCurrentLayoutProperties();
+  }
+
+  function extractLayoutPropertiesFromOptions(args, propertyName) {
+    return args && args.options && args.options[propertyName] !== undefined
+      ? copyUndoRedoValue(args.options[propertyName])
+      : undefined;
+  }
+
+  function removeLayoutPropertyMetadataFromOptions(args) {
+    if (args && args.options) {
+      delete args.options.layoutPropertiesBefore;
+      delete args.options.layoutPropertiesAfter;
+    }
+  }
+
+  // enables undo/redo support for layout settings
+  function registerLayoutPropertiesUndo(ur, defaultLayout) {
+    ur.action(
+      "layout",
+
+      function(args) {
+        if (args.firstTime && !args.layoutPropertiesBefore) {
+          args.layoutPropertiesBefore =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesBefore') ||
+            consumeLayoutPropertiesBeforeNextLayout();
+        }
+
+        if (args.firstTime && !args.layoutPropertiesAfter) {
+          args.layoutPropertiesAfter =
+            extractLayoutPropertiesFromOptions(args, 'layoutPropertiesAfter') ||
+            saveCurrentLayoutProperties();
+        }
+
+        removeLayoutPropertyMetadataFromOptions(args);
+
+        var result = defaultLayout._do(args);
+
+        restoreLayoutProperties(args.layoutPropertiesAfter);
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
+
+        return result;
+      },
+
+      function(args) {
+        args.layoutPropertiesAfter = args.layoutPropertiesAfter || saveCurrentLayoutProperties();
+
+        var result = defaultLayout._undo(args);
+
+        restoreLayoutProperties(args.layoutPropertiesBefore);
+        result.layoutPropertiesBefore = args.layoutPropertiesBefore;
+        result.layoutPropertiesAfter = args.layoutPropertiesAfter;
+
+        return result;
+      }
+    );
+  }
+
   function registerUndoRedoActions() { // only if undoRedo is set
     // get ur extension instance for cy
     var ur = cy.undoRedo();
+    var defaultLayout = ur.actions.layout;
+
+    registerLayoutPropertiesUndo(ur, defaultLayout);
 
     // generate an instance of app undo actions with related cy
     var appUndoActions = appUndoActionsFactory(cy);
