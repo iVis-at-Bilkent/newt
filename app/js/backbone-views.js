@@ -298,6 +298,7 @@ var LayoutPropertiesView = Backbone.View.extend({
         thresholdIncrementDeg: currentLayoutProperties.orse.thresholdIncrementDeg,
         edgeSeparation: currentLayoutProperties.orse.edgeSeparation,
         quasiOrthogonal: currentLayoutProperties.orse.quasiOrthogonal,
+        undoable: appUtilities.undoable,
       };
     } else {
       options = {
@@ -365,7 +366,6 @@ var LayoutPropertiesView = Backbone.View.extend({
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
     var options = this.getLayoutOptions(preferences, _chiseInstance);
-
     if (!notUndoable) {
       if (layoutPropertiesBefore !== undefined) {
         options.layoutPropertiesBefore = $.extend(true, {}, layoutPropertiesBefore);
@@ -376,11 +376,6 @@ var LayoutPropertiesView = Backbone.View.extend({
         {},
         appUtilities.getScratch(chiseInstance.getCy(), "currentLayoutProperties")
       );
-
-      $(document).trigger("newtBeforeUndoableLayout", [
-        chiseInstance.getCy(),
-        options
-      ]);
     }
 
     chiseInstance.performLayout(options, notUndoable);
