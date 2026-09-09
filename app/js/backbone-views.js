@@ -298,6 +298,7 @@ var LayoutPropertiesView = Backbone.View.extend({
         thresholdIncrementDeg: currentLayoutProperties.orse.thresholdIncrementDeg,
         edgeSeparation: currentLayoutProperties.orse.edgeSeparation,
         quasiOrthogonal: currentLayoutProperties.orse.quasiOrthogonal,
+        undoable: appUtilities.undoable,
       };
     } else {
       options = {

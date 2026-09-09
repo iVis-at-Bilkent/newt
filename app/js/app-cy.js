@@ -1917,6 +1917,10 @@ module.exports = function (chiseInstance) {
 
     registerLayoutPropertiesUndo(ur, defaultLayout);
 
+    if (typeof cy.orseUndoRedo === 'function') {
+      cy.orseUndoRedo();
+    }
+
     // generate an instance of app undo actions with related cy
     var appUndoActions = appUndoActionsFactory(cy);
 
