@@ -1105,6 +1105,13 @@ img#template-reversible-output-add-button:hover {
   margin-left: 0;
 }
 
+.layer-item .layer-visibility-btn,
+.layer-item .layer-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .add-layer-section button {
   font-weight: normal !important;
 }
