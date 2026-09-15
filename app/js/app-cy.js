@@ -220,7 +220,7 @@ module.exports = function (chiseInstance) {
       edgeForValidation,
       sourceNode,
       targetNode,
-      true
+      false
     );
 
     if (validation === "invalid") {
