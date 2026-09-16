@@ -1,5 +1,12 @@
 import { URL } from '../constants';
 
+Cypress.on('uncaught:exception', (err) => {
+  console.log('UNCAUGHT ERROR:', err.message);
+  console.log(err.stack);
+
+  throw err;
+});
+
 context('Load from URI/URL', () => {
 
   it('TC1: URI=http://bioregistry.io/reactome:R-HSA-6803211', () => {
