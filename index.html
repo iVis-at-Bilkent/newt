@@ -5609,8 +5609,10 @@
             <select id="metabolic-reaction-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
             <option value="macromolecule" selected> Macromolecule </option>
             <option value="simple chemical"> Simple Chemical </option>
+            <option value="nucleic acid feature"> Nucleic Acid Feature </option>
             <option value="unspecified entity"> Unspecified Entity </option>
             <option value="complex"> Complex </option>
+            <option value="perturbing agent"> Perturbing Agent </option>
             </select>
             <input id="metabolic-reaction-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 10px;" disabled></input>
             <label id="metabolic-reaction-multimer-label" for="metabolic-reaction-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
@@ -5683,8 +5685,10 @@
         <select id="conversion-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' name="1" style='width: fit-content' disabled>
         <option value="macromolecule" selected> Macromolecule </option>
         <option value="simple chemical"> Simple Chemical </option>
+        <option value="nucleic acid feature"> Nucleic Acid Feature </option>
         <option value="unspecified entity"> Unspecified Entity </option>
         <option value="complex"> Complex </option>
+        <option value="perturbing agent"> Perturbing Agent </option>
         </select>
         <input id="conversion-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left:10px" disabled></input>
         <label id="conversion-multimer-label" for="conversion-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
@@ -5779,8 +5783,10 @@
         <select id="multimerization-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
         <option value="macromolecule" selected>Macromolecule</option>
         <option value="simple chemical">Simple Chemical</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         <input id="multimerization-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 5px;" disabled></input>
         <label id="multimerization-multimer-label" for="multimerization-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
@@ -5842,8 +5848,10 @@
         <select id="association-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
         <option value="macromolecule" selected>Macromolecule</option>
         <option value="simple chemical">Simple Chemical</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         <input id="association-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 5px;" disabled></input>
         <label id="association-multimer-label" for="association-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
@@ -5871,7 +5879,6 @@
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="complex">Complex</option>
-        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
@@ -5888,7 +5895,6 @@
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="complex">Complex</option>
-        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
@@ -5933,8 +5939,10 @@
         <select id="dissociation-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content' disabled>
         <option value="macromolecule" selected>Macromolecule</option>
         <option value="simple chemical">Simple Chemical</option>
+        <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="complex">Complex</option>
+        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         <input id="dissociation-multimer-checkbox" type='checkbox' class="layout-text" style="margin-left: 5px;" disabled></input>
         <label id="dissociation-multimer-label" for="dissociation-multimer-checkbox" class="checkbox-label-disabled">Multimer</label>
@@ -5984,7 +5992,6 @@
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="complex">Complex</option>
-        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
@@ -6001,7 +6008,6 @@
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="complex">Complex</option>
-        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         </td>
         <td><img class='template-reaction-delete-button icon-small image-button-disabled-appearance' src='app/img/toolbar/delete-simple.svg'/>
@@ -6026,7 +6032,6 @@
         <option value="unspecified entity">Unspecified Entity</option>
         <option value="nucleic acid feature">Nucleic Acid Feature</option>
         <option value="complex">Complex</option>
-        <option value="perturbing agent">Perturbing Agent</option>
         </select>
         </div>
         </td>
@@ -6049,7 +6054,7 @@
         <input id='transcription-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-enabled"></input>
 
         <select id="transcription-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
-        <option value="macromolecule" selected>Nucleic Acid Feature</option>
+        <option value="nucleic acid feature" selected>Nucleic Acid Feature</option>
         </select>
         <select id="transcription-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
         <option value="stimulation" selected>Necessary Stimulation</option>
@@ -6105,7 +6110,7 @@
         <input id='translation-regulator-name' type='text' class='sbgn-input-medium layout-text' value='' class="text-input-enabled"></input>
 
         <select id="translation-regulator-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
-        <option value="macromolecule" selected>Nucleic Acid Feature</option>
+        <option value="nucleic acid feature" selected>Nucleic Acid Feature</option>
         </select>
         <select id="translation-regulator-edge-type" class='template-reaction-molecule-type sbgn-output-medium layout-text' style='width: fit-content; margin-left: 10px;'>
         <option value="stimulation" selected>Necessary Stimulation</option>
