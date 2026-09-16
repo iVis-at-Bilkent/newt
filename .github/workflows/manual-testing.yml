@@ -28,12 +28,12 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Headless Electron
+      - name: Headless Chrome
         uses: cypress-io/github-action@v6
         with:
           build: npm run release-build
           start: node server.js
-          browser: electron
+          browser: chrome
           record: true
           install: false
         env:
