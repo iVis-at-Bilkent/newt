@@ -8532,7 +8532,6 @@ var ReactionTemplateView = Backbone.View.extend({
       { label: "Unspecified Entity", value: "unspecified entity" },
       { label: "Nucleic Acid Feature", value: "nucleic acid feature" },
       { label: "Complex", value: "complex" },
-      { label: "Perturbing Agent", value: "perturbing agent" },
     ];
 
     return options.sort(function (first, second) {
