@@ -1,12 +1,5 @@
 import { URL } from '../constants';
 
-Cypress.on('uncaught:exception', (err) => {
-  console.log('UNCAUGHT ERROR:', err.message);
-  console.log(err.stack);
-
-  throw err;
-});
-
 context('Load from URI/URL', () => {
 
   it('TC1: URI=http://bioregistry.io/reactome:R-HSA-6803211', () => {
@@ -31,20 +24,8 @@ context('Load from URI/URL', () => {
     cy.visit(URL + '?URL=https://raw.githubusercontent.com/iVis-at-Bilkent/newt/unstable/app/samples/polyq_proteins_interference.nwt');
     cy.wait(2000);
     cy.window().then((win) => {
-      cy.log('After 2s - readyState: ' + win.document.readyState);
-      cy.log('After 2s - window.cy exists: ' + Boolean(win.cy));
-    });
-
-    cy.wait(8000);
-
-    cy.window().then((win) => {
-      cy.log('After 10s - readyState: ' + win.document.readyState);
-      cy.log('After 10s - window.cy exists: ' + Boolean(win.cy));
-
-      expect(win.cy, 'window.cy after 10 seconds').to.exist;
-
-      expect(win.cy.nodes().length, 'node count').to.be.greaterThan(0);
-      expect(win.cy.edges().length, 'edge count').to.be.greaterThan(0);
+      expect(win.cy.nodes().length >0).to.eq(true);
+      expect(win.cy.edges().length >0).to.eq(true);
     });
   });
 
