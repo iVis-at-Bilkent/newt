@@ -9,6 +9,8 @@ on:
 jobs:
   chrome-headless:
     runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node14.16.0-chrome89-ff86
     environment: test0
     timeout-minutes: 30
     steps:
