@@ -1821,7 +1821,36 @@ module.exports = function (chiseInstance) {
     cytoscapeExtensionsAndContextMenu();
     bindCyEvents();
     cy.style().selector('core').style({'active-bg-opacity': 0});
-    cy.style().selector('node[boundaryParentId]').style({ 'z-index': 10 });
+    
+    var boundaryZCounter = 1000;
+    cy.style()
+      .selector('node[boundaryParentId]')
+      .style({
+        'z-index': function (ele) {
+          if (!ele.scratch('_boundaryZ')) {
+            boundaryZCounter += 10;
+            ele.scratch('_boundaryZ', boundaryZCounter);
+          }
+          return ele.scratch('_boundaryZ');
+        },
+        'z-compound-depth': 'top'
+      })
+      .selector('node[boundaryParentId] > node, node[boundaryParentId] > node > node, node[boundaryParentId] > node > node > node')
+      .style({
+        'z-index': function (ele) {
+          var parent = ele.ancestors('node[boundaryParentId]').first();
+          if (parent.nonempty()) {
+            if (!parent.scratch('_boundaryZ')) {
+              boundaryZCounter += 10;
+              parent.scratch('_boundaryZ', boundaryZCounter);
+            }
+            return parent.scratch('_boundaryZ') + ele.ancestors().length;
+          }
+          return 11;
+        },
+        'z-compound-depth': 'top'
+      });
+
     // If undo extension, register undo/redo actions
     if (appUtilities.undoable) {
       registerUndoRedoActions();
