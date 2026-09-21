@@ -2724,6 +2724,8 @@ module.exports = function (chiseInstance) {
     cy.nodeEditing({
       padding: 2, // spacing between node and grapples/rectangle
       undoable: appUtilities.undoable, // and if cy.undoRedo exists
+      // Arrow movement and its undo action are handled by keyboard-shortcuts.js.
+      moveSelectedNodesOnKeyEvents: false,
 
       grappleSize: 7, // size of square dots
       grappleColor: "#d67614", // color of grapples
