@@ -1680,8 +1680,7 @@ module.exports = function() {
         pathsBetweenQueryView.render();
     });
 
-    $("#query-pathsbetween-localdatabase, #query-pathsbetween-icon").click(function (e) {
-      console.log("clicked")
+    $("#query-pathsbetween-localdatabase").click(function (e) {
       pathsBetweenQueryViewLocalDB.render();
   });
 
