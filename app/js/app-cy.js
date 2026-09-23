@@ -1835,7 +1835,7 @@ module.exports = function (chiseInstance) {
         },
         'z-compound-depth': 'top'
       })
-      .selector('node[boundaryParentId] > node, node[boundaryParentId] > node > node, node[boundaryParentId] > node > node > node')
+      .selector('node[boundaryParentId] node')
       .style({
         'z-index': function (ele) {
           var parent = ele.ancestors('node[boundaryParentId]').first();
