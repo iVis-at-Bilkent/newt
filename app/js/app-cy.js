@@ -1993,6 +1993,8 @@ module.exports = function (chiseInstance) {
     cy.autopanOnDrag();
 
     cy.edgeEditing({
+      // Keyboard movement is handled together with grid snapping in Newt.
+      moveSelectedAnchorsOnKeyEvents: false,
       // this function specifies the positions of bend points
       bendPositionsFunction: function (ele) {
         return ele.data('bendPointPositions');
