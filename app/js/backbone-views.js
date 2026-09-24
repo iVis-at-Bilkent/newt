@@ -10877,7 +10877,13 @@ var AnnotationListView = Backbone.View.extend({
     });
   },
   createAnnotation: function (e) {
-    var newAnnot = this.model.create({ cyParent: this.model.cyParent });
+    var Annotation = this.model.model;
+
+    // use the most recently selected database option for the new annotation
+    var newAnnot = this.model.create({
+      cyParent: this.model.cyParent, 
+      selectedDB: Annotation.lastSelectedDB
+    });
   },
   addAnnotationElementView: function (annotationModel) {
     var view = new AnnotationElementView({ model: annotationModel });
@@ -10927,6 +10933,9 @@ var AnnotationElementView = Backbone.View.extend({
   dbChangeHandler: function (e) {
     var selectedDBkey = $(e.currentTarget).val();
     if (this.underControlledMode()) {
+      // remember this database selection for new annotations in all open networks
+      this.model.constructor.lastSelectedDB = selectedDBkey;
+
       this.model.set("selectedDB", selectedDBkey);
       this.model.save();
       this.launchValidation();
@@ -10968,8 +10977,8 @@ var AnnotationElementView = Backbone.View.extend({
       // validation cannot be applied, considered always valid
       this.model.set("status", "validated");
     } else if (!previouslyControlledMode && nowControlledMode) {
-      // went from uncontrolled to controlled, select defaults db
-      this.model.set("selectedDB", this.model.defaults.selectedDB);
+      // went from uncontrolled to controlled, restore the most recently selected database
+      this.model.set("selectedDB", this.model.constructor.lastSelectedDB);
       // reset validation status
       this.model.set("status", "unchecked");
     }
