@@ -1058,6 +1058,9 @@ module.exports = function() {
       // some operations are to be performed if there is any map property
       // that comes from URL or read from file
       var mapPropertiesExist = ( !$.isEmptyObject( mapProperties ) );
+      var mapStylePropertiesExist = Object.keys(mapProperties).some(function (key) {
+        return key !== 'rememberDirectoryToPersist' && key !== 'enableEntityStateSynchronization';
+      });
 
       if (mapPropertiesExist) {
           appUtilities.setMapProperties(mapProperties);
@@ -1072,13 +1075,13 @@ module.exports = function() {
         // mapTabLocalDBSettings.render();
         experimentTabPanel.render();
         simulationTabPanel.render();
-        if (mapPropertiesExist){
+        if (mapStylePropertiesExist){
           // update map panel
           appUndoActions.refreshColorSchemeMenu({value: currentGeneralProperties.mapColorScheme, self: colorSchemeInspectorView, scheme_type: currentGeneralProperties.mapColorSchemeStyle});
         }
       }
 
-      if (mapPropertiesExist) {
+      if (mapStylePropertiesExist) {
 
         var compartmentBorderColor =
           appUtilities.getCompartmentBorderColorForScheme(
