@@ -409,7 +409,10 @@ ns.Annotation = Backbone.Model.extend({
 	 */
 	dbList: ns.dbList,
 	vocabulary: ns.vocabulary,
-	userDefinedProperties: []
+	userDefinedProperties: [],
+	// this attribute enables the most recently selected database 
+	// to be remembered across all concurrently open networks
+	lastSelectedDB: "chebi"
 });
 
 /**

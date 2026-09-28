@@ -5,6 +5,7 @@ var modeHandler = require('./app-mode-handler');
 var arrowKeyCombos = [
   "left", "right", "up", "down",
   "shift+left", "shift+right", "shift+up", "shift+down",
+  "alt+left", "alt+right", "alt+up", "alt+down",
   "ctrl+left", "ctrl+right", "ctrl+up", "ctrl+down",
   "command+left", "command+right", "command+up", "command+down"
 ];
@@ -87,7 +88,7 @@ function snapPosition(cy, position, gridProperties) {
   };
 }
 
-function getKeyboardMoveDiff(cy, nodes, direction, shouldSnapToGrid, gridProperties, moveSpeed) {
+function getKeyboardMoveDiff(cy, referencePosition, direction, shouldSnapToGrid, gridProperties, moveSpeed) {
   var gridSize = Number(gridProperties.gridSize) || 1;
   // Keep the original 3/10-unit speeds, rounded to whole grid steps when snapping.
   var step = shouldSnapToGrid ? gridSize * Math.max(1, Math.round(moveSpeed / 3)) : moveSpeed;
@@ -110,12 +111,10 @@ function getKeyboardMoveDiff(cy, nodes, direction, shouldSnapToGrid, gridPropert
     return requestedDiff;
   }
 
-  var referenceNode = getReferenceNode(nodes);
-  if (!referenceNode) {
+  if (!referencePosition) {
     return requestedDiff;
   }
 
-  var referencePosition = referenceNode.position();
   // Align first, then move by whole grid steps, using the same snap as dragging.
   var snappedPosition = snapPosition(cy, referencePosition, gridProperties);
 
@@ -230,17 +229,46 @@ module.exports = function () {
     }
 
     var selectedNodes = cy.nodes(":visible:selected");
-    if (selectedNodes.empty()) {
-      return true;
-    }
-
     var direction = keyCombo.split("+").pop();
     var gridProperties = appUtilities.getScratch(cy, 'currentGridProperties') || {};
-    var bypassGridSnap = event.ctrlKey || event.metaKey;
-    var moveSpeed = event.shiftKey ? 10 : 3;
+    var bypassGridSnap = event.ctrlKey || event.metaKey || event.altKey;
+    var moveSpeed = event.altKey ? 1 : (event.shiftKey ? 10 : 3);
     var shouldSnapToGrid = !bypassGridSnap &&
       (gridProperties.snapToGridOnRelease || gridProperties.snapToGridDuringDrag);
-    var positionDiff = getKeyboardMoveDiff(cy, selectedNodes, direction, shouldSnapToGrid, gridProperties, moveSpeed);
+    if (selectedNodes.empty()) {
+      // Preserve edge-editing's rule: move anchors only for one selected edge.
+      var selectedEdges = cy.edges(":visible:selected");
+      if (selectedEdges.length !== 1 || cy.elements(":selected").length !== 1) {
+        return true;
+      }
+      var edgeEditing = cy.edgeEditing('get');
+      var edge = selectedEdges[0];
+      var anchors = edgeEditing.getAnchorsAsArray(edge);
+      if (!anchors || anchors.length < 2) {
+        return true;
+      }
+      var type = edgeEditing.getEdgeType(edge);
+      var anchorDiff = getKeyboardMoveDiff(cy, { x: anchors[0], y: anchors[1] },
+        direction, shouldSnapToGrid && type === 'bend', gridProperties, moveSpeed);
+      var positions = [];
+      for (var i = 0; i < anchors.length; i += 2) {
+        positions.push({ x: anchors[i] + anchorDiff.x, y: anchors[i + 1] + anchorDiff.y });
+      }
+      edge.data(type === 'bend' ? 'bendPointPositions' : 'controlPointPositions', positions);
+      edgeEditing.initAnchorPoints(selectedEdges);
+      if (appUtilities.undoable && cy.undoRedo) {
+        // This action records an already-applied move on its first execution.
+        cy.undoRedo().do("moveAnchorPoints", {
+          edges: selectedEdges,
+          positionDiff: { x: -anchorDiff.x, y: -anchorDiff.y }
+        });
+      }
+      return false;
+    }
+
+    var referenceNode = getReferenceNode(selectedNodes);
+    var positionDiff = getKeyboardMoveDiff(cy, referenceNode && referenceNode.position(),
+      direction, shouldSnapToGrid, gridProperties, moveSpeed);
 
     if (positionDiff.x === 0 && positionDiff.y === 0) {
       return false;

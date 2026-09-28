@@ -1835,7 +1835,7 @@ module.exports = function (chiseInstance) {
         },
         'z-compound-depth': 'top'
       })
-      .selector('node[boundaryParentId] > node, node[boundaryParentId] > node > node, node[boundaryParentId] > node > node > node')
+      .selector('node[boundaryParentId] node')
       .style({
         'z-index': function (ele) {
           var parent = ele.ancestors('node[boundaryParentId]').first();
@@ -1993,6 +1993,8 @@ module.exports = function (chiseInstance) {
     cy.autopanOnDrag();
 
     cy.edgeEditing({
+      // Keyboard movement is handled together with grid snapping in Newt.
+      moveSelectedAnchorsOnKeyEvents: false,
       // this function specifies the positions of bend points
       bendPositionsFunction: function (ele) {
         return ele.data('bendPointPositions');
