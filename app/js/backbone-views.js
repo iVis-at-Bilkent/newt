@@ -259,7 +259,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     // return cloned props to make them accessible
     return clonedProp;
   },
-  getLayoutOptions: function (preferences, _chiseInstance) {
+  getLayoutOptions: function (preferences, _chiseInstance, layoutStyleOverride) {
     // if chise instance param is not set use the recently active chise instance
     var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
 
@@ -276,7 +276,8 @@ var LayoutPropertiesView = Backbone.View.extend({
       preferences = {};
     }
 
-    var layoutStyle = currentLayoutProperties.layoutStyle || "force-directed";
+    var layoutStyle =
+      layoutStyleOverride || currentLayoutProperties.layoutStyle || "force-directed";
     var fcosePreferences = preferences || {};
     var options;
 
@@ -379,6 +380,54 @@ var LayoutPropertiesView = Backbone.View.extend({
     }
 
     chiseInstance.performLayout(options, notUndoable);
+  },
+  runStaticOrthogonalLayout: function (fcosePreferences, _chiseInstance) {
+    var chiseInstance = _chiseInstance || appUtilities.getActiveChiseInstance();
+    var cy = chiseInstance.getCy();
+    var currentLayoutProperties = appUtilities.getScratch(
+      cy,
+      "currentLayoutProperties"
+    );
+
+    if ((currentLayoutProperties.layoutStyle || "force-directed") !== "orthogonal") {
+      return false;
+    }
+
+    // Keep fCoSE configuration owned by Newt.  The static orthogonal action
+    // merely supplies a fresh randomized starting layout before normal OrSE.
+    var fcoseOptions = this.getLayoutOptions(
+      fcosePreferences,
+      chiseInstance,
+      "force-directed"
+    );
+    var pipelineTrace =
+      (window.__newtStaticOrsePipelineTrace = [
+        {
+          stage: "fcose-start",
+          randomize: fcoseOptions.randomize === true,
+          animate: fcoseOptions.animate,
+        },
+      ]);
+    var self = this;
+    var fcoseLayout = cy.elements().filter(":visible").layout(fcoseOptions);
+
+    fcoseLayout.one("layoutstop", function () {
+      pipelineTrace.push({ stage: "fcose-finished" });
+
+      // Newt's global layoutstop listener ends the spinner for fCoSE. Defer
+      // until that event has fully dispatched, then keep it visible for OrSE.
+      setTimeout(function () {
+        chiseInstance.startSpinner("layout-spinner");
+        pipelineTrace.push({ stage: "orse-start" });
+        cy.one("layoutstop", function () {
+          pipelineTrace.push({ stage: "orse-finished" });
+        });
+        self.applyLayout({}, undefined, chiseInstance);
+      }, 0);
+    });
+
+    fcoseLayout.run();
+    return true;
   },
   render: function () {
     var self = this;

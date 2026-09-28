@@ -1916,7 +1916,11 @@ module.exports = function() {
         randomize: true
       };
 
-      layoutPropertiesView.applyLayout(preferences);
+      // A static orthogonal run needs a new force-directed placement before
+      // OrSE. Other layout styles retain the existing fCoSE-only behavior.
+      if (!layoutPropertiesView.runStaticOrthogonalLayout(preferences, chiseInstance)) {
+        layoutPropertiesView.applyLayout(preferences);
+      }
     }, 0);
     });
 
