@@ -1492,7 +1492,7 @@ module.exports = function() {
       // use cy instance associated with chise instance
       var cy = chiseInstance.getCy();
 
-      chiseInstance.highlightProcesses(cy.nodes(':selected'));
+      chiseInstance.highlightProcesses(cy.nodes(':selected'), true);
     });
 
     // PD map to AF map conversion 
