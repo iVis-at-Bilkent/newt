@@ -1992,7 +1992,14 @@ module.exports = function (chiseInstance) {
 
     cy.autopanOnDrag();
 
-    cy.edgeEditing({
+    var edgeEditingOptions = {
+      // evaluate bend removal sensitivity dynamically
+      bendRemovalSensitivity: {
+        valueOf: function() {
+          var props = appUtilities.getScratch(cy, 'currentGeneralProperties') || appUtilities.defaultGeneralProperties;
+          return props.autoRemoveBends ? 8 : 0;
+        }
+      },
       // Keyboard movement is handled together with grid snapping in Newt.
       moveSelectedAnchorsOnKeyEvents: false,
       // this function specifies the positions of bend points
@@ -2039,7 +2046,8 @@ module.exports = function (chiseInstance) {
       },
       zIndex: 999,
       enableMultipleAnchorRemovalOption: true,
-    });
+    };
+    cy.edgeEditing(edgeEditingOptions);
     var pdEdgeTypeModulatorsMenuItems = createPdEdgeTypeModulatorsMenuItems();
     var afEdgeTypeMenuItems = createAfEdgeTypeMenuItems();
     var pdNodeTypeMenuItems = createPdNodeTypeMenuItems();

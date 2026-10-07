@@ -904,6 +904,7 @@ appUtilities.defaultGeneralProperties = {
   keepBendPointPositionsFixed: false,
   animateOnDrawingChanges: true,
   adjustNodeLabelFontSizeAutomatically: false,
+  autoRemoveBends: true,
   epnMatchingPercentage: 100,
   processIncomingContribution: 33,
   processOutgoingContribution: 33,

@@ -909,6 +909,13 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.highlightColor",
     };
 
+    self.params.autoRemoveBends = {
+      id: "auto-remove-bends",
+      type: "checkbox",
+      property: "currentGeneralProperties.autoRemoveBends",
+      update: self.applyUpdate,
+    };
+
     // general properties part
     $(document).on("change", "#map-name", function (evt) {
       // use active cy instance
@@ -1349,6 +1356,14 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
       $("#highlight-color").blur();
     });
 
+    $(document).on("change", "#auto-remove-bends", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      self.params.autoRemoveBends.value = $("#auto-remove-bends").prop("checked");
+      appUtilities.setUserProfileProperty("generalProperties", "autoRemoveBends", self.params.autoRemoveBends.value);
+      cy.undoRedo().do("changeMenu", self.params.autoRemoveBends);
+      $("#auto-remove-bends").blur();
+    });
+
     $(document).on("click", "#inspector-map-tab", function (evt) {
       var chiseInstance = appUtilities.getActiveChiseInstance();
       //document.getElementById('map-type').value = chiseInstance.getMapType() ? chiseInstance.getMapType() : "Unknown";
@@ -1393,6 +1408,8 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         appUtilities.defaultGeneralProperties.calculateBoundaryPadding;
       self.params.compoundPadding.value =
         appUtilities.defaultGeneralProperties.compoundPadding;
+      self.params.autoRemoveBends.value =
+        appUtilities.defaultGeneralProperties.autoRemoveBends;
       self.params.arrowScale.value =
         appUtilities.defaultGeneralProperties.arrowScale;
       self.params.extraHighlightThickness.value =
@@ -1422,6 +1439,7 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
         param: { apply: self.params.enableSIFTopologyGrouping.value },
       });
       actions.push({ name: "changeMenu", param: self.params.compoundPadding });
+      actions.push({ name: "changeMenu", param: self.params.autoRemoveBends });
       actions.push({ name: "changeMenu", param: self.params.arrowScale });
       actions.push({
         name: "changeCss",
