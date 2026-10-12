@@ -37,6 +37,8 @@ function getFileType(filename) {
 
 // Handle sbgnviz menu functions which are to be triggered on events
 module.exports = function() {
+  inspectorUtilities.initializeCustomPropertiesStateTracking();
+  
   var dynamicResize = appUtilities.dynamicResize.bind(appUtilities);
 
   var layoutPropertiesView, generalPropertiesView, neighborhoodQueryView, pathsBetweenQueryView, pathsFromToQueryView, PathsFromToQueryViewLocalDB, commonStreamQueryView, pathsByURIQueryView, mapByWPIDQueryView, mapByReactomeIDQueryView, promptSaveView, promptConfirmationView,

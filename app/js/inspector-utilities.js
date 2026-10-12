@@ -5,6 +5,28 @@ var fillChemicalContainer = require("./fill-chemical-container");
 var annotHandler = require("./annotations-handler");
 var modeHandler = require("./app-mode-handler");
 const colorPickerUtils = require("./color-picker-utils");
+var customPropertiesExpanded = false;
+
+inspectorUtilities.initializeCustomPropertiesStateTracking = function () {
+  var panelGroup = $("#sbgn-inspector-style-panel-group");
+
+  panelGroup
+    .off(".customPropertiesState")
+    .on(
+      "shown.bs.collapse.customPropertiesState",
+      "#annotations-collapsible",
+      function () {
+        customPropertiesExpanded = true;
+      }
+    )
+    .on(
+      "hidden.bs.collapse.customPropertiesState",
+      "#annotations-collapsible",
+      function () {
+        customPropertiesExpanded = false;
+      }
+    );
+};
 
 inspectorUtilities.updateInputBoxesFromSet = function (
   ele,
@@ -1739,7 +1761,7 @@ inspectorUtilities.handleSBGNInspector = function () {
       }
 
       // annotations handling part
-      addCollapsibleSection("annotations", "Custom Properties", false, false);
+      addCollapsibleSection("annotations", "Custom Properties", false, customPropertiesExpanded);
       annotHandler.fillAnnotationsContainer(selectedEles[0]);
     }
 
