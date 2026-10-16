@@ -2732,6 +2732,29 @@ module.exports = function (chiseInstance) {
     });
 
     cy.nodeEditing({
+      // Save boundary nodes separately: resize history otherwise stores dimensions only
+      getResizeState: function (node) {
+        var parents = node.union(node.descendants());
+        return cy.nodes().filter(function (ele) {
+          var parentId = ele.data('boundaryParentId');
+          return parentId && parents.some(function (parent) {
+            return parent.id() === parentId;
+          });
+        }).map(function (ele) {
+          var pos = ele.position();
+          return { id: ele.id(), x: pos.x, y: pos.y };
+        });
+      },
+      restoreResizeState: function (node, positions) {
+        (positions || []).forEach(function (position) {
+          var boundaryNode = cy.getElementById(position.id);
+          if (boundaryNode.empty()) return;
+          var listeners = boundaryNode.scratch('boundaryListeners');
+          if (listeners && listeners.restorePosition) {
+            listeners.restorePosition(position);
+          }
+        });
+      },
       padding: 2, // spacing between node and grapples/rectangle
       undoable: appUtilities.undoable, // and if cy.undoRedo exists
       // Arrow movement and its undo action are handled by keyboard-shortcuts.js.
