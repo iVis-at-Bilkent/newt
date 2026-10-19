@@ -848,7 +848,6 @@ appUtilities.defaultLayoutProperties = {
     initialCoolingFactor: 0.3,
     orthogonalizationInterval: 10,
     orthogonalityThresholdDeg: 10,
-    relaxAmountDeg: 5,
     thresholdIncrementDeg: 5,
     edgeSeparation: 8,
     quasiOrthogonal: false,

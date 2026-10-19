@@ -283,7 +283,6 @@ var LayoutPropertiesView = Backbone.View.extend({
 
     if (layoutStyle === "orthogonal") {
       options = {
-        layoutStyle: layoutStyle,
         name: "orse",
         animate: "end",
         fit: currentLayoutProperties.fit,
@@ -295,15 +294,15 @@ var LayoutPropertiesView = Backbone.View.extend({
         initialCoolingFactor: currentLayoutProperties.orse.initialCoolingFactor,
         orthogonalizationInterval: currentLayoutProperties.orse.orthogonalizationInterval,
         orthogonalityThresholdDeg: currentLayoutProperties.orse.orthogonalityThresholdDeg,
-        relaxAmountDeg: currentLayoutProperties.orse.relaxAmountDeg,
         thresholdIncrementDeg: currentLayoutProperties.orse.thresholdIncrementDeg,
         edgeSeparation: currentLayoutProperties.orse.edgeSeparation,
         quasiOrthogonal: currentLayoutProperties.orse.quasiOrthogonal,
-        undoable: appUtilities.undoable,
+        // From the defaults: layout settings undo copies the current settings as JSON,
+        // which drops functions.
+        boundaryNodeConstraint: appUtilities.defaultLayoutProperties.boundaryNodeConstraint,
       };
     } else {
       options = {
-        layoutStyle: layoutStyle,
         name: "fcose",
         quality: currentLayoutProperties.quality,
         samplingType: currentLayoutProperties.samplingType,
@@ -393,40 +392,19 @@ var LayoutPropertiesView = Backbone.View.extend({
       return false;
     }
 
-    // Keep fCoSE configuration owned by Newt.  The static orthogonal action
-    // merely supplies a fresh randomized starting layout before normal OrSE.
+    // fCoSE only gives OrSE its starting positions. Both run without animation in one
+    // go, so nothing is drawn before the final orthogonal layout.
     var fcoseOptions = this.getLayoutOptions(
       fcosePreferences,
       chiseInstance,
       "force-directed"
     );
-    var pipelineTrace =
-      (window.__newtStaticOrsePipelineTrace = [
-        {
-          stage: "fcose-start",
-          randomize: fcoseOptions.randomize === true,
-          animate: fcoseOptions.animate,
-        },
-      ]);
-    var self = this;
-    var fcoseLayout = cy.elements().filter(":visible").layout(fcoseOptions);
+    fcoseOptions.animate = false;
+    cy.elements().filter(":visible").layout(fcoseOptions).run();
 
-    fcoseLayout.one("layoutstop", function () {
-      pipelineTrace.push({ stage: "fcose-finished" });
-
-      // Newt's global layoutstop listener ends the spinner for fCoSE. Defer
-      // until that event has fully dispatched, then keep it visible for OrSE.
-      setTimeout(function () {
-        chiseInstance.startSpinner("layout-spinner");
-        pipelineTrace.push({ stage: "orse-start" });
-        cy.one("layoutstop", function () {
-          pipelineTrace.push({ stage: "orse-finished" });
-        });
-        self.applyLayout({}, undefined, chiseInstance);
-      }, 0);
-    });
-
-    fcoseLayout.run();
+    var orseOptions = this.getLayoutOptions({}, chiseInstance);
+    orseOptions.animate = false;
+    chiseInstance.performLayout(orseOptions);
     return true;
   },
   render: function () {
@@ -546,9 +524,6 @@ var LayoutPropertiesView = Backbone.View.extend({
           );
           currentLayoutProperties.orse.orthogonalityThresholdDeg = Number(
             document.getElementById("orse-orth-threshold").value
-          );
-          currentLayoutProperties.orse.relaxAmountDeg = Number(
-            document.getElementById("orse-relax-amount").value
           );
           currentLayoutProperties.orse.thresholdIncrementDeg = Number(
             document.getElementById("orse-orth-increment").value
