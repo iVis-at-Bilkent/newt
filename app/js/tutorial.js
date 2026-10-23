@@ -17,7 +17,11 @@ tutorial.introduction = function(checkCookie){
   // set the current step
   var currentStep = 0;
   if(getCookie("stepNo") != ""){
-    currentStep = parseInt(getCookie("stepNo"));
+    currentStep = parseInt(getCookie("stepNo"), 10);
+    // Old introductions had four pages; only page indices 0 and 1 remain valid.
+    if (currentStep !== 0 && currentStep !== 1) {
+      currentStep = 0;
+    }
   }
 
   // necessary style changes before starting introduction
@@ -29,27 +33,17 @@ tutorial.introduction = function(checkCookie){
       { 
         intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
                 <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/FUf-aqKO0_g" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Basics</p>'
+                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/xYRg-dwqBxw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
+                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Help &amp; Legends</p>'
 
       },
       { 
-        intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
+        intro: '<h2 style="text-align:center; margin-top: 10px; color:#0B9BCD;">Newt Tutorials</h2>\n\
                 <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BQ8RDtpzLsw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Advanced</p>'
-      },
-      {
-        intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
-                <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/LmTGgluJN0U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Complexity Management</p>'               
-      },
-      {
-        intro: '<h2 style="text-align:center; margin-top: 10px;"><b style="vertical-align:middle; color:#0B9BCD;">Welcome to  </b><img src="app/img/newt-logo.png"> </h2>\n\
-                <hr style="margin:10px auto;">\n\
-                <iframe style="border: 1px solid #0B9BCD; box-sizing: content-box" width="560" height="315" src="https://www.youtube-nocookie.com/embed/Ie8tjLjJk8k" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> \n\
-                <br><p style="text-align:center; margin: 0px; font-size: 12px;">Newt Layout</p>'               
+                <div style="width:560px; max-width:100%; box-sizing:border-box; text-align:center; padding:70px 15px;">\n\
+                  <p style="font-size:14px; margin:0 0 22px;">Learn how to create, edit, and explore maps in Newt.</p>\n\
+                  <a class="btn btn-default" style="color:#0B9BCD; padding:8px 18px;" href="https://www.youtube.com/playlist?list=PLJA9by_crwfZ2UqUxWWHUcDENuyy6tuWh" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-play" aria-hidden="true" style="margin-right:6px;"></i>Watch Tutorials on YouTube</a>\n\
+                </div>'
       }
     ],
     showStepNumbers: false,
