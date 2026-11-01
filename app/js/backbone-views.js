@@ -400,11 +400,31 @@ var LayoutPropertiesView = Backbone.View.extend({
       "force-directed"
     );
     fcoseOptions.animate = false;
+    var positionsBefore = {};
+    cy.nodes().forEach(function (node) {
+      positionsBefore[node.id()] = { x: node.position("x"), y: node.position("y") };
+    });
     cy.elements().filter(":visible").layout(fcoseOptions).run();
 
     var orseOptions = this.getLayoutOptions({}, chiseInstance);
     orseOptions.animate = false;
+    var undoStack = cy.undoRedo ? cy.undoRedo().getUndoStack() : [];
+    var undoStackSize = undoStack.length;
     chiseInstance.performLayout(orseOptions);
+
+    // The OrSE undo step saved the fCoSE positions, both as its own positions and in the
+    // element jsons sbgnviz restores on undo, so undo would return there with the edges of
+    // the layout before. It returns to the positions before fCoSE instead.
+    var orseAction = undoStack[undoStack.length - 1];
+    if (undoStack.length > undoStackSize && orseAction.name === "layout") {
+      Object.keys(positionsBefore).forEach(function (id) {
+        if (orseAction.args[id]) orseAction.args[id] = positionsBefore[id];
+      });
+      (orseAction.args.allElements || []).forEach(function (json) {
+        var position = json.group === "nodes" && positionsBefore[json.data.id];
+        if (position) json.position = position;
+      });
+    }
     return true;
   },
   render: function () {
