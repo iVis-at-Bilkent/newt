@@ -285,6 +285,8 @@ var LayoutPropertiesView = Backbone.View.extend({
       options = {
         name: "orse",
         animate: "end",
+        animationEasing: currentLayoutProperties.animationEasing,
+        animationDuration: currentLayoutProperties.animationDuration,
         fit: currentLayoutProperties.fit,
         padding: currentLayoutProperties.padding,
         nodeRepulsion: currentLayoutProperties.orse.nodeRepulsion,
@@ -392,14 +394,15 @@ var LayoutPropertiesView = Backbone.View.extend({
       return false;
     }
 
-    // fCoSE only gives OrSE its starting positions. Both run without animation in one
-    // go, so nothing is drawn before the final orthogonal layout.
+    // fCoSE only gives OrSE its starting positions. It runs without animation or fit, so
+    // nothing is drawn before OrSE, which animates once from the positions before fCoSE.
     var fcoseOptions = this.getLayoutOptions(
       fcosePreferences,
       chiseInstance,
       "force-directed"
     );
     fcoseOptions.animate = false;
+    fcoseOptions.fit = false;
     var positionsBefore = {};
     cy.nodes().forEach(function (node) {
       positionsBefore[node.id()] = { x: node.position("x"), y: node.position("y") };
@@ -407,7 +410,8 @@ var LayoutPropertiesView = Backbone.View.extend({
     cy.elements().filter(":visible").layout(fcoseOptions).run();
 
     var orseOptions = this.getLayoutOptions({}, chiseInstance);
-    orseOptions.animate = false;
+    orseOptions.animate = fcosePreferences.animate ? "end" : false;
+    orseOptions.animateFrom = positionsBefore;
     var undoStack = cy.undoRedo ? cy.undoRedo().getUndoStack() : [];
     var undoStackSize = undoStack.length;
     chiseInstance.performLayout(orseOptions);
