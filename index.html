@@ -1544,9 +1544,7 @@
       <ul id="network-tabs-list" class="nav nav-tabs"></ul>
     </div>
 
-    <div id="layout-properties-table" tabindex="-1" class="modal fade" role="dialog">
-      <!-- sbgn layout table will be shown here -->
-    </div>
+    <div id="layout-properties-table" style="display: none;"></div>
 
     <div id="biogene-container" style="display: none"></div>
 
@@ -2461,283 +2459,6 @@
       </div>
     </script>
 
-    <script type="text/template" id="layout-settings-template">
-      <div class="modal-dialog modal-sm sbgn-modal-dialog">
-      <div class="modal-content">
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Layout Properties</h4>
-      </div>
-      <div class="modal-body">
-      <table class="table-condensed layout-table dialog-table">
-      <tbody>
-        <tr>
-          <td>
-            <span class="add-on layout-text">Style</span>
-          </td>
-
-          <td>
-            <select id="layout-style" name="layout-style" class="layout-text">
-              <option value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> selected<%}%>>
-                Force Directed
-              </option>
-              <option value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> selected<%}%>>
-                Orthogonal
-              </option>
-            </select>
-          </td>
-        </tr>
-
-      <!-- Force-directed layout settings -->
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Node repulsion (non overlapping) multiplier"> Node Repulsion </span>
-      </td>
-      <td>
-      <input id="node-repulsion" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= nodeRepulsion %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Ideal (intra-graph) edge length"> Ideal Edge Length </span>
-      </td>
-      <td>
-      <input id="ideal-edge-length" type="number" min="5" class="sbgn-input-small layout-text integer-input" value= <%= idealEdgeLength %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Divisor to compute edge forces"> Edge Elasticity </span>
-      </td>
-      <td>
-      <input id="edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= edgeElasticity %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Nesting factor (multiplier) to compute ideal edge length for inter-graph edges"> Nesting Factor </span>
-      </td>
-      <td>
-      <input id="nesting-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= nestingFactor %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Gravity force (constant)"> Gravity </span>
-      </td>
-      <td>
-      <input id="gravity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravity %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Gravity range (constant)"> Gravity Range   </span>
-      </td>
-      <td>
-      <input id="gravity-range" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRange %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Gravity force (constant) for compounds"> Compound Gravity  </span>
-      </td>
-      <td>
-      <input id="gravity-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityCompound %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Gravity range (constant) for compounds"> Compound Gravity Range </span>
-      </td>
-      <td>
-      <input id="gravity-range-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRangeCompound %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Maximum number of iterations to perform"> Number of Iterations </span>
-      </td>
-      <td>
-      <input id="num-iter" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= numIter %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Amount of vertical space to put between degree zero nodes during tiling"> Tiling Vertical Padding </span>
-      </td>
-      <td>
-      <input id="tiling-padding-vertical" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingVertical %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Amount of horizontal space to put between degree zero nodes during tiling"> Tiling Horizontal Padding </span>
-      </td>
-      <td>
-      <input id="tiling-padding-horizontal" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingHorizontal %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Whether to tile disconnected nodes"> Tile Disconnected </span>
-      </td>
-
-      <td>
-      <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-        <td>
-          <span class="add-on layout-text" title="Whether to pack components"> Pack Components </span>
-        </td>
-
-        <td>
-          <input id="pack-components" type="checkbox" class="layout-text" <% if (packComponents){ %> checked<%}%>>
-        </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Whether to enable incremental mode"> Incremental </span>
-      </td>
-
-      <td>
-      <input id="incremental" type="checkbox" class="layout-text" <% if (!randomize){ %> checked<%}%>>
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Initial cooling factor for incremental layout"> Incremental Cooling Factor </span>
-      </td>
-      <td>
-      <input id="incremental-cooling-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= initialEnergyOnIncremental %> >
-      </td>
-      </tr>
-
-      <tr class="force-directed-layout-setting">
-      <td>
-      <span class="add-on layout-text" title="Whether to improve flow by swapping degree one nodes"> Improve Flow </span>
-      </td>
-      <td>
-      <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>
-      </td>
-      </tr>
-
-      <!-- Orthogonal layout settings -->
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Node Repulsion </span>
-        </td>
-        <td>
-          <input id="orse-node-repulsion" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.nodeRepulsion %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Ideal Edge Length </span>
-        </td>
-        <td>
-          <input id="orse-ideal-edge-length" type="number" min="10" class="sbgn-input-small layout-text" value= <%= orse.idealEdgeLength %> >
-        </td>
-       </tr>  
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Edge Elasticity </span>
-        </td>
-        <td>
-          <input id="orse-edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.edgeElasticity %> >
-        </td>
-       </tr>  
-
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Maximum Iterations </span>
-        </td>
-        <td>
-          <input id="orse-max-iterations" type="number" min="1" class="sbgn-input-small layout-text" value= <%= orse.maxIterations %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Initial Cooling Factor </span>
-        </td>
-        <td>
-          <input id="orse-initial-cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= orse.initialCoolingFactor %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonalization Interval</span>
-        </td>
-        <td>
-          <input id="orse-orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalizationInterval %> >
-        </td>
-       </tr>
-
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonality Threshold </span>
-        </td>
-        <td>
-          <input id="orse-orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalityThresholdDeg %> >
-        </td>
-       </tr>
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
-        </td>
-        <td>
-          <input id="orse-orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.thresholdIncrementDeg %> >
-        </td>
-       </tr>      
-
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Edge Seperation </span>
-        </td>
-        <td>
-          <input id="orse-edge-separation" type="number" min="0" max="50" class="sbgn-input-small layout-text" value= <%= orse.edgeSeparation %> >
-        </td>
-       </tr>         
-       
-       <tr class="orthogonal-layout-setting">
-        <td>
-          <span class="add-on layout-text"> Quasi-Orthogonal </span>
-        </td>
-        <td>
-          <input id="orse-quasi-orthogonal" type="checkbox" class="layout-text" <% if (orse.quasiOrthogonal){ %> checked<%}%>>
-        </td>
-      </tr>
-
-      </tbody>
-      </table>
-      </div>
-      <div class="modal-footer" style="text-align: center">
-      <button id="save-layout" class="btn btn-default" >Save</button>
-      <button id="default-layout" class="btn btn-default">Default</button>
-      </div>
-      </div>
-      </div>
-    </script>
-
     <script type="text/template" id="map-tab-general-template">
       <table class="table-condensed layout-table dialog-table map-panel-table">
       <tbody>
@@ -3127,12 +2848,265 @@
           <input id="animate-on-drawing-changes" type="checkbox" class="layout-text" <% if (animateOnDrawingChanges){ %> checked<%}%>>
           </td>
           </tr>
+
+          <tr>
+            <td class="header">
+              <span class="add-on layout-text">Style</span>
+            </td>
+
+            <td>
+              <select id="layout-style" name="layout-style" class="sbgn-input-large layout-text">
+                <option value="force-directed" <% if (!layoutStyle || layoutStyle === "force-directed"){ %> selected<%}%>>
+                  Force Directed
+                </option>
+                <option value="orthogonal" <% if (layoutStyle === "orthogonal"){ %> selected<%}%>>
+                  Orthogonal
+                </option>
+              </select>
+            </td>
+          </tr>
+
+          <!-- Force-directed layout settings -->
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Node repulsion (non overlapping) multiplier"> Node Repulsion </span>
+            </td>
+            <td>
+              <input id="node-repulsion" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= nodeRepulsion %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Ideal (intra-graph) edge length"> Ideal Edge Length </span>
+            </td>
+            <td>
+              <input id="ideal-edge-length" type="number" min="5" class="sbgn-input-small layout-text integer-input" value= <%= idealEdgeLength %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Divisor to compute edge forces"> Edge Elasticity </span>
+            </td>
+            <td>
+              <input id="edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= edgeElasticity %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Nesting factor (multiplier) to compute ideal edge length for inter-graph edges"> Nesting Factor </span>
+            </td>
+            <td>
+              <input id="nesting-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= nestingFactor %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Gravity force (constant)"> Gravity </span>
+            </td>
+            <td>
+              <input id="gravity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravity %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Gravity range (constant)"> Gravity Range </span>
+            </td>
+            <td>
+              <input id="gravity-range" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRange %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Gravity force (constant) for compounds"> Compound Gravity </span>
+            </td>
+            <td>
+              <input id="gravity-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityCompound %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Gravity range (constant) for compounds"> Compound Gravity Range </span>
+            </td>
+            <td>
+              <input id="gravity-range-compound" type="number" min="0" class="sbgn-input-small layout-text" value= <%= gravityRangeCompound %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Maximum number of iterations to perform"> Number of Iterations </span>
+            </td>
+            <td>
+              <input id="num-iter" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= numIter %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Amount of vertical space to put between degree zero nodes during tiling"> Tiling Vertical Padding </span>
+            </td>
+            <td>
+              <input id="tiling-padding-vertical" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingVertical %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Amount of horizontal space to put between degree zero nodes during tiling"> Tiling Horizontal Padding </span>
+            </td>
+            <td>
+              <input id="tiling-padding-horizontal" type="number" min="0" class="sbgn-input-small layout-text integer-input" value= <%= tilingPaddingHorizontal %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Whether to tile disconnected nodes"> Tile Disconnected </span>
+            </td>
+            <td>
+              <input id="tile" type="checkbox" class="layout-text" <% if (tile){ %> checked<%}%>>
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Whether to pack components"> Pack Components </span>
+            </td>
+            <td>
+              <input id="pack-components" type="checkbox" class="layout-text" <% if (packComponents){ %> checked<%}%>>
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Whether to enable incremental mode"> Incremental </span>
+            </td>
+            <td>
+              <input id="incremental" type="checkbox" class="layout-text" <% if ((typeof incremental !== "undefined" && incremental) || (typeof incremental === "undefined" && !randomize)){ %> checked<%}%>>
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Initial cooling factor for incremental layout"> Incremental Cooling Factor </span>
+            </td>
+            <td>
+              <input id="incremental-cooling-factor" type="number" min="0" class="sbgn-input-small layout-text" value= <%= initialEnergyOnIncremental %> >
+            </td>
+          </tr>
+
+          <tr class="force-directed-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text" title="Whether to improve flow by swapping degree one nodes"> Improve Flow </span>
+            </td>
+            <td>
+              <input id="improve-flow" type="checkbox" class="layout-text" <% if (improveFlow){ %> checked<%}%>>
+            </td>
+          </tr>
+
+          <!-- Orthogonal layout settings -->
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Node Repulsion </span>
+            </td>
+            <td>
+              <input id="orse-node-repulsion" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.nodeRepulsion %> >
+            </td>
+          </tr>
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Ideal Edge Length </span>
+            </td>
+            <td>
+              <input id="orse-ideal-edge-length" type="number" min="10" class="sbgn-input-small layout-text" value= <%= orse.idealEdgeLength %> >
+            </td>
+          </tr>  
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Edge Elasticity </span>
+            </td>
+            <td>
+              <input id="orse-edge-elasticity" type="number" min="0" class="sbgn-input-small layout-text" value= <%= orse.edgeElasticity %> >
+            </td>
+          </tr>  
+
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Maximum Iterations </span>
+            </td>
+            <td>
+              <input id="orse-max-iterations" type="number" min="1" class="sbgn-input-small layout-text" value= <%= orse.maxIterations %> >
+            </td>
+          </tr>
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Initial Cooling Factor </span>
+            </td>
+            <td>
+              <input id="orse-initial-cooling-factor" type="number" min="0.0" max="1.0" step="0.01" class="sbgn-input-small layout-text" value= <%= orse.initialCoolingFactor %> >
+            </td>
+          </tr>
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Orthogonalization Interval</span>
+            </td>
+            <td>
+              <input id="orse-orth-interval" type="number" min="1" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalizationInterval %> >
+            </td>
+          </tr>
+
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Orthogonality Threshold </span>
+            </td>
+            <td>
+              <input id="orse-orth-threshold" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.orthogonalityThresholdDeg %> >
+            </td>
+          </tr>
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Orthogonal Increment (deg) </span>
+            </td>
+            <td>
+              <input id="orse-orth-increment" type="number" min="0" max="45" step="1" class="sbgn-input-small layout-text" value= <%= orse.thresholdIncrementDeg %> >
+            </td>
+          </tr>      
+
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Edge Separation </span>
+            </td>
+            <td>
+              <input id="orse-edge-separation" type="number" min="0" max="50" class="sbgn-input-small layout-text" value= <%= orse.edgeSeparation %> >
+            </td>
+          </tr>         
+          
+          <tr class="orthogonal-layout-setting">
+            <td class="header">
+              <span class="add-on layout-text"> Quasi-Orthogonal </span>
+            </td>
+            <td>
+              <input id="orse-quasi-orthogonal" type="checkbox" class="layout-text" <% if (orse.quasiOrthogonal){ %> checked<%}%>>
+            </td>
+          </tr>
       </tbody>
       </table>
 
       <div style='text-align: center; margin-top: 5px;'>
         <button class='btn btn-default' style='align: center;' id='map-rearrangement-default-button'>Default</button>
-      <div>
+      </div>
     </script>
 
     <script type="text/template" id="map-tab-simulation-template">

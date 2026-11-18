@@ -251,7 +251,7 @@ var LayoutPropertiesView = Backbone.View.extend({
     var cy = appUtilities.getActiveCy();
 
     // clone default layout props
-    var clonedProp = _.clone(appUtilities.defaultLayoutProperties);
+    var clonedProp = $.extend(true, {}, appUtilities.defaultLayoutProperties);
 
     // reset current layout props
     appUtilities.setScratch(cy, "currentLayoutProperties", clonedProp);
@@ -344,22 +344,9 @@ var LayoutPropertiesView = Backbone.View.extend({
     return options;
   },
   updateLayoutStyleInputs: function () {
-    var selectedStyle = $(this.el).find("#layout-style").val();
-    var isOrthogonal = selectedStyle === "orthogonal";
-
-    // force-directed layout parameters
-    $(this.el)
-    .find(".force-directed-layout-setting")
-    .toggle(!isOrthogonal)
-    .find("input, select, textarea")
-    .prop("disabled", isOrthogonal);
-
-    // orthogonal layout parameters
-    $(this.el)
-      .find(".orthogonal-layout-setting")
-      .toggle(isOrthogonal)
-      .find("input, select, textarea")
-      .prop("disabled", !isOrthogonal);
+    if (appUtilities.mapTabRearrangementPanel) {
+      appUtilities.mapTabRearrangementPanel.updateLayoutStyleInputs();
+    }
   },
   getLayoutNameForStyle: function (layoutStyle) {
     return layoutStyle === "orthogonal" ? "orse" : "fcose";
@@ -432,162 +419,13 @@ var LayoutPropertiesView = Backbone.View.extend({
     return true;
   },
   render: function () {
-    var self = this;
-
-    // use active cy instance
-    var cy = appUtilities.getActiveCy();
-
-    // get current layout props for cy
-    var currentLayoutProperties = appUtilities.getScratch(
-      cy,
-      "currentLayoutProperties"
-    );
-
-    self.template = _.template($("#layout-settings-template").html());
-    self.template = self.template(currentLayoutProperties);
-    $(self.el).html(self.template);
-
-    self.updateLayoutStyleInputs();
-
-    $(document)
-      .off("change", "#layout-style")
-      .on("change", "#layout-style", function () {
-        self.updateLayoutStyleInputs();
-      });
-
-    $(self.el).modal("show");
-
-    $(document)
-      .off("click", "#save-layout")
-      .on("click", "#save-layout", function (evt) {
-        // use active cy instance
-        var cy = appUtilities.getActiveCy();
-
-        // get current layout props for cy
-        var currentLayoutProperties = appUtilities.getScratch(
-          cy,
-          "currentLayoutProperties"
-        );
-        var layoutPropertiesBefore = $.extend(true, {}, currentLayoutProperties);
-
-        currentLayoutProperties.layoutStyle =
-          $(self.el).find("#layout-style").val();
-
-        currentLayoutProperties.name =
-          self.getLayoutNameForStyle(currentLayoutProperties.layoutStyle);
-
-        // force-directed layout settings
-        if (currentLayoutProperties.layoutStyle === "force-directed") {
-          currentLayoutProperties.nodeRepulsion = Number(
-            document.getElementById("node-repulsion").value
-          );
-          currentLayoutProperties.idealEdgeLength = Number(
-            document.getElementById("ideal-edge-length").value
-          );
-          currentLayoutProperties.edgeElasticity = Number(
-            document.getElementById("edge-elasticity").value
-          );
-          currentLayoutProperties.nestingFactor = Number(
-            document.getElementById("nesting-factor").value
-          );
-          currentLayoutProperties.gravity = Number(
-            document.getElementById("gravity").value
-          );
-          currentLayoutProperties.numIter = Number(
-            document.getElementById("num-iter").value
-          );
-          currentLayoutProperties.tile = document.getElementById("tile").checked;
-          currentLayoutProperties.packComponents = document.getElementById(
-            "pack-components"
-          ).checked
-            ? true
-            : false;
-          currentLayoutProperties.randomize =
-            !document.getElementById("incremental").checked;
-          currentLayoutProperties.gravityRangeCompound = Number(
-            document.getElementById("gravity-range-compound").value
-          );
-          currentLayoutProperties.gravityCompound = Number(
-            document.getElementById("gravity-compound").value
-          );
-          currentLayoutProperties.gravityRange = Number(
-            document.getElementById("gravity-range").value
-          );
-          currentLayoutProperties.tilingPaddingVertical = Number(
-            document.getElementById("tiling-padding-vertical").value
-          );
-          currentLayoutProperties.tilingPaddingHorizontal = Number(
-            document.getElementById("tiling-padding-horizontal").value
-          );
-          currentLayoutProperties.initialEnergyOnIncremental = Number(
-            document.getElementById("incremental-cooling-factor").value
-          );
-          currentLayoutProperties.improveFlow =
-            document.getElementById("improve-flow").checked;
-        }
-
-        if (currentLayoutProperties.layoutStyle === "orthogonal") {
-          // ortogonal layout settings
-          currentLayoutProperties.orse.nodeRepulsion = Number(
-            document.getElementById("orse-node-repulsion").value
-          );
-          currentLayoutProperties.orse.idealEdgeLength = Number(
-            document.getElementById("orse-ideal-edge-length").value
-          );
-          currentLayoutProperties.orse.edgeElasticity = Number(
-            document.getElementById("orse-edge-elasticity").value
-          );
-          currentLayoutProperties.orse.maxIterations = Number(
-            document.getElementById("orse-max-iterations").value
-          );
-          currentLayoutProperties.orse.initialCoolingFactor = Number(
-            document.getElementById("orse-initial-cooling-factor").value
-          );
-          currentLayoutProperties.orse.orthogonalizationInterval = Number(
-            document.getElementById("orse-orth-interval").value
-          );
-          currentLayoutProperties.orse.orthogonalityThresholdDeg = Number(
-            document.getElementById("orse-orth-threshold").value
-          );
-          currentLayoutProperties.orse.thresholdIncrementDeg = Number(
-            document.getElementById("orse-orth-increment").value
-          );
-          currentLayoutProperties.orse.edgeSeparation = Number(
-            document.getElementById("orse-edge-separation").value
-          );
-          currentLayoutProperties.orse.quasiOrthogonal =
-            document.getElementById("orse-quasi-orthogonal").checked;
-        }
-
-        // reset currentLayoutProperties in scratch pad
-        appUtilities.setScratch(
-          cy,
-          "currentLayoutProperties",
-          currentLayoutProperties
-        );
-        appUtilities.setScratch(
-          cy,
-          "layoutPropertiesBeforeNextLayout",
-          layoutPropertiesBefore
-        );
-
-        $(self.el).modal("toggle");
-        $(document).trigger("saveLayout", cy);
-      });
-
-    $(document)
-      .off("click", "#default-layout")
-      .on("click", "#default-layout", function (evt) {
-        // reset current layout props for active cy instance and get new props
-        var currentLayoutProperties = self.copyProperties();
-
-        self.template = _.template($("#layout-settings-template").html());
-        self.template = self.template(currentLayoutProperties);
-        $(self.el).html(self.template);
-
-        self.updateLayoutStyleInputs();
-      });
-
+    if (!$('#inspector-map-tab').hasClass('active')) {
+      $('#inspector-map-tab a').tab('show');
+    }
+    var $collapse = $('#sbgn-inspector-map-properties-rearrangement');
+    if ($collapse.length && !$collapse.hasClass('in')) {
+      $collapse.collapse('show');
+    }
     return this;
   },
 });
@@ -1522,6 +1360,11 @@ var MapTabGeneralPanel = GeneralPropertiesParentView.extend({
 
       currentGeneralProperties = Object.assign({}, currentGeneralProperties, userProfile.generalProperties);
       appUtilities.setScratch(cy, 'currentGeneralProperties', currentGeneralProperties);
+      if (userProfile.layoutProperties) {
+        var currentLayoutProperties = appUtilities.getScratch(cy, 'currentLayoutProperties');
+        currentLayoutProperties = $.extend(true, {}, currentLayoutProperties, userProfile.layoutProperties);
+        appUtilities.setScratch(cy, 'currentLayoutProperties', currentLayoutProperties);
+      }
       appUtilities.setScratch(cy, 'profileApplied', true);
 
       cy.viewUtilities("get").changeHighlightStyle(
@@ -1983,6 +1826,101 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       property: "currentGeneralProperties.animateOnDrawingChanges",
     };
 
+    self.params.layoutStyle = {
+      id: "layout-style",
+      type: "select",
+      property: "currentLayoutProperties.layoutStyle",
+      update: function () {
+        var cy = appUtilities.getActiveCy();
+        var lp = appUtilities.getScratch(cy, "currentLayoutProperties");
+        var val = $("#layout-style").val();
+        if (lp) {
+          lp.name = val === "orthogonal" ? "orse" : "fcose";
+        }
+        self.updateLayoutStyleInputs();
+        $(document).trigger("saveLayout", cy);
+      }
+    };
+
+    self.params.tile = {
+      id: "tile",
+      type: "checkbox",
+      property: "currentLayoutProperties.tile",
+    };
+
+    self.params.packComponents = {
+      id: "pack-components",
+      type: "checkbox",
+      property: "currentLayoutProperties.packComponents",
+    };
+
+    self.params.incremental = {
+      id: "incremental",
+      type: "checkbox",
+      property: "currentLayoutProperties.incremental",
+      update: function () {
+        var cy = appUtilities.getActiveCy();
+        var lp = appUtilities.getScratch(cy, "currentLayoutProperties");
+        if (lp) {
+          lp.randomize = !$("#incremental").prop("checked");
+        }
+      }
+    };
+
+    self.params.improveFlow = {
+      id: "improve-flow",
+      type: "checkbox",
+      property: "currentLayoutProperties.improveFlow",
+    };
+
+    self.params.orseQuasiOrthogonal = {
+      id: "orse-quasi-orthogonal",
+      type: "checkbox",
+      property: "currentLayoutProperties.orse.quasiOrthogonal",
+    };
+
+    var numberInputs = [
+      { id: "node-repulsion", key: "nodeRepulsion", prop: "currentLayoutProperties.nodeRepulsion", userProp: "nodeRepulsion" },
+      { id: "ideal-edge-length", key: "idealEdgeLength", prop: "currentLayoutProperties.idealEdgeLength", userProp: "idealEdgeLength" },
+      { id: "edge-elasticity", key: "edgeElasticity", prop: "currentLayoutProperties.edgeElasticity", userProp: "edgeElasticity" },
+      { id: "nesting-factor", key: "nestingFactor", prop: "currentLayoutProperties.nestingFactor", userProp: "nestingFactor" },
+      { id: "gravity", key: "gravity", prop: "currentLayoutProperties.gravity", userProp: "gravity" },
+      { id: "gravity-range", key: "gravityRange", prop: "currentLayoutProperties.gravityRange", userProp: "gravityRange" },
+      { id: "gravity-compound", key: "gravityCompound", prop: "currentLayoutProperties.gravityCompound", userProp: "gravityCompound" },
+      { id: "gravity-range-compound", key: "gravityRangeCompound", prop: "currentLayoutProperties.gravityRangeCompound", userProp: "gravityRangeCompound" },
+      { id: "num-iter", key: "numIter", prop: "currentLayoutProperties.numIter", userProp: "numIter" },
+      { id: "tiling-padding-vertical", key: "tilingPaddingVertical", prop: "currentLayoutProperties.tilingPaddingVertical", userProp: "tilingPaddingVertical" },
+      { id: "tiling-padding-horizontal", key: "tilingPaddingHorizontal", prop: "currentLayoutProperties.tilingPaddingHorizontal", userProp: "tilingPaddingHorizontal" },
+      { id: "incremental-cooling-factor", key: "incrementalCoolingFactor", prop: "currentLayoutProperties.initialEnergyOnIncremental", userProp: "initialEnergyOnIncremental" },
+      { id: "orse-node-repulsion", key: "orseNodeRepulsion", prop: "currentLayoutProperties.orse.nodeRepulsion", userProp: "orse.nodeRepulsion" },
+      { id: "orse-ideal-edge-length", key: "orseIdealEdgeLength", prop: "currentLayoutProperties.orse.idealEdgeLength", userProp: "orse.idealEdgeLength" },
+      { id: "orse-edge-elasticity", key: "orseEdgeElasticity", prop: "currentLayoutProperties.orse.edgeElasticity", userProp: "orse.edgeElasticity" },
+      { id: "orse-max-iterations", key: "orseMaxIterations", prop: "currentLayoutProperties.orse.maxIterations", userProp: "orse.maxIterations" },
+      { id: "orse-initial-cooling-factor", key: "orseInitialCoolingFactor", prop: "currentLayoutProperties.orse.initialCoolingFactor", userProp: "orse.initialCoolingFactor" },
+      { id: "orse-orth-interval", key: "orseOrthInterval", prop: "currentLayoutProperties.orse.orthogonalizationInterval", userProp: "orse.orthogonalizationInterval" },
+      { id: "orse-orth-threshold", key: "orseOrthThreshold", prop: "currentLayoutProperties.orse.orthogonalityThresholdDeg", userProp: "orse.orthogonalityThresholdDeg" },
+      { id: "orse-orth-increment", key: "orseOrthIncrement", prop: "currentLayoutProperties.orse.thresholdIncrementDeg", userProp: "orse.thresholdIncrementDeg" },
+      { id: "orse-edge-separation", key: "orseEdgeSeparation", prop: "currentLayoutProperties.orse.edgeSeparation", userProp: "orse.edgeSeparation" }
+    ];
+    self.numberInputs = numberInputs;
+
+    numberInputs.forEach(function (item) {
+      self.params[item.key] = {
+        id: item.id,
+        type: "text",
+        property: item.prop
+      };
+
+      $(document).on("change", "#" + item.id, function (evt) {
+        var cy = appUtilities.getActiveCy();
+        var val = Number($("#" + item.id).val());
+        self.params[item.key].value = val;
+        appUtilities.setUserProfileProperty("layoutProperties", item.userProp, val);
+        cy.undoRedo().do("changeMenu", self.params[item.key]);
+        $("#" + item.id).blur();
+      });
+    });
+
     $(document).on(
       "change",
       "#recalculate-layout-on-complexity-management",
@@ -2052,6 +1990,72 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       $("#animate-on-drawing-changes").blur();
     });
 
+    $(document).on("change", "#layout-style", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var val = $("#layout-style").val();
+      self.params.layoutStyle.value = val;
+      var lp = appUtilities.getScratch(cy, "currentLayoutProperties");
+      if (lp) {
+        lp.name = val === "orthogonal" ? "orse" : "fcose";
+      }
+      appUtilities.setUserProfileProperty("layoutProperties", "layoutStyle", val);
+      appUtilities.setUserProfileProperty("layoutProperties", "name", val === "orthogonal" ? "orse" : "fcose");
+      cy.undoRedo().do("changeMenu", self.params.layoutStyle);
+      self.updateLayoutStyleInputs();
+      $(document).trigger("saveLayout", cy);
+      $("#layout-style").blur();
+    });
+
+    $(document).on("change", "#tile", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var checked = $("#tile").prop("checked");
+      self.params.tile.value = checked;
+      appUtilities.setUserProfileProperty("layoutProperties", "tile", checked);
+      cy.undoRedo().do("changeMenu", self.params.tile);
+      $("#tile").blur();
+    });
+
+    $(document).on("change", "#pack-components", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var checked = $("#pack-components").prop("checked");
+      self.params.packComponents.value = checked;
+      appUtilities.setUserProfileProperty("layoutProperties", "packComponents", checked);
+      cy.undoRedo().do("changeMenu", self.params.packComponents);
+      $("#pack-components").blur();
+    });
+
+    $(document).on("change", "#incremental", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var checked = $("#incremental").prop("checked");
+      self.params.incremental.value = checked;
+      var lp = appUtilities.getScratch(cy, "currentLayoutProperties");
+      if (lp) {
+        lp.randomize = !checked;
+      }
+      appUtilities.setUserProfileProperty("layoutProperties", "incremental", checked);
+      appUtilities.setUserProfileProperty("layoutProperties", "randomize", !checked);
+      cy.undoRedo().do("changeMenu", self.params.incremental);
+      $("#incremental").blur();
+    });
+
+    $(document).on("change", "#improve-flow", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var checked = $("#improve-flow").prop("checked");
+      self.params.improveFlow.value = checked;
+      appUtilities.setUserProfileProperty("layoutProperties", "improveFlow", checked);
+      cy.undoRedo().do("changeMenu", self.params.improveFlow);
+      $("#improve-flow").blur();
+    });
+
+    $(document).on("change", "#orse-quasi-orthogonal", function (evt) {
+      var cy = appUtilities.getActiveCy();
+      var checked = $("#orse-quasi-orthogonal").prop("checked");
+      self.params.orseQuasiOrthogonal.value = checked;
+      appUtilities.setUserProfileProperty("layoutProperties", "orse.quasiOrthogonal", checked);
+      cy.undoRedo().do("changeMenu", self.params.orseQuasiOrthogonal);
+      $("#orse-quasi-orthogonal").blur();
+    });
+
     $(document).on(
       "click",
       "#map-rearrangement-default-button",
@@ -2070,13 +2074,6 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
         self.params.animateOnDrawingChanges.value =
           appUtilities.defaultGeneralProperties.animateOnDrawingChanges;
         
-        if (appUtilities.hasUserProfile()) {
-          appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
-          appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
-          appUtilities.setUserProfileProperty("generalProperties", "keepBendPointPositionsFixed", self.params.keepBendPointPositionsFixed.value);
-          appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
-        }
-
         actions.push({
           name: "changeMenu",
           param: self.params.recalculateLayoutOnComplexityManagement,
@@ -2093,9 +2090,76 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
           name: "changeMenu",
           param: self.params.animateOnDrawingChanges,
         });
+
+        self.params.layoutStyle.value = appUtilities.defaultLayoutProperties.layoutStyle;
+        actions.push({ name: "changeMenu", param: self.params.layoutStyle });
+
+        numberInputs.forEach(function (item) {
+          var defVal;
+          if (item.userProp.indexOf("orse.") === 0) {
+            var subProp = item.userProp.split(".")[1];
+            defVal = appUtilities.defaultLayoutProperties.orse[subProp];
+          } else {
+            defVal = appUtilities.defaultLayoutProperties[item.userProp];
+          }
+          self.params[item.key].value = defVal;
+          actions.push({ name: "changeMenu", param: self.params[item.key] });
+        });
+
+        self.params.tile.value = appUtilities.defaultLayoutProperties.tile;
+        actions.push({ name: "changeMenu", param: self.params.tile });
+
+        self.params.packComponents.value = appUtilities.defaultLayoutProperties.packComponents;
+        actions.push({ name: "changeMenu", param: self.params.packComponents });
+
+        self.params.incremental.value = !appUtilities.defaultLayoutProperties.randomize;
+        actions.push({ name: "changeMenu", param: self.params.incremental });
+
+        self.params.improveFlow.value = appUtilities.defaultLayoutProperties.improveFlow;
+        actions.push({ name: "changeMenu", param: self.params.improveFlow });
+
+        self.params.orseQuasiOrthogonal.value = appUtilities.defaultLayoutProperties.orse.quasiOrthogonal;
+        actions.push({ name: "changeMenu", param: self.params.orseQuasiOrthogonal });
+
+        if (appUtilities.hasUserProfile()) {
+          appUtilities.setUserProfileProperty("generalProperties", "recalculateLayoutOnComplexityManagement", self.params.recalculateLayoutOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("generalProperties", "rearrangeOnComplexityManagement", self.params.rearrangeOnComplexityManagement.value);
+          appUtilities.setUserProfileProperty("generalProperties", "keepBendPointPositionsFixed", self.params.keepBendPointPositionsFixed.value);
+          appUtilities.setUserProfileProperty("generalProperties", "animateOnDrawingChanges", self.params.animateOnDrawingChanges.value);
+
+          var defLayout = $.extend(true, {}, appUtilities.defaultLayoutProperties);
+          delete defLayout.boundaryNodeConstraint;
+          defLayout.incremental = !defLayout.randomize;
+          var userProfile = appUtilities.getUserProfile();
+          userProfile.layoutProperties = defLayout;
+          localStorage.setItem("userProfile", JSON.stringify(userProfile));
+        }
         ur.do("batch", actions);
+        var currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties");
+        if (currentLayoutProperties) {
+          currentLayoutProperties.name = appUtilities.defaultLayoutProperties.name;
+          currentLayoutProperties.randomize = appUtilities.defaultLayoutProperties.randomize;
+        }
+        self.updateLayoutStyleInputs();
+        $(document).trigger("saveLayout", cy);
       }
     );
+  },
+  updateLayoutStyleInputs: function () {
+    var selectedStyle = $("#layout-style").val();
+    var isOrthogonal = selectedStyle === "orthogonal";
+
+    $("#map-tab-rearrangement-container")
+      .find(".force-directed-layout-setting")
+      .toggle(!isOrthogonal)
+      .find("input, select, textarea")
+      .prop("disabled", isOrthogonal);
+
+    $("#map-tab-rearrangement-container")
+      .find(".orthogonal-layout-setting")
+      .toggle(isOrthogonal)
+      .find("input, select, textarea")
+      .prop("disabled", !isOrthogonal);
   },
   render: function () {
     // use the active cy instance
@@ -2107,9 +2171,21 @@ var MapTabRearrangementPanel = GeneralPropertiesParentView.extend({
       "currentGeneralProperties"
     );
 
+    var currentLayoutProperties = appUtilities.getScratch(
+      cy,
+      "currentLayoutProperties"
+    );
+
+    if (currentLayoutProperties && currentLayoutProperties.incremental === undefined) {
+      currentLayoutProperties.incremental = !currentLayoutProperties.randomize;
+    }
+
+    var mergedProps = $.extend({}, currentGeneralProperties, currentLayoutProperties);
+
     this.template = _.template($("#map-tab-rearrangement-template").html());
     this.$el.empty();
-    this.$el.html(this.template(currentGeneralProperties));
+    this.$el.html(this.template(mergedProps));
+    this.updateLayoutStyleInputs();
 
     return this;
   },
@@ -7476,9 +7552,12 @@ var LoadUserPreferencesView = Backbone.View.extend({
             );
             appUtilities.setScratch(
               cy,
-              currentLayoutProperties,
-              "currentLayoutProperties"
+              "currentLayoutProperties",
+              currentLayoutProperties
             );
+            if (appUtilities.mapTabRearrangementPanel) {
+              appUtilities.mapTabRearrangementPanel.render();
+            }
             $(document).trigger("saveLayout", cy);
           }
         }

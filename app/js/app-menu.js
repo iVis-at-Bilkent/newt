@@ -1640,7 +1640,13 @@ module.exports = function() {
     });
 
     $("#layout-properties, #layout-properties-icon").click(function (e) {
-      layoutPropertiesView.render();
+      if (!$('#inspector-map-tab').hasClass('active')) {
+        $('#inspector-map-tab a').tab('show');
+      }
+      var $collapse = $('#sbgn-inspector-map-properties-rearrangement');
+      if ($collapse.length && !$collapse.hasClass('in')) {
+        $collapse.collapse('show');
+      }
     });
 
     $("#delete-selected-simple, #delete-selected-simple-icon").click(function (e) {

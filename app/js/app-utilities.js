@@ -410,6 +410,26 @@ appUtilities.createNewNetwork = function (networkName, networkDescription) {
   currentGeneralProperties.mapName = mapName;
   if (networkDescription)
     currentGeneralProperties.mapDescription = networkDescription;
+
+  if (appUtilities.hasUserProfile()) {
+    var userProfile = appUtilities.getUserProfile();
+    if (userProfile.generalProperties) {
+      currentGeneralProperties = jquery.extend(
+        true,
+        {},
+        currentGeneralProperties,
+        userProfile.generalProperties
+      );
+    }
+    if (userProfile.layoutProperties) {
+      currentLayoutProperties = jquery.extend(
+        true,
+        {},
+        currentLayoutProperties,
+        userProfile.layoutProperties
+      );
+    }
+  }
   // Create a new chise.js instance
   var newInst = chise({
     networkContainerSelector: networkPanelSelector,
@@ -830,6 +850,7 @@ appUtilities.defaultLayoutProperties = {
   animate: "end",
   animationDuration: 2000,
   randomize: false,
+  incremental: true,
   tile: true,
   tilingPaddingVertical: 12,
   tilingPaddingHorizontal: 12,
@@ -5679,6 +5700,7 @@ appUtilities.setRememberDirectoryToPersist = function (state) {
 appUtilities.setUserProfile = function () {
   const cy = appUtilities.getActiveCy();
   const currentGeneralProperties = appUtilities.getScratch(cy, "currentGeneralProperties");
+  const currentLayoutProperties = appUtilities.getScratch(cy, "currentLayoutProperties") || {};
   
   const userProfile = {
     generalProperties: {
@@ -5715,6 +5737,39 @@ appUtilities.setUserProfile = function () {
       overallProcessPercentage: currentGeneralProperties.overallProcessPercentage,
       complexMatchPercentage: currentGeneralProperties.complexMatchPercentage
     },
+    layoutProperties: {
+      layoutStyle: currentLayoutProperties.layoutStyle,
+      name: currentLayoutProperties.name,
+      nodeRepulsion: currentLayoutProperties.nodeRepulsion,
+      idealEdgeLength: currentLayoutProperties.idealEdgeLength,
+      edgeElasticity: currentLayoutProperties.edgeElasticity,
+      nestingFactor: currentLayoutProperties.nestingFactor,
+      gravity: currentLayoutProperties.gravity,
+      gravityRange: currentLayoutProperties.gravityRange,
+      gravityCompound: currentLayoutProperties.gravityCompound,
+      gravityRangeCompound: currentLayoutProperties.gravityRangeCompound,
+      numIter: currentLayoutProperties.numIter,
+      tilingPaddingVertical: currentLayoutProperties.tilingPaddingVertical,
+      tilingPaddingHorizontal: currentLayoutProperties.tilingPaddingHorizontal,
+      tile: currentLayoutProperties.tile,
+      packComponents: currentLayoutProperties.packComponents,
+      randomize: currentLayoutProperties.randomize,
+      incremental: currentLayoutProperties.incremental !== undefined ? currentLayoutProperties.incremental : !currentLayoutProperties.randomize,
+      initialEnergyOnIncremental: currentLayoutProperties.initialEnergyOnIncremental,
+      improveFlow: currentLayoutProperties.improveFlow,
+      orse: {
+        nodeRepulsion: currentLayoutProperties.orse ? currentLayoutProperties.orse.nodeRepulsion : undefined,
+        idealEdgeLength: currentLayoutProperties.orse ? currentLayoutProperties.orse.idealEdgeLength : undefined,
+        edgeElasticity: currentLayoutProperties.orse ? currentLayoutProperties.orse.edgeElasticity : undefined,
+        maxIterations: currentLayoutProperties.orse ? currentLayoutProperties.orse.maxIterations : undefined,
+        initialCoolingFactor: currentLayoutProperties.orse ? currentLayoutProperties.orse.initialCoolingFactor : undefined,
+        orthogonalizationInterval: currentLayoutProperties.orse ? currentLayoutProperties.orse.orthogonalizationInterval : undefined,
+        orthogonalityThresholdDeg: currentLayoutProperties.orse ? currentLayoutProperties.orse.orthogonalityThresholdDeg : undefined,
+        thresholdIncrementDeg: currentLayoutProperties.orse ? currentLayoutProperties.orse.thresholdIncrementDeg : undefined,
+        edgeSeparation: currentLayoutProperties.orse ? currentLayoutProperties.orse.edgeSeparation : undefined,
+        quasiOrthogonal: currentLayoutProperties.orse ? currentLayoutProperties.orse.quasiOrthogonal : undefined,
+      }
+    },
     simulationProperties: {
       simulationStart: $("#inspector-simulation-start").val(),
       simulationEnd: $("#inspector-simulation-end").val(),
@@ -5736,7 +5791,19 @@ appUtilities.setUserProfileProperty = function (propertySection, propertyName, p
       userProfile[propertySection] = {};
     }
 
-    userProfile[propertySection][propertyName] = propertyValue;
+    if (propertyName.indexOf('.') >= 0) {
+      let parts = propertyName.split('.');
+      let current = userProfile[propertySection];
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!current[parts[i]]) {
+          current[parts[i]] = {};
+        }
+        current = current[parts[i]];
+      }
+      current[parts[parts.length - 1]] = propertyValue;
+    } else {
+      userProfile[propertySection][propertyName] = propertyValue;
+    }
     localStorage.setItem("userProfile", JSON.stringify(userProfile));
   }
 };
